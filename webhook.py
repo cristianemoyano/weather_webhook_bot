@@ -24,6 +24,7 @@ def webhook():
 
 
 def makeResponse(req):
+    print(req)
     if req.get("intent").get("displayName") != "CheckWeather":
         return {}
 

@@ -5,6 +5,7 @@ import requests
 from flask import Flask
 from flask import request
 from flask import make_response
+from dateutil import parser
 
 # Flask app should start in global layout
 app = Flask(__name__)
@@ -31,7 +32,9 @@ def makeResponse(req):
     result = req.get("queryResult")
     parameters = result.get("parameters")
     city = parameters.get("geo-city")
-    date = parameters.get("date")
+    querydate = parameters.get("date")
+    parsed_date = parser.parse(querydate)
+    date = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
     if city is None:
         return None
     r = requests.get(
@@ -44,7 +47,7 @@ def makeResponse(req):
         if date in weather[i]['dt_txt']:
             condition = str(weather[i]['weather'][0]['description'])
             break
-    speech = "The forecast for" + city + "for " + date + " is " + condition
+    speech = "The forecast for " + city + " at " + date + " is " + condition
     return {
         "fulfillmentText": speech,
         "source": "weather-webhook-bot-app.herokuapp.com/webhook",

@@ -34,7 +34,7 @@ def makeResponse(req):
     city = parameters.get("geo-city")
     querydate = parameters.get("date")
     parsed_date = parser.parse(querydate)
-    date = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
+    date = parsed_date.strftime("%Y-%m-%d")
     if city is None:
         return None
     r = requests.get(

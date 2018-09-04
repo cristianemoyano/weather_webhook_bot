@@ -24,6 +24,20 @@ def webhook():
     return r
 
 
+@app.route('/')
+def index():
+    msg = '<p>Try: Weather forecast in Mendoza today</p>'
+    iframe = (
+        '<iframe '
+        'allow="microphone;"'
+        'width="350"  '
+        'height="430" '
+        'src="https://console.dialogflow.com/api-client/demo/embedded/1a033c63-e5f9-4f42-b715-1db32e561b52">'
+        '</iframe> '
+    )
+    return msg + iframe
+
+
 def makeResponse(req):
     print(req)
     if req.get('queryResult').get('intent').get('displayName') != "CheckWeather":

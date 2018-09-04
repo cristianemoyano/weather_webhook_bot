@@ -49,3 +49,12 @@ $ source env/bin/activate
 (env) $ export DEBUG=bool
 (env) $ export EB_ACCESS_TOKEN=secret
 ```
+
+##### New release
+[Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
+```sh
+$ gco master
+$ git pull origin master
+$ git tag -a v1.4 -m "my version 1.4"
+$ git push origin v1.4
+```

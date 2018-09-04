@@ -5,11 +5,34 @@
 
 App that communicates with the apiV2 of a bot in [DialogFlow](https://dialogflow.com/)
 
-##### deploy on Heroku app
-`git push heroku master`
 
 ##### heroku app
 [Heroku app](https://weather-webhook-bot-app.herokuapp.com/)
 
-##### heroku logs
+
+## Running Locally
+
+Make sure you have [Heroku CLI](https://cli.heroku.com/) installed.
+
+```sh
+$ git clone https://github.com/cristianemoyano/weather_webhook_bot.git # or clone your own fork
+$ python webhook.py
+```
+
+Your app should now be running on [localhost:5000](http://localhost:5000/).
+
+## Deploying to Heroku in a new app
+
+```
+$ heroku create <name>
+$ git push heroku master
+$ heroku open
+```
+
+##### View heroku logs
 `heroku logs`
+
+##### deploy a new version
+```sh
+$ git push heroku master
+```

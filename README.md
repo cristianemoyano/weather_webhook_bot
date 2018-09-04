@@ -36,3 +36,10 @@ $ heroku open
 ```sh
 $ git push heroku master
 ```
+
+
+> set environment
+```python
+(env) $ export DEBUG=bool
+(env) $ export EB_ACCESS_TOKEN=secret
+```

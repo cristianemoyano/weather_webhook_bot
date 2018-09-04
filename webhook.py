@@ -6,6 +6,16 @@ from flask import Flask
 from flask import request
 from flask import make_response
 from dateutil import parser
+from eventbrite import Eventbrite
+
+
+DEBUG = os.environ['DEBUG']
+EB_ACCESS_TOKEN = os.environ['EB_ACCESS_TOKEN']
+
+eventbrite = Eventbrite(EB_ACCESS_TOKEN)
+user = eventbrite.get_user()
+print user
+
 
 # Flask app should start in global layout
 app = Flask(__name__)
@@ -71,4 +81,4 @@ def makeResponse(req):
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     print("Starting app on port %d" % port)
-    app.run(debug=True, port=port, host='0.0.0.0')
+    app.run(debug=DEBUG, port=port, host='0.0.0.0')

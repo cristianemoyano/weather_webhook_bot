@@ -3,3 +3,9 @@ Requests==2.18.4
 python-dateutil==2.7.2
 coverage==4.0.3
 coveralls==1.5.0
+eventbrite==3.3.3
+requests==2.18.4
+certifi==2018.1.18
+chardet==3.0.4
+idna==2.6
+urllib3==1.22

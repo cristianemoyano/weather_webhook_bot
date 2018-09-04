@@ -3,7 +3,6 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/cristianemoyano/weather_webhook_bot/badge.svg)](https://coveralls.io/github/cristianemoyano/weather_webhook_bot)
 
-weather webhook bot app
 App that communicates with the apiV2 of a bot in [DialogFlow](https://dialogflow.com/)
 
 ##### deploy on Heroku app

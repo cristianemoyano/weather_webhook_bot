@@ -6,36 +6,7 @@
 App that communicates with the apiV2 of a bot in [DialogFlow](https://dialogflow.com/)
 
 
-##### heroku app
-[Heroku app](https://weather-webhook-bot-app.herokuapp.com/)
-
-
-## Running Locally
-
-Make sure you have [Heroku CLI](https://cli.heroku.com/) installed.
-
-```sh
-$ git clone https://github.com/cristianemoyano/weather_webhook_bot.git # or clone your own fork
-$ python webhook.py
-```
-
-Your app should now be running on [localhost:5000](http://localhost:5000/).
-
-## Deploying to Heroku in a new app
-
-```
-$ heroku create <name>
-$ git push heroku master
-$ heroku open
-```
-
-##### View heroku logs
-`heroku logs`
-
-##### deploy a new version
-```sh
-$ git push heroku master
-```
+## Environment
 
 > we recommend
 ```sh
@@ -50,7 +21,42 @@ $ source env/bin/activate
 (env) $ export EB_ACCESS_TOKEN=secret
 ```
 
-##### New release
+## Running Locally
+
+```sh
+$ pip install -r requirements.txt
+$ git clone https://github.com/cristianemoyano/weather_webhook_bot.git # or clone your own fork
+$ python webhook.py
+```
+
+Your app should now be running on [localhost:5000](http://localhost:5000/).
+
+## Heroku
+
+#### deploying to Heroku in a new app
+
+Make sure you have [Heroku CLI](https://cli.heroku.com/) installed.
+
+```
+$ heroku create <name>
+$ git push heroku master
+$ heroku open
+```
+
+##### View heroku logs
+`heroku logs`
+
+##### deploy a new version
+You must have the correct credentials
+```sh
+$ git push heroku master
+```
+
+##### heroku app
+[Heroku app](https://weather-webhook-bot-app.herokuapp.com/)
+
+
+## New git release
 [Git Basics - Tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 ```sh
 $ gco master

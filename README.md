@@ -37,6 +37,12 @@ $ heroku open
 $ git push heroku master
 ```
 
+> we recommend
+```sh
+$ cd ..
+$ virtualenv env
+$ source env/bin/activate
+```
 
 > set environment
 ```python

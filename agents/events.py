@@ -18,8 +18,7 @@ class EventAgent(Agent):
             )['events']
         ]
         event = events[0]
-        print(events)
-        speech = "The event is " + event.name.html
+        speech = "The event is " + event.get('name').get('text')
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",

@@ -14,10 +14,11 @@ class EventAgent(Agent):
         events = [
             event
             for event in eventbrite.get(
-                'events/search/'
+                '/events/search/'
             )['events']
         ]
         event = events[0]
+        print(events)
         speech = "The event is " + event.name.html
         return {
             "fulfillmentText": speech,

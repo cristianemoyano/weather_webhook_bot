@@ -1,6 +1,6 @@
 import requests
 
-from base import Agent
+from agents.base import Agent
 from dateutil import parser
 
 

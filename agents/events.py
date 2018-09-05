@@ -14,7 +14,7 @@ class EventAgent(Agent):
         user = eventbrite.get_user()
         print(user)
 
-        speech = "The user is " + user
+        speech = "The user is " + user.name
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",

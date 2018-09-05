@@ -18,6 +18,7 @@ class Controller(object):
     @app.route(webhook_route.get('route'), methods=webhook_route.get('methods'))
     def webhook():
         post = request.get_json(silent=True, force=True)
+        print(post)
         intent_display_name = post.get('queryResult').get('intent').get('displayName')
         agent = build_agent_by_intent_diplayname(intent_display_name)
         return_value = agent.process(post)

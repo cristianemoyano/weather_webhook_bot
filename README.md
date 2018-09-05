@@ -26,7 +26,7 @@ $ source env/bin/activate
 ```sh
 $ pip install -r requirements.txt
 $ git clone https://github.com/cristianemoyano/weather_webhook_bot.git # or clone your own fork
-$ python webhook.py
+$ python server.py
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).

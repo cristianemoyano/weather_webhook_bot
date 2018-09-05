@@ -1,0 +1,20 @@
+from agents.base import Agent
+from eventbrite import Eventbrite
+from constants import EB_ACCESS_TOKEN
+
+
+class EventAgent(Agent):
+    """Agent that processes events"""
+    def __init__(self):
+        super(EventAgent, self).__init__()
+
+    def process(self, post):
+        eventbrite = Eventbrite(EB_ACCESS_TOKEN)
+        user = eventbrite.get_user()
+        print user
+
+        speech = "The user is " + user
+        return {
+            "fulfillmentText": speech,
+            "source": "weather-webhook-bot-app.herokuapp.com/webhook",
+        }

@@ -1,6 +1,6 @@
 import json
 
-from agents.builder import build_agent_by_name
+from agents.builder import build_agent_by_intent_diplayname
 from constants import app
 from flask import request
 from flask import make_response
@@ -18,7 +18,8 @@ class Controller(object):
     @app.route(webhook_route.get('route'), methods=webhook_route.get('methods'))
     def webhook():
         post = request.get_json(silent=True, force=True)
-        agent = build_agent_by_name('Event')
+        intent_display_name = post.get('queryResult').get('intent').get('displayName')
+        agent = build_agent_by_intent_diplayname(intent_display_name)
         return_value = agent.process(post)
         return_value = json.dumps(return_value, indent=4)
         # Convert the return value from a view function to an instance of response_class.

@@ -9,9 +9,10 @@ class EventAgent(Agent):
         super(EventAgent, self).__init__()
 
     def process(self, post):
+        print(post)
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)
         user = eventbrite.get_user()
-        print user
+        print(user)
 
         speech = "The user is " + user
         return {

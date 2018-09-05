@@ -13,14 +13,28 @@ webhook_route = APP_ROUTES.get('webhooks')
 index_route = APP_ROUTES.get('index')
 
 
+def get_intent_display_name(post):
+    intent_display_name = None
+    try:
+        intent_display_name = post.get('queryResult').get('intent').get('displayName')
+    except AttributeError:
+        intent_display_name = None
+
+    try:
+        intent_display_name = intent_display_name or post.get('result').get('action')
+    except AttributeError:
+        intent_display_name = None
+
+    return intent_display_name
+
+
 class Controller(object):
 
     @app.route(webhook_route.get('route'), methods=webhook_route.get('methods'))
     def webhook():
         post = request.get_json(silent=True, force=True)
         print(post)
-        intent_display_name = post.get('queryResult').get('intent').get('displayName')
-        intent_display_name = intent_display_name or post.get('result').get('action')
+        intent_display_name = get_intent_display_name(post)
         agent = build_agent_by_intent_diplayname(intent_display_name)
         return_value = agent.process(post)
         return_value = json.dumps(return_value, indent=4)

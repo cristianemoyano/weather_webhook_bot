@@ -20,6 +20,7 @@ class Controller(object):
         post = request.get_json(silent=True, force=True)
         print(post)
         intent_display_name = post.get('queryResult').get('intent').get('displayName')
+        intent_display_name = intent_display_name or post.get('result').get('action')
         agent = build_agent_by_intent_diplayname(intent_display_name)
         return_value = agent.process(post)
         return_value = json.dumps(return_value, indent=4)

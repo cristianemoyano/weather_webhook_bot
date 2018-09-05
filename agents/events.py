@@ -11,10 +11,14 @@ class EventAgent(Agent):
     def process(self, post):
         print(post)
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)
-        user = eventbrite.get_user()
-        print(user)
-
-        speech = "The user is " + user.name
+        events = [
+            event
+            for event in eventbrite.get(
+                'events/search/'
+            )['events']
+        ]
+        event = events[0]
+        speech = "The event is " + event.name.html
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",

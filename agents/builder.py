@@ -4,7 +4,7 @@ from agents.exceptions import UndefinedAgent
 
 
 AGENT_BY_NAME = {
-    'SearchEvent': EventAgent,
+    'events.search': EventAgent,
     'CheckWeather': ForecastAgent,
 }
 

@@ -1,4 +1,4 @@
-from base import View
+from views.base import View
 
 
 class IframeView(View):

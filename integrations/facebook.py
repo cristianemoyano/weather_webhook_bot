@@ -18,18 +18,13 @@ class FacebookSimpleElement(object):
             'title': title,
             'subtitle': sub,
             'image_url': image_url,
-            "default_action": {
-                "type": "web_url",
-                "url": btn_url,
-                "messenger_extensions": False,
-                "webview_height_ratio": "tall",
-                "fallback_url": btn_url
-            },
             'buttons': [
                 {
+                    "title": "View Website"
                     "type": "web_url",
                     "url": btn_url,
-                    "title": "View Website"
+                    "messenger_extensions": "false",
+                    "webview_height_ratio": "tall",
                 },
                 {
                     "type": "postback",
@@ -37,6 +32,12 @@ class FacebookSimpleElement(object):
                     "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
             ],
+            "default_action": {
+                "type": "web_url",
+                "url": btn_url,
+                "messenger_extensions": "false",
+                "webview_height_ratio": "tall",
+            },
         }
 
         return element

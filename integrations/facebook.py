@@ -121,9 +121,9 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def get_element(self, element_type, title, sub, image_url, btn_title, btn_url):
+    def get_element(self, element_type, title, sub, image_url, btn_title, btn_url, webview):
         element = self.ELEMENTS_TYPE.get(element_type, None)
         if element:
-            return element().get_element(title, sub, image_url, btn_title, btn_url)
+            return element().get_element(title, sub, image_url, btn_title, btn_url, webview)
         else:
             raise UndefinedElementType(element_type)

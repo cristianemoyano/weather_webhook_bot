@@ -16,101 +16,70 @@ class EventAgent(Agent):
         intent = post.get('originalDetectIntentRequest')
         if (intent and intent.get('source') == 'facebook'):
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-            messageData = {
-                'recipient': {
-                    'id': sender_id
-                },
-                'message': {
-                    'attachment': {
-                        'type': "template",
-                        'payload': {
-                            'template_type': 'generic',
-                            'elements':
-                                [{
-                                    'title': 'Biking',
-                                    'subtitle': 'Bike trail',
-                                    'item_url': 'https://www.evbqa.com/e/bike-trip-tickets-37353734024',
-                                    'image_url':
-                                        (
-                                            'http://images.singletracks.com/blog/wp-content/uploads/'
-                                            '2014/05/Copper-Harbor-copperhippie.jpg'
-                                        ),
-                                    'buttons':
-                                        [
-                                            {
-                                                'type': 'payment',
-                                                'title': 'buy',
-                                                'payload': 'ticket_type_vip',
-                                                'payment_summary': {
-                                                    'currency': 'USD',
-                                                    'payment_type': 'FIXED_AMOUNT',
-                                                    'is_test_payment': True,
-                                                    'merchant_name': 'Eventbrite',
-                                                    'requested_user_info': [
-                                                        'contact_email'
-                                                    ],
-                                                    'price_list':[
-                                                        {
-                                                            'label': 'Subtotal',
-                                                            'amount': '1.00'
-                                                        }
-                                                    ]
-                                                }
-                                            },
-                                            {
-                                                'title': '$100 Get tickets',
-                                                'type': 'web_url',
-                                                'url': 'https://mulberry-surf.glitch.me/webview',
-                                                'webview_height_ratio': 'tall',
-                                                'messenger_extensions': True,
-                                            }
-                                        ],
-                                }, {
-                                    'title': 'dev day',
-                                    'subtitle': 'Argentina Dev day',
-                                    'item_url':
-                                        (
-                                            'https://www.eventbrite.com.ar/e/argentina-devday-mendoza-'
-                                            'tickets-31298217812?aff=ehomecard'
-                                        ),
-                                    'image_url':
-                                        (
-                                            'https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F'
-                                            '31809526%2F199503150352%2F1%2Foriginal.jpg?w=800&rect=0%2C28%2'
-                                            'C960%2C480&s=82345a2d2fba82b996cba87955ef5d23'
-                                        ),
-                                    'buttons': [{
-                                        'type': 'web_url',
-                                        'url':
-                                            (
-                                                'https://www.eventbrite.com.ar/e/argentina-devday-mendoza'
-                                                '-tickets-31298217812?aff=ehomecard'
-                                            ),
-                                        'title': 'Open Web URL'
-                                    }, {
-                                        'type': 'postback',
-                                        'title': 'Call Postback',
-                                        'payload': 'Payload for second bubble',
-                                    }]
-                                }]
-                        }
+            msg = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Hello 1",
+                                "subtitle": "Subtitle 1",
+                                "buttons": [{
+                                    "title": "View",
+                                    "type": "web_url",
+                                    "url": "https://www.medium.com/",
+                                    "messenger_extensions": "false",
+                                    "webview_height_ratio": "full"
+                                }],
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://www.medium.com/",
+                                    "messenger_extensions": "false",
+                                    "webview_height_ratio": "full"
+                                }
+                            },
+                            {
+                                "title": "Hello 2",
+                                "subtitle": "Subtitle 2",
+                                "image_url": "https://cdn-images-1.medium.com/1*Vkf6A8Mb0wBoL3Fw1u0paA.jpeg",
+                                "buttons": [{
+                                    "title": "View",
+                                    "type": "web_url",
+                                    "url": "https://www.medium.com/",
+                                    "messenger_extensions": "false",
+                                    "webview_height_ratio": "full"
+                                }],
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://www.medium.com/",
+                                    "messenger_extensions": "false",
+                                    "webview_height_ratio": "full"
+                                }
+                            }
+                        ]
                     }
                 }
             }
-            print(sender_id)
-            print(messageData)
+            json_data = {
+                "recipient": {"id": sender_id},
+                "message": msg
+            }
+
             params = {
                 "access_token": FB_MESSENGER_ACCESS_TOKEN
             }
-
             r = requests.post(
                 'https://graph.facebook.com/v2.6/me/messages',
-                json=messageData,
+                json=json_data,
                 params=params
             )
-            print(r)
+            print(r, r.status_code, r.text)
+            print(sender_id)
+            print(json_data)
+
             return {
-                "fulfillmentText": 'Respuesta del servidor: ',
+                "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)

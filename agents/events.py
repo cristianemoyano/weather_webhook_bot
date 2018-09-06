@@ -32,7 +32,7 @@ class EventAgent(Agent):
 
             elements = [
                 integration.get_element(
-                    element_type='complex',
+                    element_type='simple',
                     title=event.get('title'),
                     sub='Eventbrite',
                     image_url=event.get('image_url'),

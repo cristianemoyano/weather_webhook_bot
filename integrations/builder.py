@@ -5,7 +5,7 @@ from integrations.exceptions import UndefinedIntegration
 
 INTEGRATIONS_BY_NAME = {
     'facebook': FacebookIntegration,
-    'evenbrite': EventbriteIntegration,
+    'eventbrite': EventbriteIntegration,
 }
 
 

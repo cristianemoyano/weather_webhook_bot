@@ -48,8 +48,12 @@ class Controller(object):
     def index():
         iframe = IframeView()
         return iframe.render()
-        
+
     @app.route(webview_route.get('route'))
     def webview():
         webview = WebView()
-        return webview.render()
+        response = make_response(webview)
+        response.headers['Content-Type'] = 'text/html'
+        response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.messenger.com/'
+        response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.facebook.com/'
+        return response

@@ -5,12 +5,13 @@ from constants import app
 from flask import request
 from flask import make_response
 from routes import APP_ROUTES
-from views.main import IframeView
+from views.main import IframeView, WebView
 
 
 # routes
 webhook_route = APP_ROUTES.get('webhooks')
 index_route = APP_ROUTES.get('index')
+webview_route = APP_ROUTES.get('webview')
 
 
 def get_intent_display_name(post):
@@ -47,3 +48,8 @@ class Controller(object):
     def index():
         iframe = IframeView()
         return iframe.render()
+        
+    @app.route(webview_route.get('route'))
+    def webview():
+        webview = WebView()
+        return webview.render()

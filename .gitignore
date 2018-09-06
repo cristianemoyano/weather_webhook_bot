@@ -128,5 +128,7 @@ dmypy.json
 pyvenv.cfg
 pip-selfcheck.json
 
+# vscode
+.vscode/
 
 # End of https://www.gitignore.io/api/python

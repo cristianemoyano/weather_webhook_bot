@@ -8,5 +8,10 @@ APP_ROUTES = {
         'description': '',
         'route': '/',
         'methods': [],
-    }
+    },
+    'webview': {
+        'description': '',
+        'route': '/webview',
+        'methods': [],
+    },
 }

@@ -21,11 +21,10 @@ class EventAgent(Agent):
         events = event_integration.respond(
             endpoint='/events/search/',
             target='events',
-            params=get_params
+            params=get_params,
+            limit=3,
         )
-        events = events[:3]
         intent = post.get('originalDetectIntentRequest')
-        print(events)
         if (intent and events):
             integration = build_integration_by_source(intent.get('source'))
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
@@ -38,7 +37,7 @@ class EventAgent(Agent):
                     btn_title='View',
                     btn_url=event.get('url')
                 )
-                for event in events
+                for event in events if events
             ]
             integration.respond(sender_id, elements)
 

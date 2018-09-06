@@ -1,13 +1,13 @@
 from views.base import View
-from constants import ROOT_PATH
 
 
 class IframeView(View):
     def __init__(self):
         super(IframeView, self).__init__()
+        self.template_name = 'iframe_view'
 
     def render(self):
-        path_file = ROOT_PATH + '/templates/iframe_view.html'
+        path_file = self.get_template_path()
 
         with open(path_file, 'r') as f:
             html = f.read()

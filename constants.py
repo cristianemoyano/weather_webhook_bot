@@ -8,3 +8,5 @@ DEBUG = bool(int(os.environ['DEBUG']))
 EB_ACCESS_TOKEN = os.environ['EB_ACCESS_TOKEN']
 PORT = int(os.getenv('PORT', 5000))
 FB_MESSENGER_ACCESS_TOKEN = os.environ['FB_MESSENGER_ACCESS_TOKEN']
+
+ROOT_PATH = os.getcwd()

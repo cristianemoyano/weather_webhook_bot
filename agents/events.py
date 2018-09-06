@@ -26,31 +26,32 @@ class EventAgent(Agent):
         )
         intent = post.get('originalDetectIntentRequest')
         if (intent and events):
-            # integration = build_integration_by_source(intent.get('source'))
-            # sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-            ev1 = events[0]
-            ev1.get('name').get('text')
-            ev1.get('logo').get('url')
-            ev1.get('url')
-            ev2 = events[1]
-            ev2.get('name').get('text')
-            ev2.get('logo').get('url')
-            ev2.get('url')
-            ev3 = events[2]
-            ev3.get('name').get('text')
-            ev3.get('logo').get('url')
-            ev3.get('url')
-            # elements = [
-            #     integration.get_element(
-            #         title=event.get('name').get('text'),
-            #         sub='Eventbrite',
-            #         image_url=event.get('logo').get('url'),
-            #         btn_title='View',
-            #         btn_url=event.get('url')
-            #     )
-            #     for event in events if events
-            # ]
-            # integration.respond(sender_id, elements)
+            integration = build_integration_by_source(intent.get('source'))
+            sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+
+            event_data = []
+            for event in events:
+                logo = event.get('logo')
+                logo_url = ''
+                if logo:
+                    logo_url = logo.get('url')
+                event_data.append({
+                    'title': event.get('name').get('text'),
+                    'image_url': logo_url,
+                    'btn_url': event.get('url')
+                })
+
+            elements = [
+                integration.get_element(
+                    title=event.get('title'),
+                    sub='Eventbrite',
+                    image_url=event.get('image_url'),
+                    btn_title='View',
+                    btn_url=event.get('btn_url')
+                )
+                for event in event_data
+            ]
+            integration.respond(sender_id, elements)
 
             return {
                 "fulfillmentText": 'Message from server.',

@@ -6,7 +6,14 @@ from integrations.exceptions import UndefinedElementType
 
 
 class FacebookSimpleElement(object):
-    def get_element(self, title, sub, image_url, btn_title, btn_url):
+    def get_element(
+        self,
+        title,
+        sub,
+        image_url,
+        btn_title,
+        btn_url='https://weather-webhook-bot-app.herokuapp.com/webview'
+    ):
         element = {
             "title": title,
             "subtitle": sub,

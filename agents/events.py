@@ -1,6 +1,8 @@
+import requests
+
 from agents.base import Agent
 from eventbrite import Eventbrite
-from constants import EB_ACCESS_TOKEN
+from constants import EB_ACCESS_TOKEN, FB_MESSENGER_ACCESS_TOKEN
 
 
 class EventAgent(Agent):
@@ -97,8 +99,18 @@ class EventAgent(Agent):
             }
             print(sender_id)
             print(messageData)
+            params = {
+                "access_token": FB_MESSENGER_ACCESS_TOKEN
+            }
+
+            r = requests.post(
+                'https://graph.facebook.com/v2.6/me/messages',
+                json=messageData,
+                params=params
+            )
+            print(r)
             return {
-                "fulfillmentText": messageData,
+                "fulfillmentText": 'Respuesta del servidor: ',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)

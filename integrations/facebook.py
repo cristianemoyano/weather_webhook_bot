@@ -11,50 +11,13 @@ class FacebookIntegration(Integration):
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
         self.call_url = call_url
 
-    def respond(self, sender_id):
+    def respond(self, sender_id, elements):
         msg = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Hello 1",
-                            "subtitle": "Subtitle 1",
-                            "image_url": "https://cdn-images-1.medium.com/1*Vkf6A8Mb0wBoL3Fw1u0paA.jpeg",
-                            "buttons": [{
-                                "title": "View",
-                                "type": "web_url",
-                                "url": "https://www.medium.com/",
-                                "messenger_extensions": "false",
-                                "webview_height_ratio": "full"
-                            }],
-                            "default_action": {
-                                "type": "web_url",
-                                "url": "https://www.medium.com/",
-                                "messenger_extensions": "false",
-                                "webview_height_ratio": "full"
-                            }
-                        },
-                        {
-                            "title": "Hello 2",
-                            "subtitle": "Subtitle 2",
-                            "image_url": "https://cdn-images-1.medium.com/1*Vkf6A8Mb0wBoL3Fw1u0paA.jpeg",
-                            "buttons": [{
-                                "title": "View",
-                                "type": "web_url",
-                                "url": "https://www.medium.com/",
-                                "messenger_extensions": "false",
-                                "webview_height_ratio": "full"
-                            }],
-                            "default_action": {
-                                "type": "web_url",
-                                "url": "https://www.medium.com/",
-                                "messenger_extensions": "false",
-                                "webview_height_ratio": "full"
-                            }
-                        }
-                    ]
+                    "elements": elements
                 }
             }
         }
@@ -74,3 +37,24 @@ class FacebookIntegration(Integration):
         print(r, r.status_code, r.text)
         print(sender_id)
         print(json_data)
+
+    def get_element(self, title, sub, image_url, btn_title, btn_url):
+        element = {
+            "title": title,
+            "subtitle": sub,
+            "image_url": image_url,
+            "buttons": [{
+                "title": btn_title,
+                "type": "web_url",
+                "url": btn_url,
+                "messenger_extensions": "false",
+                "webview_height_ratio": "full"
+            }],
+            "default_action": {
+                "type": "web_url",
+                "url": btn_url,
+                "messenger_extensions": "false",
+                "webview_height_ratio": "full"
+            }
+        }
+        return element

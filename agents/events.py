@@ -15,7 +15,7 @@ class EventAgent(Agent):
 
     def process(self, post):
         print(post)
-        req_params = post.get('parameters')
+        req_params = post.get('queryResult').get('parameters')
         get_params = {key: req_params.get(values) for key, values in self.MAP_PARAMETERS}
         event_integration = build_integration_by_source(self.event_integration)
         events = event_integration.respond(

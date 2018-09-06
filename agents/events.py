@@ -1,8 +1,7 @@
-import requests
-
 from agents.base import Agent
 from eventbrite import Eventbrite
-from constants import EB_ACCESS_TOKEN, FB_MESSENGER_ACCESS_TOKEN
+from constants import EB_ACCESS_TOKEN
+from integrations.builder import build_integration_by_source
 
 
 class EventAgent(Agent):
@@ -14,69 +13,10 @@ class EventAgent(Agent):
     def process(self, post):
         print(post)
         intent = post.get('originalDetectIntentRequest')
-        if (intent and intent.get('source') == 'facebook'):
+        if (intent):
+            integration = build_integration_by_source(intent.get('source'))
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-            msg = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [
-                            {
-                                "title": "Hello 1",
-                                "subtitle": "Subtitle 1",
-                                "buttons": [{
-                                    "title": "View",
-                                    "type": "web_url",
-                                    "url": "https://www.medium.com/",
-                                    "messenger_extensions": "false",
-                                    "webview_height_ratio": "full"
-                                }],
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://www.medium.com/",
-                                    "messenger_extensions": "false",
-                                    "webview_height_ratio": "full"
-                                }
-                            },
-                            {
-                                "title": "Hello 2",
-                                "subtitle": "Subtitle 2",
-                                "image_url": "https://cdn-images-1.medium.com/1*Vkf6A8Mb0wBoL3Fw1u0paA.jpeg",
-                                "buttons": [{
-                                    "title": "View",
-                                    "type": "web_url",
-                                    "url": "https://www.medium.com/",
-                                    "messenger_extensions": "false",
-                                    "webview_height_ratio": "full"
-                                }],
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://www.medium.com/",
-                                    "messenger_extensions": "false",
-                                    "webview_height_ratio": "full"
-                                }
-                            }
-                        ]
-                    }
-                }
-            }
-            json_data = {
-                "recipient": {"id": sender_id},
-                "message": msg
-            }
-
-            params = {
-                "access_token": FB_MESSENGER_ACCESS_TOKEN
-            }
-            r = requests.post(
-                'https://graph.facebook.com/v2.6/me/messages',
-                json=json_data,
-                params=params
-            )
-            print(r, r.status_code, r.text)
-            print(sender_id)
-            print(json_data)
+            integration.respond(sender_id)
 
             return {
                 "fulfillmentText": 'Message from server.',

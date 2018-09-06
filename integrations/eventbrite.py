@@ -10,7 +10,7 @@ class EventbriteIntegration(Integration):
         super(EventbriteIntegration, self).__init__()
         self.eb_token = EB_ACCESS_TOKEN
 
-    def respond(self, endpoint, target, params={}):
+    def respond(self, endpoint, target, params={}, limit=None):
         params_encoded = urllib.parse.urlencode(params)
         url = endpoint + '?' + params_encoded
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)
@@ -20,4 +20,4 @@ class EventbriteIntegration(Integration):
                 url
             )[target]
         ]
-        return response
+        return response[:limit]

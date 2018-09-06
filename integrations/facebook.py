@@ -15,38 +15,28 @@ class FacebookSimpleElement(object):
         btn_url
     ):
         element = {
-            "title": title,
-            "subtitle": sub,
-            "image_url": image_url,
-            "buttons": [
+            'title': title,
+            'subtitle': sub,
+            'image_url': image_url,
+            "default_action": {
+                "type": "web_url",
+                "url": btn_url,
+                "messenger_extensions": False,
+                "webview_height_ratio": "tall",
+                "fallback_url": btn_url
+            },
+            'buttons': [
                 {
-                    "type": "payment",
-                    "title": btn_title,
-                    "payload": "ticket_type_vip",
-                    "payment_summary": {
-                        "currency": "USD",
-                        "payment_type": "FIXED_AMOUNT",
-                        "is_test_payment": "true",
-                        "merchant_name": "Eventbrite",
-                        "requested_user_info": [
-                            "contact_email"
-                        ],
-                        "price_list":[
-                            {
-                                "label": "Subtotal",
-                                "amount": "1.00"
-                            }
-                        ]
-                    }
+                    "type": "web_url",
+                    "url": btn_url,
+                    "title": "View Website"
                 },
                 {
-                    "title": "$100 Get tickets",
-                    'type': 'web_url',
-                    "url": btn_url,
-                    "webview_height_ratio": "tall",
-                    "messenger_extensions": "true",
+                    "type": "postback",
+                    "title": "Start Chatting",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
-            ]
+            ],
         }
 
         return element
@@ -64,38 +54,26 @@ class FacebookComplexElement(object):
         element = {
             'title': title,
             'subtitle': sub,
-            'item_url': btn_url,
             'image_url': image_url,
-            'buttons':
-                [
-                    {
-                        "type": "payment",
-                        "title": "buy",
-                        "payload": "ticket_type_vip",
-                        "payment_summary": {
-                            "currency": "USD",
-                            "payment_type": "FIXED_AMOUNT",
-                            "is_test_payment": "true",
-                            "merchant_name": "Eventbrite",
-                            "requested_user_info": [
-                                "contact_email"
-                            ],
-                            "price_list":[
-                                {
-                                    "label": "Subtotal",
-                                    "amount": "1.00"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "title": "$100 Get tickets",
-                        'type': 'web_url',
-                        "url": "https://mulberry-surf.glitch.me/webview",
-                        "webview_height_ratio": "tall",
-                        "messenger_extensions": "true",
-                    }
-                ],
+            "default_action": {
+                "type": "web_url",
+                "url": btn_url,
+                "messenger_extensions": False,
+                "webview_height_ratio": "tall",
+                "fallback_url": btn_url
+            },
+            'buttons': [
+                {
+                    "type": "web_url",
+                    "url": btn_url,
+                    "title": "View Website"
+                },
+                {
+                    "type": "postback",
+                    "title": "Start Chatting",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                }
+            ],
         }
         return element
 
@@ -118,7 +96,7 @@ class FacebookIntegration(Integration):
             "attachment": {
                 "type": "template",
                 "payload": {
-                    "template_type": "button",
+                    "template_type": "generic",
                     "elements": elements
                 }
             }

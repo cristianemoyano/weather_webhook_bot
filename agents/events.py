@@ -24,22 +24,11 @@ class EventAgent(Agent):
             params=get_params,
             limit=3,
         )
+        events_data = self.get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
         if (intent and events):
             integration = build_integration_by_source(intent.get('source'))
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-
-            event_data = []
-            for event in events:
-                logo = event.get('logo')
-                logo_url = ''
-                if logo:
-                    logo_url = logo.get('url')
-                event_data.append({
-                    'title': event.get('name').get('text'),
-                    'image_url': logo_url,
-                    'btn_url': event.get('url')
-                })
 
             elements = [
                 integration.get_element(
@@ -47,9 +36,9 @@ class EventAgent(Agent):
                     sub='Eventbrite',
                     image_url=event.get('image_url'),
                     btn_title='View',
-                    btn_url=event.get('btn_url')
+                    btn_url=event.get('url')
                 )
-                for event in event_data
+                for event in events_data
             ]
             integration.respond(sender_id, elements)
 
@@ -57,8 +46,22 @@ class EventAgent(Agent):
                 "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
-        speech = "The event is " + events[0].get('name').get('text')
+        speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data[0].get('title')
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",
         }
+
+    def get_events_data(self, events):
+        events_data = []
+        for event in events:
+            logo = event.get('logo')
+            logo_url = ''
+            if logo:
+                logo_url = logo.get('url')
+            events_data.append({
+                'title': event.get('name').get('text'),
+                'image_url': logo_url,
+                'url': event.get('url')
+            })
+        return events_data

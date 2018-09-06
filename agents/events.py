@@ -37,7 +37,7 @@ class EventAgent(Agent):
                     sub='Eventbrite',
                     image_url=event.get('image_url'),
                     btn_title='View',
-                    btn_url=event.get('url')
+                    # btn_url=event.get('url')
                 )
                 for event in events_data
             ]

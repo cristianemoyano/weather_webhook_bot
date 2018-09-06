@@ -18,19 +18,35 @@ class FacebookSimpleElement(object):
             "title": title,
             "subtitle": sub,
             "image_url": image_url,
-            "buttons": [{
-                "title": btn_title,
-                "type": "web_url",
-                "url": btn_url,
-                "messenger_extensions": "false",
-                "webview_height_ratio": "full"
-            }],
-            "default_action": {
-                "type": "web_url",
-                "url": btn_url,
-                "messenger_extensions": "false",
-                "webview_height_ratio": "full"
-            }
+            "buttons": [
+                {
+                    "type": "payment",
+                    "title": btn_title,
+                    "payload": "ticket_type_vip",
+                    "payment_summary": {
+                        "currency": "USD",
+                        "payment_type": "FIXED_AMOUNT",
+                        "is_test_payment": "true",
+                        "merchant_name": "Eventbrite",
+                        "requested_user_info": [
+                            "contact_email"
+                        ],
+                        "price_list":[
+                            {
+                                "label": "Subtotal",
+                                "amount": "1.00"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "title": "$100 Get tickets",
+                    'type': 'web_url',
+                    "url": btn_url,
+                    "webview_height_ratio": "tall",
+                    "messenger_extensions": "true",
+                }
+            ]
         }
 
         return element

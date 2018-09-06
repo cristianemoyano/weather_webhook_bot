@@ -12,7 +12,8 @@ class FacebookSimpleElement(object):
         sub,
         image_url,
         btn_title,
-        btn_url
+        btn_url,
+        webview
     ):
         element = {
             'title': title,
@@ -20,7 +21,7 @@ class FacebookSimpleElement(object):
             'image_url': image_url,
             'buttons': [
                 {
-                    "title": "View Website",
+                    "title": "View",
                     "type": "web_url",
                     "url": btn_url,
                     "messenger_extensions": "false",
@@ -28,7 +29,7 @@ class FacebookSimpleElement(object):
                 },
                 {
                     "type": "postback",
-                    "title": "Start Chatting",
+                    "title": "Thanks",
                     "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
             ],
@@ -50,7 +51,8 @@ class FacebookComplexElement(object):
         sub,
         image_url,
         btn_title,
-        btn_url
+        btn_url,
+        webview
     ):
         element = {
             'title': title,
@@ -67,11 +69,11 @@ class FacebookComplexElement(object):
                 {
                     "type": "web_url",
                     "url": btn_url,
-                    "title": "View Website"
+                    "title": "View"
                 },
                 {
                     "type": "postback",
-                    "title": "Start Chatting",
+                    "title": "Thanks",
                     "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
             ],

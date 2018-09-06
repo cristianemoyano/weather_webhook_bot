@@ -25,7 +25,8 @@ class EventAgent(Agent):
         )
         events = events[:3]
         intent = post.get('originalDetectIntentRequest')
-        if (intent):
+        print(events)
+        if (intent and events):
             integration = build_integration_by_source(intent.get('source'))
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
 

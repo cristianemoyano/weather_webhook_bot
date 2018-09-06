@@ -52,7 +52,7 @@ class Controller(object):
     @app.route(webview_route.get('route'))
     def webview():
         webview = WebView()
-        response = make_response(webview)
+        response = make_response(webview.render())
         response.headers['Content-Type'] = 'text/html'
         response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.messenger.com/'
         response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.facebook.com/'

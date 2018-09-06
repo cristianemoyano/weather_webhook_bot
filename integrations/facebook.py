@@ -20,7 +20,7 @@ class FacebookSimpleElement(object):
             'image_url': image_url,
             'buttons': [
                 {
-                    "title": "View Website"
+                    "title": "View Website",
                     "type": "web_url",
                     "url": btn_url,
                     "messenger_extensions": "false",

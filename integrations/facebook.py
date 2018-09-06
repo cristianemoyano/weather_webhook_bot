@@ -12,7 +12,7 @@ class FacebookSimpleElement(object):
         sub,
         image_url,
         btn_title,
-        btn_url='https://weather-webhook-bot-app.herokuapp.com/webview'
+        btn_url
     ):
         element = {
             "title": title,
@@ -43,7 +43,7 @@ class FacebookComplexElement(object):
         sub,
         image_url,
         btn_title,
-        btn_url='https://weather-webhook-bot-app.herokuapp.com/webview'
+        btn_url
     ):
         element = {
             'title': title,

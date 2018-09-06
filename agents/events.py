@@ -36,7 +36,8 @@ class EventAgent(Agent):
                     title=event.get('title'),
                     sub='Eventbrite',
                     image_url=event.get('image_url'),
-                    btn_title='View'
+                    btn_title='View',
+                    btn_url='https://weather-webhook-bot-app.herokuapp.com/webview'
                 )
                 for event in events_data
             ]

@@ -1,24 +1,28 @@
 from agents.base import Agent
-from eventbrite import Eventbrite
-from constants import EB_ACCESS_TOKEN
 from integrations.builder import build_integration_by_source
 
 
 class EventAgent(Agent):
     """Agent that processes events"""
 
+    MAP_PARAMETERS = [
+        ('location.address', 'geo-city'),
+    ]
+
     def __init__(self):
         super(EventAgent, self).__init__()
+        self.event_integration = 'eventbrite'
 
     def process(self, post):
         print(post)
-        eventbrite = Eventbrite(EB_ACCESS_TOKEN)
-        events = [
-            event
-            for event in eventbrite.get(
-                '/events/search/'
-            )['events']
-        ]
+        req_params = post.get('parameters')
+        get_params = {key: req_params.get(values) for key, values in self.MAP_PARAMETERS}
+        event_integration = build_integration_by_source(self.event_integration)
+        events = event_integration.respond(
+            endpoint='/events/search/',
+            target='events',
+            params=get_params
+        )
         events = events[:3]
         intent = post.get('originalDetectIntentRequest')
         if (intent):

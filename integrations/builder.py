@@ -1,9 +1,11 @@
 from integrations.facebook import FacebookIntegration
+from integrations.eventbrite import EventbriteIntegration
 from integrations.exceptions import UndefinedIntegration
 
 
 INTEGRATIONS_BY_NAME = {
     'facebook': FacebookIntegration,
+    'evenbrite': EventbriteIntegration,
 }
 
 

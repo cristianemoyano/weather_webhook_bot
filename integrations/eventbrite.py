@@ -11,7 +11,7 @@ class EventbriteIntegration(Integration):
         self.eb_token = EB_ACCESS_TOKEN
 
     def respond(self, endpoint, target, params={}):
-        params_encoded = urllib.urlencode(params)
+        params_encoded = urllib.parse.urlencode(params)
         url = endpoint + '?' + params_encoded
         eventbrite = Eventbrite(EB_ACCESS_TOKEN)
         response = [

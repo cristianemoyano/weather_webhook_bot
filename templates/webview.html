@@ -17,6 +17,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
+  <style>
+      div#iframe {
+        display: none;
+      }
+      div#loading {
+        top: 200 px;
+        margin: auto;
+        position: inherit;
+        z-index: 1000;
+        width: 150px;
+        height: 150px;
+        background: url(https://vignette.wikia.nocookie.net/polandball/images/0/03/Cargando.gif/revision/latest/scale-to-width-down/480?cb=20161110194813&path-prefix=es) no-repeat;
+        cursor: wait;
+      }
+    </style>
   <body>
     <script>
       window.fbMessengerPlugins = window.fbMessengerPlugins || {
@@ -55,7 +70,9 @@
       }(document, 'script', 'Messenger'));
     </script>
 
-    <div id="eventbrite-widget-container-50019077407"></div>
+<div id="loading"></div>
+<div id="iframe">
+<div id="eventbrite-widget-container-50019077407"></div>
 
 <script src="https://www.evbqa.com/static/widgets/eb_widgets.js"></script>
 
@@ -75,6 +92,7 @@
         onOrderComplete: exampleCallback  // Method called when an order has successfully completed
     });
 </script>
+</div>
 
 
 
@@ -106,6 +124,15 @@
 
       }
     </script>
+
+    <script type="text/javascript">// <![CDATA[
+        function preloader(){
+            document.getElementById("loading").style.display = "none";
+            document.getElementById("iframe").style.display = "block";
+        }//preloader
+        window.onload = preloader;
+// ]]></script>
+
 
       <div
         class="fb-customerchat"

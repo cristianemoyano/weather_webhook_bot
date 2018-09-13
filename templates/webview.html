@@ -8,6 +8,15 @@
 </head>
 
 <body>
+    <script type="text/javascript">
+        (function(d, s, id){
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'Messenger'));
+    </script>
     <form action="/optionspostback" method="get">
     <input type="hidden" name="psid" id="psid">
     <h3>Pillows</h3>
@@ -23,47 +32,6 @@
     <input type="submit" value="Submit" id="submitButton">
 </form>
 </body>
-<script>
-
-    (function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) {
-        return;
-    }
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'Messenger'));
-
-        window.fbAsyncInit = function () {
-
-            MessengerExtensions.getSupportedFeatures(function success(result) {
-              let features = result.supported_features;
-              if (features.indexOf("context") != -1) {
-                MessengerExtensions.getContext('2122394994692265',
-                  function success(thread_context) {
-                    // success
-                    document.getElementById("psid").value = thread_context.psid;
-                    document.getElementById('submitButton').addEventListener('click', function () {
-                    MessengerExtensions.requestCloseBrowser(function success() {
-                        console.log("Webview closing");
-                    }, function error(err) {
-                        console.log(err);
-                    });
-                    });
-                  },
-                  function error(err) {
-                    console.log(err);
-                  }
-                );
-              }
-            }, function error(err) {
-              console.log(err);
-            });
-    };
-
-</script>
 
 </html>
 

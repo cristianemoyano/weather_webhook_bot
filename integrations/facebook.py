@@ -28,11 +28,11 @@ class FacebookSimpleElement(object):
                     "webview_height_ratio": "tall",
                 },
                 {
-                    "title": "View other",
                     "type": "web_url",
                     "url": webview,
-                    "messenger_extensions": "false",
-                    "webview_height_ratio": "tall",
+                    "title": 'Webview (compact)',
+                    "messenger_extensions": "true",
+                    "webview_height_ratio": "compact"
                 },
                 {
                     "type": "postback",

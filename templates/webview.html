@@ -55,28 +55,26 @@
       }(document, 'script', 'Messenger'));
     </script>
 
-    <main>
-      <img src="https://media.giphy.com/media/5wWf7GW1AzV6pF3MaVW/giphy.gif" title="High five" />
-    </main>
+    <div id="eventbrite-widget-container-50019077407"></div>
 
-      <h2>
-        What do you like?
-      </h2>
-      <form id="preferencesForm">
-        <input type="checkbox" id="likes-bots" name="botsAttribute" value="yes">
-        <label for="likes-bots">Bots</label>
+<script src="https://www.evbqa.com/static/widgets/eb_widgets.js"></script>
 
-        <input type="checkbox" id="likes-music" name="musicAttribute" value="yes">
-        <label for="likes-music">Music</label>
+<script type="text/javascript">
+    var exampleCallback = function() {
+        console.log('Order complete!');
+    };
 
-        <input type="checkbox" id="likes-food" name="foodAttribute" value="yes">
-        <label for="likes-dood">Food</label>
+    window.EBWidgets.createWidget({
+        // Required
+        widgetType: 'checkout',
+        eventId: '50019077407',
+        iframeContainerId: 'eventbrite-widget-container-50019077407',
 
-        <input type="checkbox" id="likes-ghosts" name="ghostsAttribute" value="yes">
-        <label for="likes-ghosts">Ghosts</label>
-
-        <button type="submit">Submit</button>
-      </form>
+        // Optional
+        iframeContainerHeight: 425,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
+        onOrderComplete: exampleCallback  // Method called when an order has successfully completed
+    });
+</script>
 
 
 

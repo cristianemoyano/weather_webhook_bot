@@ -1,38 +1,121 @@
-<html lang="en">
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
+<!-- You might want to try something fancier: -->
+<!-- html/nunjucks docs: https://mozilla.github.io/nunjucks/ -->
+<!-- pug: https://pugjs.org/ -->
+<!-- haml: http://haml.info/ -->
+<!-- hbs(handlebars): http://handlebarsjs.com/ -->
 
-<body>
-    <script type="text/javascript">
-        (function(d, s, id){
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'Messenger'));
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>User preferences</title>
+    <meta name="description" content="A cool thing made with Glitch">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <script>
+      window.fbMessengerPlugins = window.fbMessengerPlugins || {
+        init: function () {
+          FB.init({
+            appId            : '2122394994692265',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v3.10'
+          });
+        }, callable: []
+      };
+      window.fbAsyncInit = window.fbAsyncInit || function () {
+        window.fbMessengerPlugins.callable.forEach(function (item) { item(); });
+        window.fbMessengerPlugins.init();
+      };
+      setTimeout(function () {
+        (function (d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) { return; }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      }, 0);
+      </script>
+    <script>
+      // Code copied from Facebook to load and initialise Messenger extensions
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'Messenger'));
     </script>
-    <form action="/optionspostback" method="get">
-    <input type="hidden" name="psid" id="psid">
-    <h3>Pillows</h3>
-    <input type="radio" name="pillows" value="soft" checked>Soft<br>
-    <input type="radio" name="pillows" value="hard">Hard<br>
-    <h3>Bed</h3>
-    <input type="radio" name="bed" value="single" checked>Single<br>
-    <input type="radio" name="bed" value="double">Double<br>
-    <input type="radio" name="bed" value="twin">Twin<br>
-    <h3>View</h3>
-    <input type="radio" name="view" value="sea" checked>Sea<br>
-    <input type="radio" name="view" value="street">Street<br>
-    <input type="submit" value="Submit" id="submitButton">
-</form>
-</body>
 
-</html>
+    <main>
+      <img src="https://media.giphy.com/media/5wWf7GW1AzV6pF3MaVW/giphy.gif" title="High five" />
+    </main>
 
+      <h2>
+        What do you like?
+      </h2>
+      <form id="preferencesForm">
+        <input type="checkbox" id="likes-bots" name="botsAttribute" value="yes">
+        <label for="likes-bots">Bots</label>
+
+        <input type="checkbox" id="likes-music" name="musicAttribute" value="yes">
+        <label for="likes-music">Music</label>
+
+        <input type="checkbox" id="likes-food" name="foodAttribute" value="yes">
+        <label for="likes-dood">Food</label>
+
+        <input type="checkbox" id="likes-ghosts" name="ghostsAttribute" value="yes">
+        <label for="likes-ghosts">Ghosts</label>
+
+        <button type="submit">Submit</button>
+      </form>
+
+
+
+    <!-- Your web-app is https, so your scripts need to be too -->
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
+            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
+            crossorigin="anonymous"></script>
+
+    <script>
+      window.extAsyncInit = function() {
+        console.log('Messenger extensions are ready');
+
+        // Handle button click
+        $('#preferencesForm').submit(function(event) {
+          console.log('Submit pressed');
+
+          event.preventDefault();
+
+          const formData = $('#preferencesForm').serialize();
+
+          $.post('/webview', formData, function (data) {
+            MessengerExtensions.requestCloseBrowser(function () {
+              console.log('Window will be closed');
+            }, function (error) {
+              console.log('There is an error');
+              console.log(error);
+            });
+          });
+        });
+
+      }
+    </script>
+
+      <div
+        class="fb-customerchat"
+        page_id="1920147214903175"
+        ref="WebinarRegistration">
+      </div>
+
+
+  </body>
 </html>

@@ -31,7 +31,7 @@ class FacebookSimpleElement(object):
                     "title": "Dialog",
                     "type": "web_url",
                     "url": webview,
-                    "messenger_extensions": "true",
+                    "messenger_extensions": "false",
                     "webview_height_ratio": "full",
                 },
                 {

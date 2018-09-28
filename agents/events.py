@@ -42,8 +42,8 @@ class EventAgent(Agent):
                 )
                 for event in events_data
             ]
-            integration.respond(sender_id, elements)
-
+            integration.respond(sender_id, elements, 'template')
+            integration.respond(sender_id, None, 'quick_replies')
             return {
                 "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",

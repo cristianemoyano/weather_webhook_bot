@@ -101,7 +101,7 @@ class FacebookIntegration(Integration):
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
         self.call_url = call_url
 
-    def respond(self, sender_id, elements):
+    def respond(self, sender_id, elements, typeMessage):
         msg = {
             "attachment": {
                 "type": "template",
@@ -113,7 +113,7 @@ class FacebookIntegration(Integration):
         }
         json_data = {
             "recipient": {"id": sender_id},
-            "message": msg
+            "message": self.get_message(elements, typeMessage)
         }
 
         params = {
@@ -127,6 +127,35 @@ class FacebookIntegration(Integration):
         print(r, r.status_code, r.text)
         print(sender_id)
         print(json_data)
+
+    def get_message(self, elements, typeMessage):
+        msg = {}
+        if typeMessage == 'template':
+            msg.update({
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elements
+                    }
+                }
+            })
+        elif typeMessage == 'quick_replies':
+            msg.update({
+                "text": "Here is a quick reply!",
+                "quick_replies": [
+                    {
+                        "content_type": "text",
+                        "title": "Search",
+                        "payload": "<POSTBACK_PAYLOAD>",
+                        "image_url": "http://example.com/img/red.png"
+                    },
+                    {
+                        "content_type": "location"
+                    }
+                ]
+            })
+        return msg
 
     def get_element(self, element_type, title, sub, image_url, btn_title, btn_url, webview):
         element = self.ELEMENTS_TYPE.get(element_type, None)

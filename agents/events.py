@@ -45,7 +45,7 @@ class EventAgent(Agent):
             integration.respond(sender_id, elements, 'template')
             integration.respond(sender_id, None, 'quick_replies')
             return {
-                "fulfillmentText": 'Message from server.',
+                # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
         speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data[0].get('title')

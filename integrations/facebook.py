@@ -32,7 +32,7 @@ class FacebookSimpleElement(object):
                     "url": webview,
                     "title": 'Webview (compact)',
                     "messenger_extensions": "true",
-                    "webview_height_ratio": "compact"
+                    "webview_height_ratio": "full"
                 },
                 {
                     "type": "postback",

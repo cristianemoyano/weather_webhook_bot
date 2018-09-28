@@ -133,17 +133,24 @@ class FacebookIntegration(Integration):
             })
         elif typeMessage == 'quick_replies':
             msg.update({
-                "text": "Here is a quick reply!",
+                "text": "Check the next article?",
                 "quick_replies": [
                     {
                         "content_type": "text",
-                        "title": "Search",
-                        "payload": "<POSTBACK_PAYLOAD>",
-                        "image_url": "http://example.com/img/red.png"
+                        "title": "More stories",
+                        "payload": "more stories"
                     },
                     {
-                        "content_type": "location"
+                        "content_type": "text",
+                        "title": "Sport",
+                        "payload": "sport"
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "Business",
+                        "payload": "business"
                     }
+
                 ]
             })
         return msg

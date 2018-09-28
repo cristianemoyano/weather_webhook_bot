@@ -96,21 +96,12 @@ class FacebookIntegration(Integration):
         'complex': FacebookComplexElement,
     }
 
-    def __init__(self, call_url='https://graph.facebook.com/v2.6/me/messages'):
+    def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
         self.call_url = call_url
 
     def respond(self, sender_id, elements, typeMessage):
-        msg = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": elements
-                }
-            }
-        }
         json_data = {
             "recipient": {"id": sender_id},
             "message": self.get_message(elements, typeMessage)

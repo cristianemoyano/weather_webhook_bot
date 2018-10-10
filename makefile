@@ -11,3 +11,6 @@ deploy:
 
 test_suite:
 	python test_suite.py test
+
+run:
+	python server.py

@@ -1,11 +1,13 @@
 from chatbot.integrations.facebook import FacebookIntegration
 from chatbot.integrations.eventbrite import EventbriteIntegration
+from chatbot.integrations.openweathermap import OpenWeatherMapIntegration
 from chatbot.integrations.exceptions import UndefinedIntegration
 
 
 INTEGRATIONS_BY_NAME = {
     'facebook': FacebookIntegration,
     'eventbrite': EventbriteIntegration,
+    'openweathermap': OpenWeatherMapIntegration,
 }
 
 

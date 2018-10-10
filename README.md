@@ -1,7 +1,7 @@
 # chatbot
 [![Build Status](https://travis-ci.org/cristianemoyano/weather_webhook_bot.svg?branch=master)](https://travis-ci.org/cristianemoyano/weather_webhook_bot)
 
-[![Coverage Status](https://coveralls.io/repos/github/cristianemoyano/weather_webhook_bot/badge.svg)](https://coveralls.io/github/cristianemoyano/weather_webhook_bot)
+[![Coverage Status](https://coveralls.io/repos/github/cristianemoyano/weather_webhook_bot/badge.svg?branch=master)](https://coveralls.io/github/cristianemoyano/weather_webhook_bot?branch=master)
 
 App that communicates with the apiV2 of a bot in [DialogFlow](https://dialogflow.com/)
 

@@ -1,4 +1,4 @@
-# weather_webhook_bot
+# chatbot
 [![Build Status](https://travis-ci.org/cristianemoyano/weather_webhook_bot.svg?branch=master)](https://travis-ci.org/cristianemoyano/weather_webhook_bot)
 
 [![Coverage Status](https://coveralls.io/repos/github/cristianemoyano/weather_webhook_bot/badge.svg)](https://coveralls.io/github/cristianemoyano/weather_webhook_bot)
@@ -44,6 +44,15 @@ $ python test_suite.py test
 #### Run specific test cases
 ```
 $ pytest tests/<folder>/test_xxxx.py::TestClass
+```
+
+#### Debugging
+```
+import ipdb;ipdb.set_trace()
+```
+turn off capture output:
+```
+$ pytest -s test_case_01.py
 ```
 
 ## Heroku

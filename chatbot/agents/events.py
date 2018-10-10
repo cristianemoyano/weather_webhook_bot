@@ -13,7 +13,7 @@ class EventAgent(Agent):
         super(EventAgent, self).__init__()
         self.event_integration = 'eventbrite'
 
-    def process(self, post):
+    def process_request(self, post):
         print(post)
         req_params = post.get('queryResult').get('parameters')
         get_params = {key: req_params.get(values) for key, values in self.MAP_PARAMETERS}
@@ -48,7 +48,8 @@ class EventAgent(Agent):
                 # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
-        speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data[0].get('title')
+        events_data = events_data[0].get('title') if events_data else ''
+        speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",
@@ -56,14 +57,15 @@ class EventAgent(Agent):
 
     def get_events_data(self, events):
         events_data = []
-        for event in events:
-            logo = event.get('logo')
-            logo_url = ''
-            if logo:
-                logo_url = logo.get('url')
-            events_data.append({
-                'title': event.get('name').get('text'),
-                'image_url': logo_url,
-                'url': event.get('url')
-            })
+        if events:
+            for event in events:
+                logo = event.get('logo')
+                logo_url = ''
+                if logo:
+                    logo_url = logo.get('url')
+                events_data.append({
+                    'title': event.get('name').get('text'),
+                    'image_url': logo_url,
+                    'url': event.get('url')
+                })
         return events_data

@@ -1,6 +1,6 @@
-from integrations.facebook import FacebookIntegration
-from integrations.eventbrite import EventbriteIntegration
-from integrations.exceptions import UndefinedIntegration
+from chatbot.integrations.facebook import FacebookIntegration
+from chatbot.integrations.eventbrite import EventbriteIntegration
+from chatbot.integrations.exceptions import UndefinedIntegration
 
 
 INTEGRATIONS_BY_NAME = {

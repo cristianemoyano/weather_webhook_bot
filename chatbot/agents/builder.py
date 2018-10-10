@@ -1,6 +1,6 @@
-from agents.events import EventAgent
-from agents.forecast import ForecastAgent
-from agents.exceptions import UndefinedAgent
+from chatbot.agents.events import EventAgent
+from chatbot.agents.forecast import ForecastAgent
+from chatbot.agents.exceptions import UndefinedAgent
 
 
 AGENT_BY_NAME = {

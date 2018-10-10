@@ -31,6 +31,21 @@ $ python server.py
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
 
+## Testing
+
+#### Doc
+[Pytest Doc](https://docs.pytest.org/en/latest/)
+
+#### Run suite
+```
+$ python test_suite.py test
+```
+
+#### Run specific test cases
+```
+$ pytest tests/<folder>/test_xxxx.py::TestClass
+```
+
 ## Heroku
 
 #### deploying to Heroku in a new app

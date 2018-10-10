@@ -1,11 +1,11 @@
 import json
 
-from agents.builder import build_agent_by_intent_diplayname
-from constants import app
+from chatbot.agents.builder import build_agent_by_intent_diplayname
+from chatbot.constants import app
 from flask import request
 from flask import make_response
-from routes import APP_ROUTES
-from views.main import IframeView, WebView
+from chatbot.routes import APP_ROUTES
+from chatbot.views.main import IframeView, WebView
 
 
 # routes

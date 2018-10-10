@@ -1,4 +1,4 @@
-from views.base import View
+from chatbot.views.base import View
 
 
 class IframeView(View):

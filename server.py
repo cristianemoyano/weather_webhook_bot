@@ -1,12 +1,12 @@
 import os
 
-from routes import APP_ROUTES
-from constants import (
+from chatbot.routes import APP_ROUTES
+from chatbot.constants import (
     DEBUG,
     PORT,
     app
 )
-from controller.main import Controller
+from chatbot.controller.main import Controller
 
 # routes
 webhook_route = APP_ROUTES.get('webhooks')

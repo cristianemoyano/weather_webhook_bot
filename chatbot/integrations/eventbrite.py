@@ -1,6 +1,6 @@
-from integrations.base import Integration
-from constants import EB_ACCESS_TOKEN
-from eventbrite import Eventbrite
+from chatbot.integrations.base import Integration
+from chatbot.constants import EB_ACCESS_TOKEN
+import eventbrite
 import urllib
 
 
@@ -13,10 +13,10 @@ class EventbriteIntegration(Integration):
     def respond(self, endpoint, target, params={}, limit=None):
         params_encoded = urllib.parse.urlencode(params)
         url = endpoint + '?' + params_encoded
-        eventbrite = Eventbrite(EB_ACCESS_TOKEN)
+        eventbrite_api = eventbrite.Eventbrite(EB_ACCESS_TOKEN)
         response = [
             element
-            for element in eventbrite.get(
+            for element in eventbrite_api.get(
                 url
             )[target]
         ]

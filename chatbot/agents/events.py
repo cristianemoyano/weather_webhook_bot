@@ -1,5 +1,5 @@
-from agents.base import Agent
-from integrations.builder import build_integration_by_source
+from chatbot.agents.base import Agent
+from chatbot.integrations.builder import build_integration_by_source
 
 
 class EventAgent(Agent):

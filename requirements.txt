@@ -1,5 +1,7 @@
 appnope==0.1.0
 asn1crypto==0.24.0
+atomicwrites==1.2.1
+attrs==18.2.0
 backports.shutil-get-terminal-size==1.0.0
 certifi==2018.8.24
 cffi==1.11.5
@@ -13,6 +15,7 @@ docopt==0.6.2
 enum34==1.1.6
 eventbrite==3.3.3
 Flask==1.0.2
+funcsigs==1.0.2
 idna==2.7
 ipaddress==1.0.22
 ipdb==0.11
@@ -21,14 +24,18 @@ ipython-genutils==0.2.0
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
+more-itertools==4.3.0
 pathlib2==2.3.2
 pexpect==4.6.0
 pickleshare==0.7.4
+pluggy==0.7.1
 prompt-toolkit==1.0.15
 ptyprocess==0.6.0
+py==1.6.0
 pycparser==2.18
 Pygments==2.2.0
 pyOpenSSL==18.0.0
+pytest==3.8.2
 python-dateutil==2.7.3
 requests==2.19.1
 scandir==1.9.0

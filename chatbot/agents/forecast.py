@@ -1,6 +1,6 @@
 import requests
 
-from agents.base import Agent
+from chatbot.agents.base import Agent
 from dateutil import parser
 
 

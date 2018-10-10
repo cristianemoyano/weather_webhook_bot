@@ -1,8 +1,8 @@
 import requests
 
-from integrations.base import Integration
-from constants import FB_MESSENGER_ACCESS_TOKEN
-from integrations.exceptions import UndefinedElementType
+from chatbot.integrations.base import Integration
+from chatbot.constants import FB_MESSENGER_ACCESS_TOKEN
+from chatbot.integrations.exceptions import UndefinedElementType
 
 
 class FacebookSimpleElement(object):

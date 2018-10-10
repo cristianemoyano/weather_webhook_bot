@@ -5,6 +5,13 @@ from chatbot.constants import FB_MESSENGER_ACCESS_TOKEN
 from chatbot.integrations.exceptions import UndefinedElementType
 
 
+FB_SENDER_ACTIONS = {
+    'seen': 'mark_seen',
+    'typing_on': 'typing_on',
+    'typing_off': 'typing_off',
+}
+
+
 class FacebookSimpleElement(object):
     def get_element(
         self,
@@ -101,6 +108,23 @@ class FacebookIntegration(Integration):
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
         self.call_url = call_url
 
+    def display_sender_action(self, sender_id, sender_action):
+        json_data = {
+            "recipient": {"id": sender_id},
+            "sender_action": sender_action
+        }
+        params = {
+            "access_token": self.fb_token
+        }
+        r = requests.post(
+            self.call_url,
+            json=json_data,
+            params=params
+        )
+        print(r, r.status_code, r.text)
+        print(sender_id)
+        print(json_data)
+
     def respond(self, sender_id, elements, typeMessage):
         json_data = {
             "recipient": {"id": sender_id},
@@ -152,6 +176,33 @@ class FacebookIntegration(Integration):
                         "payload": "business"
                     }
 
+                ]
+            })
+        elif typeMessage == 'location':
+            msg.update({
+                "text": "Please share your location:",
+                "quick_replies": [
+                    {
+                        "content_type": "location"
+                    }
+                ]
+            })
+        elif typeMessage == 'phone_number':
+            msg.update({
+                "text": "Please share your phone number:",
+                "quick_replies": [
+                    {
+                        "content_type": "user_phone_number"
+                    }
+                ]
+            })
+        elif typeMessage == 'email':
+            msg.update({
+                "text": "Please share your phone number:",
+                "quick_replies": [
+                    {
+                        "content_type": "user_email"
+                    }
                 ]
             })
         return msg

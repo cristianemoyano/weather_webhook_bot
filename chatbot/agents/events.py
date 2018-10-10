@@ -1,5 +1,6 @@
 from chatbot.agents.base import Agent
 from chatbot.integrations.builder import build_integration_by_source
+from chatbot.integrations.facebook import FB_SENDER_ACTIONS
 
 
 class EventAgent(Agent):
@@ -29,7 +30,7 @@ class EventAgent(Agent):
         if (intent.get('payload') and events):
             integration = build_integration_by_source(intent.get('source'))
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-
+            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
             elements = [
                 integration.get_element(
                     element_type='simple',
@@ -42,8 +43,12 @@ class EventAgent(Agent):
                 )
                 for event in events_data
             ]
+            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             integration.respond(sender_id, elements, 'template')
             integration.respond(sender_id, None, 'quick_replies')
+            integration.respond(sender_id, None, 'location')
+            integration.respond(sender_id, None, 'phone_number')
+            integration.respond(sender_id, None, 'email')
             return {
                 # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",

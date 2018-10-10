@@ -2,10 +2,12 @@ from chatbot.agents.events import EventAgent
 from chatbot.agents.forecast import ForecastAgent
 from chatbot.agents.exceptions import UndefinedAgent
 
+EVENT_AGENT = 'events.search'
+FORECAST_AGENT = 'CheckWeather'
 
 AGENT_BY_NAME = {
-    'events.search': EventAgent,
-    'CheckWeather': ForecastAgent,
+    EVENT_AGENT: EventAgent,
+    FORECAST_AGENT: ForecastAgent,
 }
 
 

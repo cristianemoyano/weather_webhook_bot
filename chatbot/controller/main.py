@@ -37,7 +37,7 @@ class Controller(object):
         print(post)
         intent_display_name = get_intent_display_name(post)
         agent = build_agent_by_intent_diplayname(intent_display_name)
-        return_value = agent.process(post)
+        return_value = agent.process_request(post)
         return_value = json.dumps(return_value, indent=4)
         # Convert the return value from a view function to an instance of response_class.
         response = make_response(return_value)

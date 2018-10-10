@@ -9,7 +9,7 @@ class ForecastAgent(Agent):
     def __init__(self):
         super(ForecastAgent, self).__init__()
 
-    def process(self, post):
+    def process_request(self, post):
         print(post)
         if post.get('queryResult').get('intent').get('displayName') != "CheckWeather":
             return {}

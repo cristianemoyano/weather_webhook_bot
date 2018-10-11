@@ -156,11 +156,15 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def respond(self, sender_id, elements, typeMessage):
+    def respond(self, sender_id, typeMessage, elements=None, is_quick_reply=False):
         json_data = {
             "recipient": {"id": sender_id},
             "messaging_type": "response",
-            "message": self.get_message(elements, typeMessage)
+            "message": self.get_message(
+                elements=elements,
+                typeMessage=typeMessage,
+                is_quick_reply=is_quick_reply
+            )
         }
 
         params = {

@@ -12,7 +12,6 @@
   <head>
     <title>User preferences</title>
     <meta name="description" content="A cool thing made with Glitch">
-    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +25,34 @@
       }
     </style>
   <body>
-    <script>
+    <div id="loading">Cargando...</div>
+<div id="iframe">
+<div id="eventbrite-widget-container-50019077407"></div>
+
+<script src="https://www.eventbrite.com/static/widgets/eb_widgets.js"></script>
+
+<script type="text/javascript">
+
+    // ---  START EVENTBRITE IFRAME -----
+    var eventId = location.search.split('eid=')[1];
+    var exampleCallback = function() {
+        console.log('Order complete!');
+    };
+
+    window.EBWidgets.createWidget({
+        // Required
+        widgetType: 'checkout',
+        eventId: eventId,
+        iframeContainerId: 'eventbrite-widget-container-50019077407',
+
+        // Optional
+        iframeContainerHeight: 425,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
+        onOrderComplete: exampleCallback  // Method called when an order has successfully completed
+    });
+    // --- END EVENTBRITE IFRAME -----
+
+    // --- START FACEBOOK PLUGIN -----
+
       window.fbMessengerPlugins = window.fbMessengerPlugins || {
         init: function () {
           FB.init({
@@ -51,9 +77,10 @@
           fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
       }, 0);
-      </script>
-    <script>
-      // Code copied from Facebook to load and initialise Messenger extensions
+
+    // --- END FACEBOOK PLUGIN -----
+
+      // Load and initialise Messenger extensions
       (function(d, s, id){
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) {return;}
@@ -61,88 +88,21 @@
         js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'Messenger'));
-    </script>
 
-<div id="loading">Cargando...</div>
-<div id="iframe">
-<div id="eventbrite-widget-container-50019077407"></div>
-
-<script src="https://www.eventbrite.com/static/widgets/eb_widgets.js"></script>
-
-<script type="text/javascript">
-    var eventId = location.search.split('eid=')[1];
-    var exampleCallback = function() {
-        console.log('Order complete!');
-    };
-
-    window.EBWidgets.createWidget({
-        // Required
-        widgetType: 'checkout',
-        eventId: eventId,
-        iframeContainerId: 'eventbrite-widget-container-50019077407',
-
-        // Optional
-        iframeContainerHeight: 425,  // Widget height in pixels. Defaults to a minimum of 425px if not provided
-        onOrderComplete: exampleCallback  // Method called when an order has successfully completed
-    });
-</script>
-</div>
-
-
-
-    <!-- Your web-app is https, so your scripts need to be too -->
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
-            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
-            crossorigin="anonymous"></script>
-
-    <script>
+      // Messenger SDK ready
       window.extAsyncInit = function() {
         console.log('Messenger extensions are ready');
-
-
-        MessengerExtensions.getContext('2122394994692265',
-          function success(thread_context){
-            console.log(thread_context);
-          },
-          function error(err){
-             console.log('Error when trying getContext');
-          }
-        );
-
-        // Handle button click
-        $('#preferencesForm').submit(function(event) {
-          console.log('Submit pressed');
-
-          event.preventDefault();
-
-          const formData = $('#preferencesForm').serialize();
-
-            MessengerExtensions.requestCloseBrowser(function () {
-              console.log('Window will be closed');
-            }, function (error) {
-              console.log('There is an error');
-              console.log(error);
-            });
-
-        });
-
       }
-    </script>
 
-    <script type="text/javascript">// <![CDATA[
-        function preloader(){
+      // Preloader
+      function preloader(){
             document.getElementById("loading").style.display = "none";
             document.getElementById("iframe").style.display = "block";
         }//preloader
         window.onload = preloader;
-// ]]></script>
+    </script>
 
-
-      <div
-        class="fb-customerchat"
-        page_id="1920147214903175"
-        ref="WebinarRegistration">
-      </div>
+</div>
 
 
   </body>

@@ -54,6 +54,4 @@ class Controller(object):
         webview = WebView()
         response = make_response(webview.render())
         response.headers['Content-Type'] = 'text/html'
-        response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.messenger.com/'
-        response.headers['X-Frame-Options'] = 'ALLOW-FROM: https://www.facebook.com/'
         return response

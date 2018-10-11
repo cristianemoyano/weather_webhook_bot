@@ -35,6 +35,7 @@
 
     // ---  START EVENTBRITE IFRAME -----
     var eventId = location.search.split('eid=')[1];
+    document.getElementById("loading").innerHTML = 'Cargando evento: ' + eventId;
     var exampleCallback = function() {
         console.log('Order complete!');
     };

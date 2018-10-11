@@ -37,13 +37,13 @@ class FacebookSimpleElement(object):
                 {
                     "type": "web_url",
                     "url": webview,
-                    "title": 'Webview (compact)',
+                    "title": 'Tickets',
                     "messenger_extensions": "true",
                     "webview_height_ratio": "full"
                 },
                 {
                     "type": "postback",
-                    "title": "Thanks",
+                    "title": "More events",
                     "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
             ],
@@ -158,23 +158,18 @@ class FacebookIntegration(Integration):
             })
         elif typeMessage == 'quick_replies':
             msg.update({
-                "text": "Check the next article?",
+                "text": "Check more events?",
                 "quick_replies": [
                     {
                         "content_type": "text",
-                        "title": "More stories",
-                        "payload": "more stories"
+                        "title": "Yes, more !",
+                        "payload": "more events"
                     },
                     {
                         "content_type": "text",
-                        "title": "Sport",
-                        "payload": "sport"
+                        "title": "No, thanks!",
+                        "payload": "thank you"
                     },
-                    {
-                        "content_type": "text",
-                        "title": "Business",
-                        "payload": "business"
-                    }
 
                 ]
             })

@@ -206,10 +206,10 @@ class FacebookIntegration(Integration):
                 }
             ]
         }
-        if elements:
+        if typeMessage == 'list_options':
             msg.update({
                 "text": reply.get('text'),
-                "quick_replies": elements or reply.get('elements_example')
+                "quick_replies": reply.get('elements_example')
             })
         return msg
 

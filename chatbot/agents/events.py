@@ -43,8 +43,8 @@ class EventAgent(Agent):
                 )
                 for event in events_data
             ]
-            integration.respond(sender_id, elements, 'template')
-            integration.respond(sender_id, None, 'quick_replies')
+            integration.respond(sender_id, 'template', elements)
+            integration.respond(sender_id, 'list_options', is_quick_reply=True)
             # integration.respond(sender_id, None, 'location')
             # integration.respond(sender_id, None, 'phone_number')
             # integration.respond(sender_id, None, 'email')

@@ -43,7 +43,7 @@ class FacebookSimpleElement(object):
                 },
                 {
                     "type": "postback",
-                    "title": "More events",
+                    "title": "more events",
                     "payload": "DEVELOPER_DEFINED_PAYLOAD"
                 }
             ],
@@ -103,6 +103,37 @@ class FacebookIntegration(Integration):
         'complex': FacebookComplexElement,
     }
 
+    QUICK_REPLIES = {
+        'location': {
+            'text': 'Please share your location:',
+            'type': 'location',
+        },
+        'phone': {
+            'text': 'Please share your phone number:',
+            'type': 'user_phone_number',
+        },
+        'email': {
+            'text': 'Please share your email:',
+            'type': 'user_email',
+        },
+        'list_options': {
+            'text': 'Check more events?',
+            'elements_example': [
+                {
+                    "content_type": "text",
+                    "title": "Yes, more !",
+                    "payload": "more events"
+                },
+                {
+                    "content_type": "text",
+                    "title": "No, thanks!",
+                    "payload": "thank you"
+                },
+
+            ],
+        }
+    }
+
     def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
@@ -144,61 +175,37 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def get_message(self, elements, typeMessage):
+    def get_message(self, typeMessage, elements=None, is_quick_reply=False):
         msg = {}
-        if typeMessage == 'template':
-            msg.update({
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": elements
+        if elements and not is_quick_reply:
+            if typeMessage == 'template':
+                msg.update({
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": elements
+                        }
                     }
-                }
-            })
-        elif typeMessage == 'quick_replies':
-            msg.update({
-                "text": "Check more events?",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Yes, more !",
-                        "payload": "more events"
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "No, thanks!",
-                        "payload": "thank you"
-                    },
+                })
+        if is_quick_reply:
+            msg.update(self.get_quick_reply(typeMessage, elements))
+        return msg
 
-                ]
-            })
-        elif typeMessage == 'location':
+    def get_quick_reply(self, typeMessage, elements=None):
+        reply = self.QUICK_REPLIES.get(typeMessage)
+        msg = {
+            "text": reply.get('text'),
+            "quick_replies": [
+                {
+                    "content_type": reply.get('type')
+                }
+            ]
+        }
+        if elements:
             msg.update({
-                "text": "Please share your location:",
-                "quick_replies": [
-                    {
-                        "content_type": "location"
-                    }
-                ]
-            })
-        elif typeMessage == 'phone_number':
-            msg.update({
-                "text": "Please share your phone number:",
-                "quick_replies": [
-                    {
-                        "content_type": "user_phone_number"
-                    }
-                ]
-            })
-        elif typeMessage == 'email':
-            msg.update({
-                "text": "Please share your phone number:",
-                "quick_replies": [
-                    {
-                        "content_type": "user_email"
-                    }
-                ]
+                "text": reply.get('text'),
+                "quick_replies": elements or reply.get('elements_example')
             })
         return msg
 

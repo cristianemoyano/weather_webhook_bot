@@ -38,17 +38,17 @@ class EventAgent(Agent):
                     sub='Eventbrite',
                     image_url=event.get('image_url'),
                     btn_title='View',
-                    webview='https://weather-webhook-bot-app.herokuapp.com/webview',
+                    webview='https://weather-webhook-bot-app.herokuapp.com/webview?eid=' + event.get('id'),
                     btn_url=event.get('url')
                 )
                 for event in events_data
             ]
-            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             integration.respond(sender_id, elements, 'template')
             integration.respond(sender_id, None, 'quick_replies')
-            integration.respond(sender_id, None, 'location')
-            integration.respond(sender_id, None, 'phone_number')
-            integration.respond(sender_id, None, 'email')
+            # integration.respond(sender_id, None, 'location')
+            # integration.respond(sender_id, None, 'phone_number')
+            # integration.respond(sender_id, None, 'email')
+            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             return {
                 # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
@@ -71,6 +71,7 @@ class EventAgent(Agent):
                 events_data.append({
                     'title': event.get('name').get('text'),
                     'image_url': logo_url,
-                    'url': event.get('url')
+                    'url': event.get('url'),
+                    'id': event.get('id'),
                 })
         return events_data

@@ -70,6 +70,7 @@
 <script src="https://www.evbqa.com/static/widgets/eb_widgets.js"></script>
 
 <script type="text/javascript">
+    var eventId = location.search.split('eid=')[1];
     var exampleCallback = function() {
         console.log('Order complete!');
     };
@@ -77,7 +78,7 @@
     window.EBWidgets.createWidget({
         // Required
         widgetType: 'checkout',
-        eventId: '50019077407',
+        eventId: eventId,
         iframeContainerId: 'eventbrite-widget-container-50019077407',
 
         // Optional

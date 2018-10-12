@@ -13,85 +13,65 @@ FB_SENDER_ACTIONS = {
 
 
 class FacebookSimpleElement(object):
+
+    BTN_TYPE_WEB_URL = 'web_url'
+    BTN_TYPE_POSTBACK = 'postback'
+    WEBVIEW_HEIGHT_RATIO_SMALL = 'compact'
+    WEBVIEW_HEIGHT_RATIO_MEDIUM = 'tall'
+    WEBVIEW_HEIGHT_RATIO_LARGE = 'full'
+    MSG_EXTENSION_TRUE = 'true'
+    MSG_EXTENSION_FALSE = 'false'
+
+    def __init__(self):
+        self.buttons = []
+
+    def add_button(self, btn_title, btn_type, msg_extension, webview_height):
+        self.buttons.append({
+            "title": btn_title,
+            "type": btn_type,
+            "url": None,
+            "messenger_extensions": msg_extension,
+            "webview_height_ratio": webview_height,
+        })
+
+    def add_postback_button(self, btn_title, btn_payload):
+        self.buttons.append({
+            'type': self.BTN_TYPE_POSTBACK,
+            'title': btn_title,
+            'payload': btn_payload
+        })
+
+    def add_url_and_get_buttons(self, btn_url, buttons):
+        for btn in buttons:
+            if btn.get('url', None):
+                btn['url'] = btn_url
+        return buttons
+
     def get_element(
         self,
         title,
-        sub,
+        subtitle,
         image_url,
         btn_title,
         btn_url,
-        webview
+        webview,
+        msg_extension,
+        webview_height_ratio,
+        buttons
     ):
         element = {
             'title': title,
-            'subtitle': sub,
+            'subtitle': subtitle,
             'image_url': image_url,
-            'buttons': [
-                {
-                    "title": "View",
-                    "type": "web_url",
-                    "url": btn_url,
-                    "messenger_extensions": "false",
-                    "webview_height_ratio": "tall",
-                },
-                {
-                    "type": "web_url",
-                    "url": webview,
-                    "title": 'Tickets',
-                    "messenger_extensions": "true",
-                    "webview_height_ratio": "full"
-                },
-                {
-                    "type": "postback",
-                    "title": "more events",
-                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
-                }
-            ],
-            "default_action": {
-                "type": "web_url",
-                "url": btn_url,
-                "messenger_extensions": "false",
-                "webview_height_ratio": "tall",
+            'buttons': self.add_url_and_get_buttons(btn_url, buttons),
+            'default_action': {
+                'type': self.BTN_TYPE_WEB_URL,
+                'url': btn_url,
+                'messenger_extensions': msg_extension,
+                'webview_height_ratio': webview_height_ratio,
             },
         }
 
-        return element
-
-
-class FacebookComplexElement(object):
-    def get_element(
-        self,
-        title,
-        sub,
-        image_url,
-        btn_title,
-        btn_url,
-        webview
-    ):
-        element = {
-            'title': title,
-            'subtitle': sub,
-            'image_url': image_url,
-            "default_action": {
-                "type": "web_url",
-                "url": btn_url,
-                "messenger_extensions": False,
-                "webview_height_ratio": "tall",
-                "fallback_url": btn_url
-            },
-            'buttons': [
-                {
-                    "type": "web_url",
-                    "url": btn_url,
-                    "title": "View"
-                },
-                {
-                    "type": "postback",
-                    "title": "Thanks",
-                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
-                }
-            ],
-        }
         return element
 
 
@@ -100,39 +80,11 @@ class FacebookIntegration(Integration):
 
     ELEMENTS_TYPE = {
         'simple': FacebookSimpleElement,
-        'complex': FacebookComplexElement,
     }
 
-    QUICK_REPLIES = {
-        'location': {
-            'text': 'Please share your location:',
-            'type': 'location',
-        },
-        'phone': {
-            'text': 'Please share your phone number:',
-            'type': 'user_phone_number',
-        },
-        'email': {
-            'text': 'Please share your email:',
-            'type': 'user_email',
-        },
-        'list_options': {
-            'text': 'Check more events?',
-            'elements_example': [
-                {
-                    "content_type": "text",
-                    "title": "Yes, more !",
-                    "payload": "more events"
-                },
-                {
-                    "content_type": "text",
-                    "title": "No, thanks!",
-                    "payload": "thank you"
-                },
-
-            ],
-        }
-    }
+    # Doc: https://developers.facebook.com/docs/messenger-platform/send-messages/templates
+    FB_MESSAGE_TYPE_TEMPLATE = 'template'
+    FB_TEMPLATE_TYPE_GENERIC = 'generic'
 
     def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
@@ -179,43 +131,86 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def get_message(self, typeMessage, elements=None, is_quick_reply=False):
+    def get_message(self, typeMessage, elements=None, quick_reply=None):
         msg = {}
-        if elements and not is_quick_reply:
-            if typeMessage == 'template':
+        if elements and not quick_reply:
+            if typeMessage == self.FB_MESSAGE_TYPE_TEMPLATE:
                 msg.update({
                     "attachment": {
-                        "type": "template",
+                        "type": self.FB_MESSAGE_TYPE_TEMPLATE,
                         "payload": {
-                            "template_type": "generic",
+                            "template_type": self.FB_TEMPLATE_TYPE_GENERIC,
                             "elements": elements
                         }
                     }
                 })
-        if is_quick_reply:
-            msg.update(self.get_quick_reply(typeMessage, elements))
+        if quick_reply:
+            msg.update(quick_reply)
         return msg
 
-    def get_quick_reply(self, typeMessage, elements=None):
-        reply = self.QUICK_REPLIES.get(typeMessage)
-        msg = {
-            "text": reply.get('text'),
-            "quick_replies": [
-                {
-                    "content_type": reply.get('type')
-                }
-            ]
-        }
-        if typeMessage == 'list_options':
-            msg.update({
-                "text": reply.get('text'),
-                "quick_replies": reply.get('elements_example')
-            })
-        return msg
-
-    def get_element(self, element_type, title, sub, image_url, btn_title, btn_url, webview):
+    def get_element(self, element_type, **kwargs):
         element = self.ELEMENTS_TYPE.get(element_type, None)
         if element:
-            return element().get_element(title, sub, image_url, btn_title, btn_url, webview)
+            return element().get_element(kwargs)
         else:
             raise UndefinedElementType(element_type)
+
+
+class FacebookQuickReplies(object):
+        """
+            Doc: https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies
+        """
+
+        LOCATION = 'location'
+        PHONE = 'user_phone_number'
+        EMAIL = 'user_email'
+        LIST_OPTIONS = 'list_options'
+
+        QUICK_REPLIES = {
+            LOCATION: {
+                'text': 'Please share your location:',
+                'type': LOCATION,
+            },
+            PHONE: {
+                'text': 'Please share your phone number:',
+                'type': PHONE,
+            },
+            EMAIL: {
+                'text': 'Please share your email:',
+                'type': EMAIL,
+            },
+            LIST_OPTIONS: {
+                'text': 'Do you want see more?',
+            }
+        }
+
+        def __init__(self):
+            self.list_options = []
+
+        def add_list_options(self, title, payload, image_url=None, content_type='text'):
+            self.list_options.append({
+                "content_type": content_type,
+                "title": title,
+                "payload": payload,
+                "image_url": image_url
+            })
+
+        def get_list_options(self):
+            return self.list_options
+
+        def get_quick_reply(self, typeMessage, text=None):
+            reply = self.QUICK_REPLIES.get(typeMessage)
+            msg = {
+                "text": reply.get('text') if not text else text,
+                "quick_replies": [
+                    {
+                        "content_type": reply.get('type')
+                    }
+                ]
+            }
+            if typeMessage == self.LIST_OPTIONS:
+                msg.update({
+                    "text": reply.get('text') if not text else text,
+                    "quick_replies": self.list_options
+                })
+            return msg

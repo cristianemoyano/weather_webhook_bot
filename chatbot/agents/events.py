@@ -1,6 +1,13 @@
 from chatbot.agents.base import Agent
-from chatbot.integrations.builder import build_integration_by_source
-from chatbot.integrations.facebook import FB_SENDER_ACTIONS
+from chatbot.integrations.builder import (
+    FB_INTEGRATION,
+    build_integration_by_source,
+)
+from chatbot.integrations.facebook import (
+    FB_SENDER_ACTIONS,
+    FacebookQuickReplies,
+    FacebookSimpleElement,
+)
 
 
 class EventAgent(Agent):
@@ -27,36 +34,66 @@ class EventAgent(Agent):
         )
         events_data = self.get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
-        if (intent.get('payload') and events):
+        if (intent.get('payload') and events and intent.get('source') == FB_INTEGRATION):
+            # Build FB integration
             integration = build_integration_by_source(intent.get('source'))
+            # get sender_id for respond
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+            # turn on typing in messenger
             integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
+            # create buttons
+            fb_simple_element = FacebookSimpleElement()
+            fb_simple_element.add_button(
+                btn_title="View",
+                btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
+                msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
+                webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_MEDIUM
+            )
+            fb_simple_element.add_button(
+                btn_title="Tickets",
+                btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
+                msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
+                webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
+            )
+            fb_simple_element.add_postback_button(
+                btn_title='more events',
+                btn_payload='more events'
+            )
+            # create a specific element with events for messenger
+            webview_url = '{url}{event_param}'.format(url=self.request_url, event_param='?eid=')
             elements = [
                 integration.get_element(
-                    element_type='simple',
+                    element_type=integration.ELEMENTS_TYPE.get('simple'),
                     title=event.get('title'),
-                    sub='Eventbrite',
+                    subtitle='Eventbrite',
                     image_url=event.get('image_url'),
                     btn_title='View',
-                    webview='https://weather-webhook-bot-app.herokuapp.com/webview?eid=' + event.get('id'),
-                    btn_url=event.get('url')
+                    webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
+                    buttons=fb_simple_element.buttons,
+                    btn_url=event.get('url'),
+                    msg_extension=integration.MSG_EXTENSION_FALSE,
+                    webview_height_ratio=integration.WEBVIEW_HEIGHT_RATIO_LARGE
                 )
                 for event in events_data
             ]
+            # send element created on messenger
             integration.respond(
                 sender_id=sender_id,
-                typeMessage='template',
+                typeMessage=integration.FB_MESSAGE_TYPE_TEMPLATE,
                 elements=elements
             )
+            # create and respond a quick reply
+            quick_reply = FacebookQuickReplies()
+            quick_reply.add_list_options(title='Yes, more !', payload='more events')
+            quick_reply.add_list_options(title='No, thanks!', payload='thank you')
             integration.respond(
                 sender_id=sender_id,
-                typeMessage='list_options',
-                is_quick_reply=True
+                typeMessage=quick_reply.LIST_OPTIONS,
+                quick_reply=quick_reply.get_quick_reply(quick_reply.LIST_OPTIONS)
             )
-            # integration.respond(sender_id, None, 'location')
-            # integration.respond(sender_id, None, 'phone_number')
-            # integration.respond(sender_id, None, 'email')
+            # turn off the typing on messenger
             integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
+            # response for chatbot app
             return {
                 # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",

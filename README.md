@@ -88,3 +88,25 @@ $ git pull origin master
 $ git tag -a v1.4 -m "my version 1.4"
 $ git push origin v1.4
 ```
+
+## Makefile
+
+For new releases:
+```sh
+$ make new_release:
+```
+
+To deploy on Heroku:
+```sh
+$ make deploy
+```
+
+Run all test:
+```sh
+$ make test_suite
+```
+
+Run app:
+```
+$ make run
+```

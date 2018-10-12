@@ -71,8 +71,8 @@ class EventAgent(Agent):
                     webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
                     buttons=fb_simple_element.buttons,
                     btn_url=event.get('url'),
-                    msg_extension=integration.MSG_EXTENSION_FALSE,
-                    webview_height_ratio=integration.WEBVIEW_HEIGHT_RATIO_LARGE
+                    msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
+                    webview_height_ratio=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
                 )
                 for event in events_data
             ]

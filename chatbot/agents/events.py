@@ -1,6 +1,7 @@
 from chatbot.agents.base import Agent
 from chatbot.integrations.builder import (
     FB_INTEGRATION,
+    EB_INTEGRATION,
     build_integration_by_source,
 )
 from chatbot.integrations.facebook import (
@@ -13,21 +14,17 @@ from chatbot.integrations.facebook import (
 class EventAgent(Agent):
     """Agent that processes events"""
 
-    MAP_PARAMETERS = [
-        ('location.address', 'geo-city'),
-    ]
-
     def __init__(self):
         super(EventAgent, self).__init__()
-        self.event_integration = 'eventbrite'
+        self.event_integration = EB_INTEGRATION
 
     def process_request(self, post):
         print(post)
         req_params = post.get('queryResult').get('parameters')
-        get_params = {key: req_params.get(values) for key, values in self.MAP_PARAMETERS}
         event_integration = build_integration_by_source(self.event_integration)
+        get_params = event_integration.map_get_params(req_params)
         events = event_integration.respond(
-            endpoint='/events/search/',
+            endpoint=event_integration.EB_EVENTS_ENDPOINT_BY_ORG,
             target='events',
             params=get_params,
             limit=3,

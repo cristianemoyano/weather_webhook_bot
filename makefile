@@ -14,3 +14,6 @@ test_suite:
 
 run:
 	python server.py
+
+setup:
+	pip install -r requirements.txt

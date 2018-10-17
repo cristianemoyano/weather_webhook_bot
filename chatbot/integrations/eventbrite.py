@@ -8,7 +8,7 @@ class EventbriteIntegration(Integration):
     """docstring for EventbriteIntegration"""
     def __init__(self):
         super(EventbriteIntegration, self).__init__()
-        self.EB_EVENTS_ENDPOINT_BY_ORG = 'organizations/61565826027/events/'
+        self.EB_EVENTS_ENDPOINT_BY_ORG = '/organizations/61565826027/events/'
         self.EB_EVENTS_ENDPOINT = '/events/search/'
         self.eb_token = EB_ACCESS_TOKEN
         self.MAP_PARAMETERS = {

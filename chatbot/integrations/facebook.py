@@ -150,7 +150,7 @@ class FacebookIntegration(Integration):
     def get_element(self, element_type, **kwargs):
         element = self.ELEMENTS_TYPES.get(element_type, None)
         if element:
-            return element().get_element(kwargs)
+            return element().get_element(**kwargs)
         else:
             raise UndefinedElementType(element_type)
 

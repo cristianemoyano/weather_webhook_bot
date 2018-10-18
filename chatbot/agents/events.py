@@ -51,10 +51,10 @@ class EventAgent(Agent):
                 msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
             )
-            fb_simple_element.add_postback_button(
-                btn_title='more events',
-                btn_payload='more events'
-            )
+            # fb_simple_element.add_postback_button(
+            #     btn_title='more events',
+            #     btn_payload='more events'
+            # )
             # create a specific element with events for messenger
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')

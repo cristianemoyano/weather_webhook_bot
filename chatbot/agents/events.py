@@ -94,8 +94,11 @@ class EventAgent(Agent):
                 # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
-        events_data = events_data[0].get('title') if events_data else ''
-        speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data
+        if events:
+            events_data = events_data[0].get('title') if events_data else ''
+            speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data
+        else:
+            speech = "Sorry I have not found any event :("
         return {
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",

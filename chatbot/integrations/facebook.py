@@ -74,7 +74,6 @@ class FacebookSimpleElement(object):
                 "url": btn_url,
                 "messenger_extensions": self.MSG_EXTENSION_FALSE,
                 "webview_height_ratio": self.WEBVIEW_HEIGHT_RATIO_MEDIUM,
-                "fallback_url": btn_url,
             },
         }
         return element

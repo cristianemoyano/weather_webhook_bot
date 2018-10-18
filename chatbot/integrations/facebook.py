@@ -41,13 +41,13 @@ class FacebookSimpleElement(object):
             'payload': btn_payload
         })
 
-    def add_url_and_get_buttons(self, btn_url, buttons, webview):
+    def add_url_and_get_buttons(self, btn_url, buttons, webview=None):
         for btn in buttons:
-            if btn.get('url', None):
-                btn['url'] = btn_url
+            btn['url'] = btn_url
             if (
-                btn.get('messenger_extensions', None) == self.MSG_EXTENSION_TRUE and
-                btn.get('webview_height_ratio', None) == self.WEBVIEW_HEIGHT_RATIO_LARGE
+                btn.get('messenger_extensions') == self.MSG_EXTENSION_TRUE and
+                btn.get('webview_height_ratio') == self.WEBVIEW_HEIGHT_RATIO_LARGE and
+                webview
             ):
                 btn['url'] = webview
         return buttons
@@ -72,11 +72,10 @@ class FacebookSimpleElement(object):
             'default_action': {
                 'type': self.BTN_TYPE_WEB_URL,
                 'url': btn_url,
-                'messenger_extensions': msg_extension,
-                'webview_height_ratio': webview_height_ratio,
+                'messenger_extensions': self.MSG_EXTENSION_FALSE,
+                'webview_height_ratio': self.WEBVIEW_HEIGHT_RATIO_MEDIUM,
             },
         }
-
         return element
 
 

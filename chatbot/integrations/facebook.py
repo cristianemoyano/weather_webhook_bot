@@ -38,12 +38,13 @@ class FacebookSimpleElement(object):
         self.buttons.append({
             'type': self.BTN_TYPE_POSTBACK,
             'title': btn_title,
-            'payload': "DEVELOPER_DEFINED_PAYLOAD"
+            'payload': btn_payload
         })
 
     def add_url_and_get_buttons(self, btn_url, buttons, webview=None):
         for btn in buttons:
-            btn['url'] = btn_url
+            if not hasattr(btn, 'payload'):
+                btn['url'] = btn_url
             if (
                 btn.get('messenger_extensions') == self.MSG_EXTENSION_TRUE and
                 btn.get('webview_height_ratio') == self.WEBVIEW_HEIGHT_RATIO_LARGE and

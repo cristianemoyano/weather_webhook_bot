@@ -38,7 +38,7 @@ class FacebookSimpleElement(object):
         self.buttons.append({
             'type': self.BTN_TYPE_POSTBACK,
             'title': btn_title,
-            'payload': btn_payload
+            'payload': "DEVELOPER_DEFINED_PAYLOAD"
         })
 
     def add_url_and_get_buttons(self, btn_url, buttons, webview=None):

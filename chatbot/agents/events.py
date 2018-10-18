@@ -22,11 +22,9 @@ class EventAgent(Agent):
         print(post)
         req_params = post.get('queryResult').get('parameters')
         event_integration = build_integration_by_source(self.event_integration)
-        get_params = event_integration.map_get_params(req_params)
+        event_integration.is_by_organization = True
         events = event_integration.respond(
-            endpoint=event_integration.EB_EVENTS_ENDPOINT_BY_ORG,
-            target='events',
-            params=get_params,
+            params=req_params,
             limit=3,
         )
         events_data = self.get_events_data(events)

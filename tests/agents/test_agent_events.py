@@ -34,12 +34,9 @@ class TestAgentEvent(unittest.TestCase):
 
     def test_event_agent_with_none_response(self):
         agent_built = build_agent_by_intent_diplayname(self.event_agent)
-        get_params = self.event_integration.map_get_params({'geo-city': 'San Francisco'})
         with patch.object(EventbriteIntegration, 'respond', return_value=None) as mock_method:
             agent_built.process_request(self.post)
             mock_method.assert_called_once_with(
-                endpoint=self.event_integration.EB_EVENTS_ENDPOINT_BY_ORG,
                 limit=3,
-                params=get_params,
-                target='events'
+                params={'geo-city': 'San Francisco'},
             )

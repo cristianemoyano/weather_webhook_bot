@@ -27,7 +27,7 @@ class EventbriteIntegration(Integration):
 
     def respond(self, params={}, limit=None):
         get_params = self.map_get_params(params)
-        params_encoded = urllib.urlencode(get_params)
+        params_encoded = urllib.parse.urlencode(get_params)
         if self.is_by_organization:
             response = self.get_events_by_organization_id(
                 params=params_encoded,

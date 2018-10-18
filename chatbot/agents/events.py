@@ -59,7 +59,7 @@ class EventAgent(Agent):
             webview_url = '{url}{event_param}'.format(url=self.request_url, event_param='?eid=')
             elements = [
                 integration.get_element(
-                    element_type=integration.ELEMENTS_TYPE.get('simple'),
+                    element_type=integration.ELEMENTS_TYPE_SIMPLE,
                     title=event.get('title'),
                     subtitle='Eventbrite',
                     image_url=event.get('image_url'),

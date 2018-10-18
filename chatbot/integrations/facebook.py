@@ -81,8 +81,9 @@ class FacebookIntegration(Integration):
     def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
-        self.ELEMENTS_TYPE = {
-            'simple': FacebookSimpleElement,
+        self.ELEMENTS_TYPE_SIMPLE = 'simple'
+        self.ELEMENTS_TYPES = {
+            self.ELEMENTS_TYPE_SIMPLE: FacebookSimpleElement,
         }
         # Doc: https://developers.facebook.com/docs/messenger-platform/send-messages/templates
         self.FB_MESSAGE_TYPE_TEMPLATE = 'template'
@@ -147,7 +148,7 @@ class FacebookIntegration(Integration):
         return msg
 
     def get_element(self, element_type, **kwargs):
-        element = self.ELEMENTS_TYPE.get(element_type, None)
+        element = self.ELEMENTS_TYPES.get(element_type, None)
         if element:
             return element().get_element(kwargs)
         else:

@@ -78,17 +78,15 @@ class FacebookSimpleElement(object):
 class FacebookIntegration(Integration):
     """docstring for FacebookIntegration"""
 
-    ELEMENTS_TYPE = {
-        'simple': FacebookSimpleElement,
-    }
-
-    # Doc: https://developers.facebook.com/docs/messenger-platform/send-messages/templates
-    FB_MESSAGE_TYPE_TEMPLATE = 'template'
-    FB_TEMPLATE_TYPE_GENERIC = 'generic'
-
     def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
+        self.ELEMENTS_TYPE = {
+            'simple': FacebookSimpleElement,
+        }
+        # Doc: https://developers.facebook.com/docs/messenger-platform/send-messages/templates
+        self.FB_MESSAGE_TYPE_TEMPLATE = 'template'
+        self.FB_TEMPLATE_TYPE_GENERIC = 'generic'
         self.call_url = call_url
 
     def display_sender_action(self, sender_id, sender_action):

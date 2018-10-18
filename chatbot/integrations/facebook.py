@@ -14,13 +14,13 @@ FB_SENDER_ACTIONS = {
 
 class FacebookSimpleElement(object):
 
-    BTN_TYPE_WEB_URL = 'web_url'
-    BTN_TYPE_POSTBACK = 'postback'
-    WEBVIEW_HEIGHT_RATIO_SMALL = 'compact'
-    WEBVIEW_HEIGHT_RATIO_MEDIUM = 'tall'
-    WEBVIEW_HEIGHT_RATIO_LARGE = 'full'
-    MSG_EXTENSION_TRUE = 'true'
-    MSG_EXTENSION_FALSE = 'false'
+    BTN_TYPE_WEB_URL = "web_url"
+    BTN_TYPE_POSTBACK = "postback"
+    WEBVIEW_HEIGHT_RATIO_SMALL = "compact"
+    WEBVIEW_HEIGHT_RATIO_MEDIUM = "tall"
+    WEBVIEW_HEIGHT_RATIO_LARGE = "full"
+    MSG_EXTENSION_TRUE = "true"
+    MSG_EXTENSION_FALSE = "false"
 
     def __init__(self):
         self.buttons = []
@@ -65,15 +65,16 @@ class FacebookSimpleElement(object):
         buttons
     ):
         element = {
-            'title': title,
-            'subtitle': subtitle,
-            'image_url': image_url,
-            'buttons': self.add_url_and_get_buttons(btn_url, buttons, webview),
-            'default_action': {
-                'type': self.BTN_TYPE_WEB_URL,
-                'url': btn_url,
-                'messenger_extensions': self.MSG_EXTENSION_FALSE,
-                'webview_height_ratio': self.WEBVIEW_HEIGHT_RATIO_MEDIUM,
+            "title": title,
+            "subtitle": subtitle,
+            "image_url": image_url,
+            "buttons": self.add_url_and_get_buttons(btn_url, buttons, webview),
+            "default_action": {
+                "type": self.BTN_TYPE_WEB_URL,
+                "url": btn_url,
+                "messenger_extensions": self.MSG_EXTENSION_FALSE,
+                "webview_height_ratio": self.WEBVIEW_HEIGHT_RATIO_MEDIUM,
+                "fallback_url": btn_url,
             },
         }
         return element

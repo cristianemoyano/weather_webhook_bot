@@ -17,3 +17,6 @@ run:
 
 setup:
 	pip install -r requirements.txt
+
+clean_local_branches:
+	git branch | grep -v "master" | xargs git branch -D

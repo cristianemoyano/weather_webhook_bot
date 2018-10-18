@@ -56,7 +56,8 @@ class EventAgent(Agent):
                 btn_payload='more events'
             )
             # create a specific element with events for messenger
-            webview_url = '{url}{event_param}'.format(url=self.request_url, event_param='?eid=')
+            url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
+            webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             elements = [
                 integration.get_element(
                     element_type=integration.ELEMENTS_TYPE_SIMPLE,

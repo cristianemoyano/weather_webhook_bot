@@ -35,6 +35,7 @@ class EventAgent(Agent):
             integration = build_integration_by_source(intent.get('source'))
             # get sender_id for respond
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+            integration.greet_user_text(sender_id)
             # turn on typing in messenger
             integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
             # create buttons
@@ -51,10 +52,10 @@ class EventAgent(Agent):
                 msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
             )
-            fb_simple_element.add_postback_button(
-                btn_title='more events',
-                btn_payload='more events'
-            )
+            # fb_simple_element.add_postback_button(
+            #     btn_title='more events',
+            #     btn_payload='more events'
+            # )
             # create a specific element with events for messenger
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')

@@ -27,6 +27,7 @@ class EventAgent(Agent):
             params=req_params,
             limit=3,
         )
+        print(events)
         events_data = self.get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
         if (intent.get('payload') and events and intent.get('source') == FB_INTEGRATION):

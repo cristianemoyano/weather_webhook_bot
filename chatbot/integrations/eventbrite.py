@@ -1,5 +1,9 @@
 from chatbot.integrations.base import Integration
-from chatbot.constants import EB_ACCESS_TOKEN
+from chatbot.constants import (
+    EB_ACCESS_TOKEN,
+    EB_ORGANIZATION_ID,
+    EB_IS_BY_ORGANIZATION,
+)
 import eventbrite
 import urllib
 
@@ -10,8 +14,8 @@ class EventbriteIntegration(Integration):
         super(EventbriteIntegration, self).__init__()
         self.EB_EVENTS_ENDPOINT = '/events/search/'
         self.eb_token = EB_ACCESS_TOKEN
-        self.is_by_organization = False
-        self.ORG_ID = '61565826027'
+        self.is_by_organization = bool(int(EB_IS_BY_ORGANIZATION))
+        self.ORG_ID = EB_ORGANIZATION_ID
         self.chatbot_app = 'DialogFlow'
         self.MAP_PARAMETERS = {
             'DialogFlow': {

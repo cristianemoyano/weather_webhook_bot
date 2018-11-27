@@ -140,6 +140,9 @@ class FacebookIntegration(Integration):
         print(json_data)
 
     def simple_response(self, sender_id, user):
+        """
+        Send API Basics https://developers.facebook.com/docs/messenger-platform/send-messages/
+        """
         json_data = {
             "recipient": {
                 "id": sender_id

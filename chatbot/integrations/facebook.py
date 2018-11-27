@@ -97,14 +97,19 @@ class FacebookIntegration(Integration):
     
     def get_user(self, sender_id):
         # Payload:
-        # - first_name
-        # - last_name
-        # - profile_pic
-        # - id
+        # - gender: (str) eg: male, female
+        # - locale: (str) eg: en_US
+        # - timezone: (int) eg: -3,
+        # - first_name: (str) eg: Clifford
+        # - last_name: (str) eg: Burton,
+        # - name: (str) Clifford Burton,
+        # - profile_pic: (str) https//..,
+        # - id: (str) eg: 23455
         uri = 'https://graph.facebook.com/v3.2/{sender_id}'.format(sender_id=sender_id)
 
         params = {
-            "access_token": self.fb_token
+            "access_token": self.fb_token,
+            "fields": 'gender,locale,timezone,first_name,last_name,name,profile_pic'
         }
         r = requests.get(
             uri,
@@ -141,7 +146,7 @@ class FacebookIntegration(Integration):
             },
             "messaging_type": "response",
             "message": {
-                "text": "Hello {user}!".format(user=user)
+                "text": "Hey {user}!".format(user=user)
             }
         }
 

@@ -101,12 +101,14 @@ class FacebookIntegration(Integration):
         params = {
             "access_token": self.fb_token
         }
-        r = requests.post(
+        r = requests.get(
             uri,
             params=params
         )
+        print('-----------------------------USER------------------------------------')
         print(r, r.status_code, r.text)
         print(sender_id)
+        print('-----------------------------USER------------------------------------')
 
     def display_sender_action(self, sender_id, sender_action):
         json_data = {

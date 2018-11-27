@@ -35,6 +35,7 @@ class EventAgent(Agent):
             integration = build_integration_by_source(intent.get('source'))
             # get sender_id for respond
             sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+            integration.greet_user_text(sender_id)
             # turn on typing in messenger
             integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
             # create buttons

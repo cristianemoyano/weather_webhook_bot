@@ -96,7 +96,7 @@ class FacebookIntegration(Integration):
         self.call_url = call_url
     
     def greet_user_text(self, sender_id):
-        uri = 'https://graph.facebook.com/v3.2/{sender_id}'.format(sender_id)
+        uri = 'https://graph.facebook.com/v3.2/{sender_id}'.format(sender_id=sender_id)
 
         params = {
             "access_token": self.fb_token

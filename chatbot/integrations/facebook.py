@@ -115,7 +115,7 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print('-----------------------------USER------------------------------------')
 
-        return r.text
+        return r.json()
 
     def display_sender_action(self, sender_id, sender_action):
         json_data = {

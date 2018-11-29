@@ -27,12 +27,12 @@ class WelcomeAgent(Agent):
         print(events)
         events_data = get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
-        payload = post.get('originalDetectIntentRequest').get('payload').get('data').get('message').get('text')
+        payload = post.get('queryResult').get('queryText')
         if (
             intent.get('payload') and
             events and
             intent.get('source') == FB_INTEGRATION and
-            payload == 'Get Started'
+            payload == 'FACEBOOK_WELCOME'
         ):
             # Build FB integration
             integration = build_integration_by_source(intent.get('source'))

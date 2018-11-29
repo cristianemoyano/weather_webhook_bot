@@ -56,9 +56,19 @@ class EventbriteIntegration(Integration):
             element
             for element in eventbrite_api.get(
                 url
-            )['events']
+            ).get('events')
         ]
-        return response[:limit]
+        if response:
+            return response[:limit]
+        else:
+            url = endpoint + '?status=live'
+            response = [
+                element
+                for element in eventbrite_api.get(
+                    url
+                ).get('events')
+            ]
+            return response[:limit]
 
     def get_events(self, params, limit=None):
         eventbrite_api = self.get_eventbrite_api()
@@ -68,7 +78,7 @@ class EventbriteIntegration(Integration):
             element
             for element in eventbrite_api.get(
                 url
-            )['events']
+            ).get('events')
         ]
         return response[:limit]
 

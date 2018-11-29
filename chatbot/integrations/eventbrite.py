@@ -52,21 +52,19 @@ class EventbriteIntegration(Integration):
             url = endpoint + '?' + params + '&status=live'
         else:
             url = endpoint + '?status=live'
-        response = [
-            element
-            for element in eventbrite_api.get(
-                url
-            ).get('events')
-        ]
-        if response:
+        request = eventbrite_api.get(url)
+        if request:
+            response = [
+                event
+                for event in request.get('events')
+            ]
             return response[:limit]
         else:
             url = endpoint + '?status=live'
+            request = eventbrite_api.get(url)
             response = [
-                element
-                for element in eventbrite_api.get(
-                    url
-                ).get('events')
+                event
+                for event in request.get('events')
             ]
             return response[:limit]
 
@@ -74,13 +72,13 @@ class EventbriteIntegration(Integration):
         eventbrite_api = self.get_eventbrite_api()
         endpoint = self.EB_EVENTS_ENDPOINT
         url = endpoint + '?' + params
-        response = [
-            element
-            for element in eventbrite_api.get(
-                url
-            ).get('events')
-        ]
-        return response[:limit]
+        request = eventbrite_api.get(url)
+        if request:
+            response = [
+                event
+                for event in request.get('events')
+            ]
+            return response[:limit]
 
     def map_get_params(self, req_params):
         endpoint_type = 'general'

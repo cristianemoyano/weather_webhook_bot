@@ -84,3 +84,20 @@ class EventbriteIntegration(Integration):
 
     def get_eventbrite_api(self):
         return eventbrite.Eventbrite(EB_ACCESS_TOKEN)
+
+
+def get_events_data(events):
+        events_data = []
+        if events:
+            for event in events:
+                logo = event.get('logo')
+                logo_url = ''
+                if logo:
+                    logo_url = logo.get('url')
+                events_data.append({
+                    'title': event.get('name').get('text'),
+                    'image_url': logo_url,
+                    'url': event.get('url'),
+                    'id': event.get('id'),
+                })
+        return events_data

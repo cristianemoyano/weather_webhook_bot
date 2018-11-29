@@ -20,3 +20,6 @@ setup:
 
 clean_local_branches:
 	git branch | grep -v "master" | xargs git branch -D
+
+test:
+	python test_suite.py test

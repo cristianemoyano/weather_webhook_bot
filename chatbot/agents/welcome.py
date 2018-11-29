@@ -12,25 +12,28 @@ from chatbot.integrations.facebook import (
 from chatbot.integrations.eventbrite import get_events_data
 
 
-class EventAgent(Agent):
+class WelcomeAgent(Agent):
     """Agent that processes events"""
-
     def __init__(self):
-        super(EventAgent, self).__init__()
+        super(WelcomeAgent, self).__init__()
         self.event_integration = EB_INTEGRATION
 
     def process_request(self, post):
         print(post)
-        req_params = post.get('queryResult').get('parameters')
         event_integration = build_integration_by_source(self.event_integration)
         events = event_integration.respond(
-            params=req_params,
             limit=3,
         )
         print(events)
         events_data = get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
-        if (intent.get('payload') and events and intent.get('source') == FB_INTEGRATION):
+        payload = post.get('originalDetectIntentRequest').get('payload').get('data').get('message').get('text')
+        if (
+            intent.get('payload') and
+            events and
+            intent.get('source') == FB_INTEGRATION and
+            payload == 'Get Started'
+        ):
             # Build FB integration
             integration = build_integration_by_source(intent.get('source'))
             # get sender_id for respond
@@ -38,9 +41,7 @@ class EventAgent(Agent):
             # Get user
             user = integration.get_user(sender_id)
             # Send greeting to the user
-            text = "{user_first_name} according to your search, I've found these events:".format(
-                user_first_name=user.get('first_name')
-            )
+            text = "Hey {user_first_name}, I recommend these events!".format(user_first_name=user.get('first_name'))
             integration.simple_response(sender_id, text)
             # turn on typing in messenger
             integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
@@ -58,11 +59,6 @@ class EventAgent(Agent):
                 msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
             )
-            # fb_simple_element.add_postback_button(
-            #     btn_title='more events',
-            #     btn_payload='more events'
-            # )
-            # create a specific element with events for messenger
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             elements = [
@@ -104,7 +100,7 @@ class EventAgent(Agent):
             }
         if events_data:
             events_data = events_data[0].get('title') if events_data else ''
-            speech = "I found this event in " + req_params.get('geo-city') + ': ' + events_data
+            speech = "I found this event for you: " + events_data
         else:
             speech = "Sorry I have not found any event :("
         return {

@@ -94,7 +94,7 @@ class FacebookIntegration(Integration):
         self.FB_MESSAGE_TYPE_TEMPLATE = 'template'
         self.FB_TEMPLATE_TYPE_GENERIC = 'generic'
         self.call_url = call_url
-    
+
     def get_user(self, sender_id):
         # Payload:
         # - gender: (str) eg: male, female
@@ -139,7 +139,7 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def simple_response(self, sender_id, user):
+    def simple_response(self, sender_id, text):
         """
         Send API Basics https://developers.facebook.com/docs/messenger-platform/send-messages/
         """
@@ -149,7 +149,7 @@ class FacebookIntegration(Integration):
             },
             "messaging_type": "response",
             "message": {
-                "text": "Hey {user}!".format(user=user)
+                "text": text
             }
         }
 

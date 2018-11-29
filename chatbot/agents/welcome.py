@@ -12,6 +12,16 @@ from chatbot.integrations.facebook import (
 from chatbot.integrations.eventbrite import get_events_data
 
 
+def send_typing_on(intent, post):
+    if (intent.get('source') == FB_INTEGRATION):
+        # Build FB integration
+        integration = build_integration_by_source(intent.get('source'))
+        # get sender_id for respond
+        sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+        # turn on typing in messenger
+        integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
+
+
 class WelcomeAgent(Agent):
     """Agent that processes events"""
     def __init__(self):
@@ -20,13 +30,14 @@ class WelcomeAgent(Agent):
 
     def process_request(self, post):
         print(post)
+        intent = post.get('originalDetectIntentRequest')
+        send_typing_on(intent, post)
         event_integration = build_integration_by_source(self.event_integration)
         events = event_integration.respond(
             limit=3,
         )
         print(events)
         events_data = get_events_data(events)
-        intent = post.get('originalDetectIntentRequest')
         payload = post.get('queryResult').get('queryText')
         if (
             intent.get('payload') and
@@ -43,8 +54,6 @@ class WelcomeAgent(Agent):
             # Send greeting to the user
             text = "Hey {user_first_name}, I recommend these events!".format(user_first_name=user.get('first_name'))
             integration.simple_response(sender_id, text)
-            # turn on typing in messenger
-            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
             # create buttons
             fb_simple_element = FacebookSimpleElement()
             fb_simple_element.add_button(

@@ -52,19 +52,19 @@ class EventbriteIntegration(Integration):
             url = endpoint + '?' + params + '&status=live'
         else:
             url = endpoint + '?status=live'
-        request = eventbrite_api.get(url)
+        request = eventbrite_api.get(url).get('events')
         if request:
             response = [
                 event
-                for event in request.get('events')
+                for event in request
             ]
             return response[:limit]
         else:
             url = endpoint + '?status=live'
-            request = eventbrite_api.get(url)
+            request = eventbrite_api.get(url).get('events')
             response = [
                 event
-                for event in request.get('events')
+                for event in request
             ]
             return response[:limit]
 
@@ -72,11 +72,11 @@ class EventbriteIntegration(Integration):
         eventbrite_api = self.get_eventbrite_api()
         endpoint = self.EB_EVENTS_ENDPOINT
         url = endpoint + '?' + params
-        request = eventbrite_api.get(url)
+        request = eventbrite_api.get(url).get('events')
         if request:
             response = [
                 event
-                for event in request.get('events')
+                for event in request
             ]
             return response[:limit]
 

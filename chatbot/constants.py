@@ -16,5 +16,6 @@ EB_IS_BY_ORGANIZATION = os.environ.get('EB_IS_BY_ORGANIZATION')
 PORT = int(os.environ.get('PORT', 5000))
 FB_MESSENGER_ACCESS_TOKEN = os.environ.get('FB_MESSENGER_ACCESS_TOKEN')
 OPENWEATHERMAP_KEY = os.environ.get('OPENWEATHERMAP_KEY')
+FB_INBOX_APP_ID = os.environ.get('FB_INBOX_APP_ID')
 
 ROOT_PATH = os.getcwd()

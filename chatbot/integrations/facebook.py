@@ -1,7 +1,10 @@
 import requests
 
 from chatbot.integrations.base import Integration
-from chatbot.constants import FB_MESSENGER_ACCESS_TOKEN
+from chatbot.constants import (
+    FB_MESSENGER_ACCESS_TOKEN,
+    FB_INBOX_APP_ID,
+)
 from chatbot.integrations.exceptions import UndefinedElementType
 
 
@@ -86,6 +89,7 @@ class FacebookIntegration(Integration):
     def __init__(self, call_url='https://graph.facebook.com/v3.1/me/messages'):
         super(FacebookIntegration, self).__init__()
         self.fb_token = FB_MESSENGER_ACCESS_TOKEN
+        self.app_id = FB_INBOX_APP_ID
         self.ELEMENTS_TYPE_SIMPLE = 'simple'
         self.ELEMENTS_TYPES = {
             self.ELEMENTS_TYPE_SIMPLE: FacebookSimpleElement,
@@ -94,6 +98,27 @@ class FacebookIntegration(Integration):
         self.FB_MESSAGE_TYPE_TEMPLATE = 'template'
         self.FB_TEMPLATE_TYPE_GENERIC = 'generic'
         self.call_url = call_url
+
+    def send_pass_thread(self, sender_id):
+        uri = 'https://graph.facebook.com/v3.1/me/pass_thread_control'
+        json_data = {
+            "recipient": {
+                "id": sender_id
+            },
+            "target_app_id": self.app_id
+        }
+
+        params = {
+            "access_token": self.fb_token
+        }
+        r = requests.post(
+            uri,
+            json=json_data,
+            params=params
+        )
+        print(r, r.status_code, r.text)
+        print(sender_id)
+        print(json_data)
 
     def get_user(self, sender_id):
         # Payload:

@@ -23,3 +23,6 @@ clean_local_branches:
 
 test:
 	python test_suite.py test
+
+logs:
+	heroku logs --tail

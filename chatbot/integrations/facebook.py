@@ -100,7 +100,7 @@ class FacebookIntegration(Integration):
         self.call_url = call_url
 
     def send_pass_thread(self, sender_id):
-        uri = 'https://graph.facebook.com/v3.1/me/pass_thread_control'
+        uri = 'https://graph.facebook.com/v2.6/me/pass_thread_control'
         json_data = {
             "recipient": {
                 "id": sender_id

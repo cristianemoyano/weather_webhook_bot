@@ -9,20 +9,20 @@ deploy:
 	git pull origin master
 	git push heroku master
 
-test_suite:
-	python test_suite.py test
-
 run:
-	python server.py
+	python3 server.py
 
 setup:
-	pip install -r requirements.txt
+	pip3 install -r requirements.txt
 
 clean_local_branches:
 	git branch | grep -v "master" | xargs git branch -D
 
 test:
-	python test_suite.py test
+	python3 test_suite.py test
 
 logs:
 	heroku logs --tail
+
+upgrade:
+	pip3 install --upgrade --force-reinstall -r requirements.txt

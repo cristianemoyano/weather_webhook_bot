@@ -13,3 +13,6 @@ class View(object):
 
     def get_template_path(self, extension='.html'):
         return ROOT_PATH + self.view_path + self.template_name + extension
+
+    def get_template(self, extension='.html'):
+        return self.template_name + extension

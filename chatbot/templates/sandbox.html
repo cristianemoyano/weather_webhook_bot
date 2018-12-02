@@ -5,6 +5,7 @@
     <title>Sandbox Interface</title>
 </head>
 <body>
+  {% if debug %}
     <form action="/sandbox" method="post">
         {% if actions %}
         Select a action:
@@ -23,6 +24,9 @@
 
         <input type="submit">
     </form>
+  {% else %}
+    This view is not available for Production environment.
+  {% endif %}
 
 </body>
 </html>

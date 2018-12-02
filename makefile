@@ -26,3 +26,6 @@ logs:
 
 upgrade:
 	pip3 install --upgrade --force-reinstall -r requirements.txt
+
+freeze:
+	pip3 freeze > requirements.txt

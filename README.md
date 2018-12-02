@@ -18,7 +18,23 @@ $ source env/bin/activate
 > set environment
 ```python
 (env) $ export DEBUG=bool
-(env) $ export EB_ACCESS_TOKEN=secret
+(env) $ export EB_ACCESS_TOKEN=str
+(env) $ EB_IS_BY_ORGANIZATION=bool
+(env) $ EB_ORGANIZATION_ID=int
+(env) $ FB_INBOX_APP_ID=int
+(env) $ FB_MESSENGER_ACCESS_TOKEN=str
+(env) $ OPENWEATHERMAP_KEY=int
+```
+
+> or create .env in code/chatbot/.env:
+```
+DEBUG=1
+EB_ACCESS_TOKEN=23
+EB_IS_BY_ORGANIZATION=1
+EB_ORGANIZATION_ID=61565826027
+FB_INBOX_APP_ID=1
+FB_MESSENGER_ACCESS_TOKEN=234
+OPENWEATHERMAP_KEY=345
 ```
 
 ## Running Locally
@@ -103,10 +119,25 @@ $ make deploy
 
 Run all test:
 ```sh
-$ make test_suite
+$ make test
 ```
 
 Run app:
 ```
 $ make run
+```
+
+To install dependencies:
+```sh
+$ make setup
+```
+
+To clean git local branches
+```sh
+$ make clean_local_branches
+```
+
+To see Heroku logs:
+```sh
+$ make logs
 ```

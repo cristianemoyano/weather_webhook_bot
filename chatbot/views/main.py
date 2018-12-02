@@ -1,5 +1,6 @@
 from chatbot.views.base import View
 from flask import render_template
+from chatbot.constants import DEBUG
 from chatbot.integrations.sandbox import (
     CONTEXT_ACTIONS,
 )
@@ -33,7 +34,8 @@ class SandboxView(View):
     def render(self):
         template = self.get_template()
         context = {
-            'actions': CONTEXT_ACTIONS
+            'actions': CONTEXT_ACTIONS,
+            'debug': DEBUG,
         }
         return render_template(
             template,

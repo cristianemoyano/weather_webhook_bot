@@ -14,4 +14,9 @@ APP_ROUTES = {
         'route': '/webview',
         'methods': [],
     },
+    'sandbox': {
+        'description': '',
+        'route': '/sandbox',
+        'methods': ['POST', 'GET'],
+    },
 }

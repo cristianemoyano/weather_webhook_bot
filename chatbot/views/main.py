@@ -1,4 +1,8 @@
 from chatbot.views.base import View
+from flask import render_template
+from chatbot.integrations.sandbox import (
+    CONTEXT_ACTIONS,
+)
 
 
 class IframeView(View):
@@ -7,12 +11,8 @@ class IframeView(View):
         self.template_name = 'iframe_view'
 
     def render(self):
-        path_file = self.get_template_path()
-
-        with open(path_file, 'r') as f:
-            html = f.read()
-
-        return html
+        template = self.get_template()
+        return render_template(template)
 
 
 class WebView(View):
@@ -21,9 +21,21 @@ class WebView(View):
         self.template_name = 'webview'
 
     def render(self):
-        path_file = self.get_template_path()
+        template = self.get_template()
+        return render_template(template)
 
-        with open(path_file, 'r') as f:
-            html = f.read()
 
-        return html
+class SandboxView(View):
+    def __init__(self):
+        super(SandboxView, self).__init__()
+        self.template_name = 'sandbox'
+
+    def render(self):
+        template = self.get_template()
+        context = {
+            'actions': CONTEXT_ACTIONS
+        }
+        return render_template(
+            template,
+            **context
+        )

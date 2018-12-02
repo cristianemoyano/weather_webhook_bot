@@ -3,17 +3,20 @@ from chatbot.agents.welcome import WelcomeAgent
 from chatbot.agents.forecast import ForecastAgent
 from chatbot.agents.livechat import LiveChatAgent
 from chatbot.agents.exceptions import UndefinedAgent
+from chatbot.agents.sandbox import SandBoxAgent
 
 EVENT_AGENT = 'events.search'
 FORECAST_AGENT = 'CheckWeather'
 WELCOME_AGENT = 'DefaultWelcomeIntent'
 LIVECHAT_AGENT = 'LiveChat'
+SANDBOX_AGENT = 'SandBox'
 
 AGENT_BY_NAME = {
     EVENT_AGENT: EventAgent,
     FORECAST_AGENT: ForecastAgent,
     WELCOME_AGENT: WelcomeAgent,
     LIVECHAT_AGENT: LiveChatAgent,
+    SANDBOX_AGENT: SandBoxAgent,
 }
 
 

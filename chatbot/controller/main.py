@@ -1,37 +1,27 @@
 import json
 
+from chatbot.controller.utils import (
+    get_methods,
+    get_route,
+    get_intent_display_name
+)
 from chatbot.agents.builder import build_agent_by_intent_diplayname
 from chatbot.constants import app
-from flask import request
-from flask import make_response
-from chatbot.routes import APP_ROUTES
-from chatbot.views.main import IframeView, WebView
+from flask import (
+    request,
+    make_response,
+)
 
-
-# routes
-webhook_route = APP_ROUTES.get('webhooks')
-index_route = APP_ROUTES.get('index')
-webview_route = APP_ROUTES.get('webview')
-
-
-def get_intent_display_name(post):
-    intent_display_name = None
-    try:
-        intent_display_name = post.get('queryResult').get('intent').get('displayName')
-    except AttributeError:
-        intent_display_name = None
-
-    try:
-        intent_display_name = intent_display_name or post.get('result').get('action')
-    except AttributeError:
-        intent_display_name = None
-
-    return intent_display_name
+from chatbot.views.main import (
+    IframeView,
+    WebView,
+    SandboxView,
+)
 
 
 class Controller(object):
 
-    @app.route(webhook_route.get('route'), methods=webhook_route.get('methods'))
+    @app.route(get_route('webhooks'), methods=get_methods('webhooks'))
     def webhook():
         post = request.get_json(silent=True, force=True)
         print(post)
@@ -45,14 +35,24 @@ class Controller(object):
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    @app.route(index_route.get('route'))
+    @app.route(get_route('index'))
     def index():
         iframe = IframeView()
         return iframe.render()
 
-    @app.route(webview_route.get('route'))
+    @app.route(get_route('webview'))
     def webview():
         webview = WebView()
         response = make_response(webview.render())
         response.headers['Content-Type'] = 'text/html'
         return response
+
+    @app.route(get_route('sandbox'), methods=get_methods('sandbox'))
+    def sandbox():
+        agent = build_agent_by_intent_diplayname('SandBox')
+        if request.method == 'POST':
+            form = request.form
+            post = form.to_dict()
+            agent.process_request(post)
+        sandbox = SandboxView()
+        return sandbox.render()

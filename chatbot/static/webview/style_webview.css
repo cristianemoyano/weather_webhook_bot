@@ -1,0 +1,6 @@
+ div#iframe {
+        display: none;
+      }
+      div#loading {
+        cursor: wait;
+      }

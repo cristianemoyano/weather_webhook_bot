@@ -164,6 +164,13 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
+    def send_typing_on(self, sender_id):
+        # turn on typing in messenger
+        self.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
+
+    def get_sender_id(self, post):
+        return post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+
     def simple_response(self, sender_id, text):
         """
         Send API Basics https://developers.facebook.com/docs/messenger-platform/send-messages/

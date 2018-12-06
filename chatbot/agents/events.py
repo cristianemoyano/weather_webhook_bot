@@ -17,13 +17,13 @@ class EventAgent(Agent):
 
     def __init__(self):
         super(EventAgent, self).__init__()
-        self.event_integration = EB_INTEGRATION
+        self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
 
     def process_request(self, post):
         print(post)
         req_params = post.get('queryResult').get('parameters')
-        event_integration = build_integration_by_source(self.event_integration)
-        events = event_integration.respond(
+        events = self.event_integration.respond(
             params=req_params,
             limit=3,
         )
@@ -31,19 +31,17 @@ class EventAgent(Agent):
         events_data = get_events_data(events)
         intent = post.get('originalDetectIntentRequest')
         if (intent.get('payload') and events and intent.get('source') == FB_INTEGRATION):
-            # Build FB integration
-            integration = build_integration_by_source(intent.get('source'))
-            # get sender_id for respond
-            sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+            # get sender_id to respond
+            sender_id = self.messenger_integration.get_sender_id(post)
             # Get user
-            user = integration.get_user(sender_id)
+            user = self.messenger_integration.get_user(sender_id)
             # Send greeting to the user
             text = "{user_first_name} according to your search, I've found these events:".format(
                 user_first_name=user.get('first_name')
             )
-            integration.simple_response(sender_id, text)
+            self.messenger_integration.simple_response(sender_id, text)
             # turn on typing in messenger
-            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
+            self.messenger_integration.send_typing_on(sender_id)
             # create buttons
             fb_simple_element = FacebookSimpleElement()
             fb_simple_element.add_button(
@@ -58,16 +56,12 @@ class EventAgent(Agent):
                 msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
             )
-            # fb_simple_element.add_postback_button(
-            #     btn_title='more events',
-            #     btn_payload='more events'
-            # )
-            # create a specific element with events for messenger
+
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             elements = [
-                integration.get_element(
-                    element_type=integration.ELEMENTS_TYPE_SIMPLE,
+                self.messenger_integration.get_element(
+                    element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
                     title=event.get('title'),
                     subtitle='Eventbrite',
                     image_url=event.get('image_url'),
@@ -81,22 +75,22 @@ class EventAgent(Agent):
                 for event in events_data
             ]
             # send element created on messenger
-            integration.respond(
+            self.messenger_integration.respond(
                 sender_id=sender_id,
-                typeMessage=integration.FB_MESSAGE_TYPE_TEMPLATE,
+                typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
                 elements=elements
             )
             # create and respond a quick reply
             quick_reply = FacebookQuickReplies()
             quick_reply.add_list_options(title='Yes, more !', payload='more events')
             quick_reply.add_list_options(title='No, thanks!', payload='thank you')
-            integration.respond(
+            self.messenger_integration.respond(
                 sender_id=sender_id,
                 typeMessage=quick_reply.LIST_OPTIONS,
                 quick_reply=quick_reply.get_quick_reply(quick_reply.LIST_OPTIONS)
             )
             # turn off the typing on messenger
-            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
+            self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             # response for chatbot app
             return {
                 # "fulfillmentText": 'Message from server.',

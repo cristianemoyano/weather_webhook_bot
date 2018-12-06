@@ -4,6 +4,9 @@ from chatbot.constants import DEBUG
 from chatbot.integrations.sandbox import (
     CONTEXT_ACTIONS,
 )
+from chatbot.integrations.eventbrite import (
+    get_widgets
+)
 
 
 class IframeView(View):
@@ -22,8 +25,15 @@ class WebView(View):
         self.template_name = 'webview'
 
     def render(self):
+        context = {
+            'eb_emb_chkout_src': get_widgets(),
+            'prev_msg': 'Loading...'
+        }
         template = self.get_template()
-        return render_template(template)
+        return render_template(
+            template,
+            **context
+        )
 
 
 class SandboxView(View):

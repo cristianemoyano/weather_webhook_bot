@@ -1,4 +1,5 @@
 from chatbot.integrations.base import Integration
+from chatbot.constants import DEBUG
 from chatbot.constants import (
     EB_ACCESS_TOKEN,
     EB_ORGANIZATION_ID,
@@ -8,13 +9,21 @@ import eventbrite
 import urllib
 
 
+EB_WIDGETS_QA = "https://www.evbqa.com/static/widgets/eb_widgets.js"
+EB_WIDGETS_PROD = "https://www.eventbrite.com/static/widgets/eb_widgets.js"
+
+
+def get_widgets():
+    return EB_WIDGETS_QA if DEBUG else EB_WIDGETS_PROD
+
+
 class EventbriteIntegration(Integration):
     """docstring for EventbriteIntegration"""
     def __init__(self):
         super(EventbriteIntegration, self).__init__()
         self.EB_EVENTS_ENDPOINT = '/events/search/'
         self.eb_token = EB_ACCESS_TOKEN
-        self.is_by_organization = bool(int(EB_IS_BY_ORGANIZATION))
+        self.is_by_organization = EB_IS_BY_ORGANIZATION
         self.ORG_ID = EB_ORGANIZATION_ID
         self.chatbot_app = 'DialogFlow'
         self.MAP_PARAMETERS = {

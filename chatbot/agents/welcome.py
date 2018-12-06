@@ -1,3 +1,7 @@
+from chatbot.utils import (
+    get_logger,
+    LOG_AGENT_DIR,
+)
 from chatbot.agents.base import Agent
 from chatbot.integrations.builder import (
     FB_INTEGRATION,
@@ -12,31 +16,26 @@ from chatbot.integrations.facebook import (
 from chatbot.integrations.eventbrite import get_events_data
 
 
-def send_typing_on(intent, post):
-    if (intent.get('source') == FB_INTEGRATION):
-        # Build FB integration
-        integration = build_integration_by_source(intent.get('source'))
-        # get sender_id for respond
-        sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
-        # turn on typing in messenger
-        integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
-
-
 class WelcomeAgent(Agent):
     """Agent that processes events"""
     def __init__(self):
         super(WelcomeAgent, self).__init__()
-        self.event_integration = EB_INTEGRATION
+        self.logger = get_logger('welcome_agent', LOG_AGENT_DIR)
+        self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
 
     def process_request(self, post):
-        print(post)
+        self.logger.info(post)
         intent = post.get('originalDetectIntentRequest')
-        send_typing_on(intent, post)
-        event_integration = build_integration_by_source(self.event_integration)
-        events = event_integration.respond(
+        # get sender_id
+        sender_id = self.messenger_integration.get_sender_id(post)
+        # send typing on
+        self.messenger_integration.send_typing_on(sender_id)
+        # get events
+        events = self.event_integration.respond(
             limit=3,
         )
-        print(events)
+        self.logger.info(events)
         events_data = get_events_data(events)
         payload = post.get('queryResult').get('queryText')
         if (
@@ -45,15 +44,11 @@ class WelcomeAgent(Agent):
             intent.get('source') == FB_INTEGRATION and
             payload == 'FACEBOOK_WELCOME'
         ):
-            # Build FB integration
-            integration = build_integration_by_source(intent.get('source'))
-            # get sender_id for respond
-            sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
             # Get user
-            user = integration.get_user(sender_id)
+            user = self.messenger_integration.get_user(sender_id)
             # Send greeting to the user
             text = "Hey {user_first_name}, I recommend these events!".format(user_first_name=user.get('first_name'))
-            integration.simple_response(sender_id, text)
+            self.messenger_integration.simple_response(sender_id, text)
             # create buttons
             fb_simple_element = FacebookSimpleElement()
             fb_simple_element.add_button(
@@ -71,8 +66,8 @@ class WelcomeAgent(Agent):
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             elements = [
-                integration.get_element(
-                    element_type=integration.ELEMENTS_TYPE_SIMPLE,
+                self.messenger_integration.get_element(
+                    element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
                     title=event.get('title'),
                     subtitle='Eventbrite',
                     image_url=event.get('image_url'),
@@ -86,25 +81,24 @@ class WelcomeAgent(Agent):
                 for event in events_data
             ]
             # send element created on messenger
-            integration.respond(
+            self.messenger_integration.respond(
                 sender_id=sender_id,
-                typeMessage=integration.FB_MESSAGE_TYPE_TEMPLATE,
+                typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
                 elements=elements
             )
             # create and respond a quick reply
             quick_reply = FacebookQuickReplies()
             quick_reply.add_list_options(title='Yes, more !', payload='more events')
             quick_reply.add_list_options(title='No, thanks!', payload='thank you')
-            integration.respond(
+            self.messenger_integration.respond(
                 sender_id=sender_id,
                 typeMessage=quick_reply.LIST_OPTIONS,
                 quick_reply=quick_reply.get_quick_reply(quick_reply.LIST_OPTIONS)
             )
             # turn off the typing on messenger
-            integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
+            self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             # response for chatbot app
             return {
-                # "fulfillmentText": 'Message from server.',
                 "source": "weather-webhook-bot-app.herokuapp.com/webhook",
             }
         if events_data:

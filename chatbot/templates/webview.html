@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style_webview.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='webview/style_webview.css') }}">
   <body>
     <div id="loading">{{ prev_msg }}}</div>
   <div id="iframe">
   <div id="eventbrite-widget-container-50019077407"></div>
   <script src="{{ eb_emb_chkout_src }}"></script>
-  <script src="{{ url_for('static', filename='eb_embedded_checkout.js') }}"></script>
-  <script src="{{ url_for('static', filename='fb_messenger_plugin.js') }}"></script>
+  <script src="{{ url_for('static', filename='webview/eb_embedded_checkout.js') }}"></script>
+  <script src="{{ url_for('static', filename='webview/fb_messenger_plugin.js') }}"></script>
   </div>
   </body>
 </html>

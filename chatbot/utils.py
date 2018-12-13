@@ -1,5 +1,8 @@
 import logging
-from chatbot.constants import IS_LOG_FILE_HANDLER_ACTIVE
+import os
+from chatbot.constants import (
+    IS_LOG_FILE_HANDLER_ACTIVE,
+)
 
 LOG_AGENT_DIR = 'chatbot/logs/agents/'
 
@@ -13,7 +16,10 @@ def get_logger(agent, path, file_handler_active=True, stream_handler_active=True
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
     file_handler = logging.FileHandler(
-        filename='{path}{agent}.log'.format(path=path, agent=agent)
+        filename=_get_log_path(
+            log_dir=path,
+            agent_name=agent,
+        )
     )
     file_handler.setLevel(logging.INFO)
 
@@ -29,3 +35,9 @@ def get_logger(agent, path, file_handler_active=True, stream_handler_active=True
     # add handler to logger
     logger.addHandler(console_handler)
     return logger
+
+
+def _get_log_path(log_dir='chatbot/logs/', agent_name='undefined', extension='.log'):
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+        return log_dir + agent_name + extension

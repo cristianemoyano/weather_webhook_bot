@@ -13,7 +13,10 @@ class SandBoxAgent(Agent):
     """Agent that processes events"""
     def __init__(self):
         super(SandBoxAgent, self).__init__()
+        self.language_code = 'es'
         self.welcome_agent = WelcomeAgent()
+        self.welcome_agent.request_url = 'localhost'
+        self.welcome_agent.lang_code = self.language_code
         self.is_debug = DEBUG
 
     def process_request(self, post):
@@ -25,7 +28,8 @@ class SandBoxAgent(Agent):
             if action == WELCOME_ACTION:
                 request = get_facebook_welcome_payload(
                     sender_id=post.get('sender_id', '2093633150674633'),
-                    recipient_id=post.get('recipient_id', '256171418366507')
+                    recipient_id=post.get('recipient_id', '256171418366507'),
+                    language_code=self.language_code
                 )
                 print(request)
                 self.welcome_agent.process_request(request)

@@ -32,6 +32,13 @@ class WelcomeAgent(Agent):
         self.event_integration = build_integration_by_source(EB_INTEGRATION)
         self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
 
+    def get_source(self):
+        try:
+            source = '{url}/webhook'.format(url=self.request_url.split('/')[2])
+        except IndexError:
+            source = ''
+        return source
+
     def process_request(self, post):
         self.logger.info(post)
         self.logger.info(self.lang_code)
@@ -114,7 +121,7 @@ class WelcomeAgent(Agent):
             self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             # response for chatbot app
             return {
-                'source': '{url}/webhook'.format(url=self.request_url.split('/')[2]),
+                'source': self.get_source(),
             }
         if events_data:
             events_data = events_data[0].get('title') if events_data else ''
@@ -123,5 +130,5 @@ class WelcomeAgent(Agent):
             speech = get_text(self.lang_code, 'Sorry I have not found any event :(')
         return {
             'fulfillmentText': speech,
-            'source': '{url}/webhook'.format(url=self.request_url.split('/')[2]),
+            'source': self.get_source(),
         }

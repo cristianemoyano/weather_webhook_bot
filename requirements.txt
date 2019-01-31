@@ -34,6 +34,7 @@ pluggy==0.7.1
 prompt-toolkit==1.0.15
 ptyprocess==0.6.0
 py==1.6.0
+py-translate==1.0.3
 pycparser==2.18
 Pygments==2.2.0
 pyOpenSSL==18.0.0

@@ -16,7 +16,7 @@ CONTEXT_ACTIONS = [
 ]
 
 
-def get_facebook_welcome_payload(sender_id, recipient_id):
+def get_facebook_welcome_payload(sender_id, recipient_id, language_code='en'):
     return {
         'responseId': '435bada8-a660-43e8-9cfb-5f8bab04754b',
         'queryResult': {
@@ -60,7 +60,7 @@ def get_facebook_welcome_payload(sender_id, recipient_id):
                 'displayName': 'DefaultWelcomeIntent'
             },
             'intentDetectionConfidence': 1.0,
-            'languageCode': 'en'
+            'languageCode': language_code
         },
         'originalDetectIntentRequest': {
             'source': 'facebook',

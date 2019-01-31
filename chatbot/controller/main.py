@@ -28,6 +28,7 @@ class Controller(object):
         intent_display_name = get_intent_display_name(post)
         agent = build_agent_by_intent_diplayname(intent_display_name)
         agent.request_url = request.url
+        agent.lang_code = post.get('queryResult').get('languageCode')
         return_value = agent.process_request(post)
         return_value = json.dumps(return_value, indent=4)
         # Convert the return value from a view function to an instance of response_class.

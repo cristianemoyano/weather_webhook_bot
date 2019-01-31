@@ -1,6 +1,7 @@
 from chatbot.utils import (
     get_logger,
     LOG_AGENT_DIR,
+    get_text,
 )
 from chatbot.agents.base import Agent
 from chatbot.integrations.builder import (
@@ -16,6 +17,13 @@ from chatbot.integrations.facebook import (
 from chatbot.integrations.eventbrite import get_events_data
 
 
+def _get_gretting_text(user_first_name, lang_out):
+    start_phrase = 'Hey'
+    last_phrase = 'I recommend these events!'
+    text = get_text(lang_out, start_phrase) + ' ' + user_first_name + ', ' + get_text(lang_out, last_phrase)
+    return text
+
+
 class WelcomeAgent(Agent):
     """Agent that processes events"""
     def __init__(self):
@@ -26,6 +34,7 @@ class WelcomeAgent(Agent):
 
     def process_request(self, post):
         self.logger.info(post)
+        self.logger.info(self.lang_code)
         intent = post.get('originalDetectIntentRequest')
         # get sender_id
         sender_id = self.messenger_integration.get_sender_id(post)
@@ -47,18 +56,18 @@ class WelcomeAgent(Agent):
             # Get user
             user = self.messenger_integration.get_user(sender_id)
             # Send greeting to the user
-            text = "Hey {user_first_name}, I recommend these events!".format(user_first_name=user.get('first_name'))
-            self.messenger_integration.simple_response(sender_id, text)
+            text = _get_gretting_text(user.get('first_name'), self.lang_code)
+            self.messenger_integration.simple_response(sender_id, get_text(self.lang_code, text))
             # create buttons
             fb_simple_element = FacebookSimpleElement()
             fb_simple_element.add_button(
-                btn_title="View",
+                btn_title=get_text(self.lang_code, 'See event'),
                 btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
                 msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_MEDIUM
             )
             fb_simple_element.add_button(
-                btn_title="Tickets",
+                btn_title=get_text(self.lang_code, 'Tickets'),
                 btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
                 msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
                 webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
@@ -71,7 +80,7 @@ class WelcomeAgent(Agent):
                     title=event.get('title'),
                     subtitle='Eventbrite',
                     image_url=event.get('image_url'),
-                    btn_title='View',
+                    btn_title=get_text(self.lang_code, 'See event'),
                     webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
                     buttons=fb_simple_element.buttons,
                     btn_url=event.get('url'),
@@ -88,8 +97,14 @@ class WelcomeAgent(Agent):
             )
             # create and respond a quick reply
             quick_reply = FacebookQuickReplies()
-            quick_reply.add_list_options(title='Yes, more !', payload='more events')
-            quick_reply.add_list_options(title='No, thanks!', payload='thank you')
+            quick_reply.add_list_options(
+                title=get_text(self.lang_code, 'Yes, more !'),
+                payload=get_text(self.lang_code, 'more events')
+            )
+            quick_reply.add_list_options(
+                title=get_text(self.lang_code, 'No, thanks!'),
+                payload=get_text(self.lang_code, 'thank you')
+            )
             self.messenger_integration.respond(
                 sender_id=sender_id,
                 typeMessage=quick_reply.LIST_OPTIONS,
@@ -99,14 +114,14 @@ class WelcomeAgent(Agent):
             self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
             # response for chatbot app
             return {
-                "source": "weather-webhook-bot-app.herokuapp.com/webhook",
+                'source': '{url}/webhook'.format(url=self.request_url.split('/')[2]),
             }
         if events_data:
             events_data = events_data[0].get('title') if events_data else ''
-            speech = "I found this event for you: " + events_data
+            speech = get_text(self.lang_code, 'I found this event for you: ') + events_data
         else:
-            speech = "Sorry I have not found any event :("
+            speech = get_text(self.lang_code, 'Sorry I have not found any event :(')
         return {
-            "fulfillmentText": speech,
-            "source": "weather-webhook-bot-app.herokuapp.com/webhook",
+            'fulfillmentText': speech,
+            'source': '{url}/webhook'.format(url=self.request_url.split('/')[2]),
         }

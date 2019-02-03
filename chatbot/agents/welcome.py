@@ -19,8 +19,11 @@ from chatbot.integrations.eventbrite import get_events_data
 
 def _get_gretting_text(user_first_name, lang_out):
     start_phrase = 'Hey'
-    last_phrase = 'I recommend these events!'
-    text = get_text(lang_out, start_phrase) + ' ' + user_first_name + ', ' + get_text(lang_out, last_phrase)
+    last_phrase = 'I recommend you these events!'
+    try:
+        text = get_text(lang_out, start_phrase) + ' ' + user_first_name + ', ' + get_text(lang_out, last_phrase)
+    except TypeError:
+        text = get_text(lang_out, last_phrase)
     return text
 
 

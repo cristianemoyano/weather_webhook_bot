@@ -10,7 +10,7 @@ from chatbot.utils import (
 
 
 class LiveChatAgent(Agent):
-    """Agent that processes events"""
+    """Agent that pass the thread with Haandover protocol"""
     def __init__(self):
         super(LiveChatAgent, self).__init__()
         self.logger = get_logger('livechat_agent', LOG_AGENT_DIR)

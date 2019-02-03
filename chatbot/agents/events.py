@@ -1,4 +1,5 @@
 from chatbot.agents.base import Agent
+from chatbot.agents.decorators import has_required_params
 from chatbot.integrations.builder import (
     FB_INTEGRATION,
     EB_INTEGRATION,
@@ -9,7 +10,10 @@ from chatbot.integrations.facebook import (
     FacebookQuickReplies,
     FacebookSimpleElement,
 )
-from chatbot.integrations.eventbrite import get_events_data
+from chatbot.integrations.eventbrite import (
+    get_events_data,
+    get_logo,
+)
 
 
 class EventAgent(Agent):
@@ -105,3 +109,77 @@ class EventAgent(Agent):
             "fulfillmentText": speech,
             "source": "weather-webhook-bot-app.herokuapp.com/webhook",
         }
+
+
+class CustomEventAgent(Agent):
+    """Agent that processes events"""
+
+    def __init__(self):
+        super(CustomEventAgent, self).__init__()
+        self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
+        self.required_params = [
+            'event_id',
+            'source',
+            'lang_code',
+            'agent',
+            'sender_id',
+            'organizer_id'
+        ]
+
+    @has_required_params
+    def process_request(self, post):
+        print(post)
+        event_id = post.get('event_id')
+        event = self.event_integration.get_event_by_id(event_id)
+        print(event)
+        if (event.ok and post.get('source') == FB_INTEGRATION):
+            # get sender_id to respond
+            sender_id = self.messenger_integration.get_sender_id(post)
+            # turn on typing in messenger
+            self.messenger_integration.send_typing_on(sender_id)
+            # create buttons
+            fb_simple_element = FacebookSimpleElement()
+            fb_simple_element.add_button(
+                btn_title="View",
+                btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
+                msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
+                webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_MEDIUM
+            )
+            fb_simple_element.add_button(
+                btn_title="Tickets",
+                btn_type=fb_simple_element.BTN_TYPE_WEB_URL,
+                msg_extension=fb_simple_element.MSG_EXTENSION_TRUE,
+                webview_height=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
+            )
+
+            url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
+            webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
+
+            element = self.messenger_integration.get_element(
+                element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
+                title=event.get('name').get('text'),
+                subtitle='Eventbrite',
+                image_url=get_logo(event),
+                btn_title='View',
+                webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
+                buttons=fb_simple_element.buttons,
+                btn_url=event.get('url'),
+                msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
+                webview_height_ratio=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
+            )
+
+            # send element created on messenger
+            self.messenger_integration.respond(
+                sender_id=sender_id,
+                typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
+                elements=element
+            )
+            # turn off the typing on messenger
+            self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
+            # response for chatbot app
+            return {
+                # "fulfillmentText": 'Message from server.',
+                "source": "weather-webhook-bot-app.herokuapp.com/webhook",
+            }
+        return None

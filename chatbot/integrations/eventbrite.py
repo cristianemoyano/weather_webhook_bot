@@ -22,6 +22,7 @@ class EventbriteIntegration(Integration):
     def __init__(self):
         super(EventbriteIntegration, self).__init__()
         self.EB_EVENTS_ENDPOINT = '/events/search/'
+        self.EB_EVENTS_ENDPOINT_BY_ID = '/events/'
         self.eb_token = EB_ACCESS_TOKEN
         self.is_by_organization = EB_IS_BY_ORGANIZATION
         self.ORG_ID = EB_ORGANIZATION_ID
@@ -90,6 +91,13 @@ class EventbriteIntegration(Integration):
             ]
             return response[:limit]
 
+    def get_event_by_id(self, event_id):
+        eventbrite_api = self.get_eventbrite_api()
+        endpoint = self.EB_EVENTS_ENDPOINT_BY_ID
+        url = endpoint + event_id
+        response = eventbrite_api.get(url)
+        return response
+
     def map_get_params(self, req_params):
         endpoint_type = 'general'
         if self.is_by_organization:
@@ -104,17 +112,21 @@ class EventbriteIntegration(Integration):
         return eventbrite.Eventbrite(EB_ACCESS_TOKEN)
 
 
+def get_logo(event):
+    logo = event.get('logo')
+    logo_url = ''
+    if logo:
+        logo_url = logo.get('url')
+    return logo_url
+
+
 def get_events_data(events):
         events_data = []
         if events:
             for event in events:
-                logo = event.get('logo')
-                logo_url = ''
-                if logo:
-                    logo_url = logo.get('url')
                 events_data.append({
                     'title': event.get('name').get('text'),
-                    'image_url': logo_url,
+                    'image_url': get_logo(event),
                     'url': event.get('url'),
                     'id': event.get('id'),
                 })

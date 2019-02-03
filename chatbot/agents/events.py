@@ -155,22 +155,24 @@ class CustomEventAgent(Agent):
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
 
-            element = self.messenger_integration.get_element(
-                element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
-                title=event.get('name').get('text'),
-                subtitle='Eventbrite',
-                image_url=get_logo(event),
-                btn_title='View',
-                webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
-                buttons=fb_simple_element.buttons,
-                btn_url=event.get('url'),
-                msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
-                webview_height_ratio=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
-            )
+            elements = [
+                self.messenger_integration.get_element(
+                    element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
+                    title=event.get('name').get('text'),
+                    subtitle='Eventbrite',
+                    image_url=get_logo(event),
+                    btn_title='View',
+                    webview='{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
+                    buttons=fb_simple_element.buttons,
+                    btn_url=event.get('url'),
+                    msg_extension=fb_simple_element.MSG_EXTENSION_FALSE,
+                    webview_height_ratio=fb_simple_element.WEBVIEW_HEIGHT_RATIO_LARGE
+                )
+            ]
 
             # send element created on messenger
             self.messenger_integration.respond(
                 sender_id=sender_id,
                 typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
-                elements=element
+                elements=elements
             )

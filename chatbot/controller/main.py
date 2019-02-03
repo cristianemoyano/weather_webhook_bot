@@ -1,5 +1,7 @@
 import json
+from flask import jsonify
 
+from chatbot.controller.exceptions import InvalidUsage
 from chatbot.controller.utils import (
     get_methods,
     get_route,
@@ -15,7 +17,6 @@ from flask import (
     request,
     make_response,
 )
-
 from chatbot.views.main import (
     IframeView,
     WebView,
@@ -24,6 +25,12 @@ from chatbot.views.main import (
 
 
 class Controller(object):
+
+    @app.errorhandler(InvalidUsage)
+    def handle_invalid_usage(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
 
     @app.route(get_route('webhooks'), methods=get_methods('webhooks'))
     def webhook():
@@ -49,11 +56,13 @@ class Controller(object):
             # param: lang_code
             agent.lang_code = get_lang_code(post)
             return_value = agent.process_request(post)
+
             return_value = json.dumps(return_value, indent=4)
             # Convert the return value from a view function to an instance of response_class.
             response = make_response(return_value)
             response.headers['Content-Type'] = 'application/json'
             return response
+        raise InvalidUsage('Invalid usage', status_code=410)
 
     @app.route(get_route('index'))
     def index():

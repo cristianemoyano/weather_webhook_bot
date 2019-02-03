@@ -176,3 +176,9 @@ class CustomEventAgent(Agent):
                 typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
                 elements=elements
             )
+            return {
+                'response': 'ok'
+            }
+        return {
+            'response': 'error'
+        }

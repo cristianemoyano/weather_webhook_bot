@@ -1,13 +1,10 @@
-import json
 from flask import jsonify
 
-from chatbot.controller.exceptions import InvalidUsage
-from chatbot.controller.utils import (
+from .flask_celery import process_webhook
+from .exceptions import InvalidUsage
+from .utils import (
     get_methods,
     get_route,
-    get_intent_display_name,
-    get_agent_name,
-    get_lang_code,
 )
 from chatbot.agents.builder import (
     build_agent_by_intent_diplayname,
@@ -36,33 +33,7 @@ class Controller(object):
     def webhook():
         post = request.get_json(silent=True, force=True)
         print(post)
-        intent_display_name = get_intent_display_name(post)
-        agent_name = get_agent_name(post)
-        if intent_display_name:
-            agent = build_agent_by_intent_diplayname(intent_display_name)
-            agent.request_url = request.url
-            # param: languageCode
-            agent.lang_code = get_lang_code(post)
-            return_value = agent.process_request(post)
-            return_value = json.dumps(return_value, indent=4)
-            # Convert the return value from a view function to an instance of response_class.
-            response = make_response(return_value)
-            response.headers['Content-Type'] = 'application/json'
-            return response
-        elif agent_name:
-            # param: agent
-            agent = build_agent_by_intent_diplayname(agent_name)
-            agent.request_url = request.url
-            # param: lang_code
-            agent.lang_code = get_lang_code(post)
-            return_value = agent.process_request(post)
-
-            return_value = json.dumps(return_value, indent=4)
-            # Convert the return value from a view function to an instance of response_class.
-            response = make_response(return_value)
-            response.headers['Content-Type'] = 'application/json'
-            return response
-        raise InvalidUsage('Invalid usage', status_code=410)
+        return process_webhook(post)
 
     @app.route(get_route('index'))
     def index():

@@ -16,14 +16,18 @@ class SandBoxAgent(Agent):
     """Agent for testing proposes"""
     def __init__(self):
         super(SandBoxAgent, self).__init__()
-        self.language_code = 'es'
-        self.welcome_agent = WelcomeAgent()
-        self.welcome_agent.request_url = 'localhost'
-        self.welcome_agent.lang_code = self.language_code
         self.env = 'weather-webhook-bot-app.herokuapp.com'
+        request_url = 'localhost/other/{}'.format(self.env)
+        es_lang = 'es'
+        en_lang = 'en'
+        self.language_code = es_lang
+        self.welcome_agent = WelcomeAgent()
+        self.welcome_agent.request_url = request_url
+        self.welcome_agent.lang_code = self.language_code
+
         self.custom_evt_agent = CustomEventAgent()
-        self.custom_evt_agent.request_url = 'localhost/other/{}'.format(self.env)
-        self.custom_evt_agent.lang_code = 'en'
+        self.custom_evt_agent.request_url = request_url
+        self.custom_evt_agent.lang_code = en_lang
         self.is_debug = DEBUG
 
     def process_request(self, post):

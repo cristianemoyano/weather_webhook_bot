@@ -131,11 +131,10 @@ class CustomEventAgent(Agent):
     def process_request(self, post):
         print(post)
         event_id = post.get('event_id')
+        sender_id = post.get('sender_id')
         event = self.event_integration.get_event_by_id(event_id)
         print(event)
         if (event.ok and post.get('source') == FB_INTEGRATION):
-            # get sender_id to respond
-            sender_id = self.messenger_integration.get_sender_id(post)
             # turn on typing in messenger
             self.messenger_integration.send_typing_on(sender_id)
             # create buttons
@@ -175,11 +174,3 @@ class CustomEventAgent(Agent):
                 typeMessage=self.messenger_integration.FB_MESSAGE_TYPE_TEMPLATE,
                 elements=element
             )
-            # turn off the typing on messenger
-            self.messenger_integration.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_off'))
-            # response for chatbot app
-            return {
-                # "fulfillmentText": 'Message from server.',
-                "source": "weather-webhook-bot-app.herokuapp.com/webhook",
-            }
-        return None

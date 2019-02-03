@@ -15,7 +15,7 @@ run:
 setup:
 	pip3 install -r requirements.txt
 
-clean_local_branches:
+clean:
 	git branch | grep -v "master" | xargs git branch -D
 
 test:

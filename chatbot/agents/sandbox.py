@@ -20,9 +20,9 @@ class SandBoxAgent(Agent):
         self.welcome_agent = WelcomeAgent()
         self.welcome_agent.request_url = 'localhost'
         self.welcome_agent.lang_code = self.language_code
-
+        self.env = 'weather-webhook-bot-app.herokuapp.com'
         self.custom_evt_agent = CustomEventAgent()
-        self.custom_evt_agent.request_url = 'localhost/other/other'
+        self.custom_evt_agent.request_url = 'localhost/other/{}'.format(self.env)
         self.custom_evt_agent.lang_code = 'en'
         self.is_debug = DEBUG
 

@@ -25,7 +25,7 @@ def _get_gretting_text(user_first_name, lang_out):
 
 
 class WelcomeAgent(Agent):
-    """Agent that processes events"""
+    """Agent for initial conversation"""
     def __init__(self):
         super(WelcomeAgent, self).__init__()
         self.logger = get_logger('welcome_agent', LOG_AGENT_DIR)

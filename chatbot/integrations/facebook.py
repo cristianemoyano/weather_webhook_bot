@@ -169,7 +169,17 @@ class FacebookIntegration(Integration):
         self.display_sender_action(sender_id, FB_SENDER_ACTIONS.get('typing_on'))
 
     def get_sender_id(self, post):
-        return post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+        try:
+            sender_id = post.get('originalDetectIntentRequest').get('payload').get('data').get('sender').get('id')
+            return sender_id
+        except AttributeError:
+            sender_id = None
+        try:
+            sender_id = post.get('sender_id')
+            return sender_id
+        except AttributeError:
+            sender_id = None
+        return sender_id
 
     def simple_response(self, sender_id, text):
         """

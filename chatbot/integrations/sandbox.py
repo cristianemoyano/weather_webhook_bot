@@ -3,6 +3,7 @@
 WELCOME_ACTION = 'welcome_action'
 SIMPLE_FB_MSG_ACTION = 'simple_fb_msg_action'
 BLANK_ACTION = 'blank_action'
+CUSTOM_EVENT_ID = 'custom_event_id'
 
 CONTEXT_ACTIONS = [
     {
@@ -12,8 +13,30 @@ CONTEXT_ACTIONS = [
     {
         'id': WELCOME_ACTION,
         'label': 'Welcome Message',
+    },
+    {
+        'id': CUSTOM_EVENT_ID,
+        'label': 'Custom Event ID',
     }
 ]
+
+
+def get_custom_event_post_example(
+        sender_id,
+        event_id,
+        source='facebook',
+        lang_code='en',
+        agent='CustomEventSearch',
+        organizer_id='1234'
+):
+    return {
+        'event_id': event_id,
+        'source': source,
+        'lang_code': lang_code,
+        'agent': agent,
+        'sender_id': sender_id,
+        'organizer_id': organizer_id,
+    }
 
 
 def get_facebook_welcome_payload(sender_id, recipient_id, language_code='en'):

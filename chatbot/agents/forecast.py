@@ -5,7 +5,7 @@ from chatbot.integrations.builder import build_integration_by_source
 
 
 class ForecastAgent(Agent):
-    """Agent that processes events"""
+    """Agent that processes forecast"""
     def __init__(self):
         super(ForecastAgent, self).__init__()
         self.forecast_integration = 'openweathermap'

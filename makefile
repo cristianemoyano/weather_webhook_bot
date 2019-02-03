@@ -12,6 +12,18 @@ deploy:
 run:
 	python3 server.py
 
+celery:
+	celery -A chatbot.tasks.celery worker --loglevel=info
+
+rabbitmq:
+	rabbitmq-server
+
+redis:
+	redis-server
+
+rabbitmq-shutdown:
+	rabbitmqctl shutdown
+
 setup:
 	pip3 install -r requirements.txt
 

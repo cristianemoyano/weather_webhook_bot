@@ -1,10 +1,13 @@
 from flask import jsonify
 
-from .flask_celery import process_webhook
+from chatbot.tasks import process_webhook
 from .exceptions import InvalidUsage
 from .utils import (
     get_methods,
     get_route,
+    get_intent_display_name,
+    get_agent_name,
+    get_lang_code,
 )
 from chatbot.agents.builder import (
     build_agent_by_intent_diplayname,
@@ -32,8 +35,18 @@ class Controller(object):
     @app.route(get_route('webhooks'), methods=get_methods('webhooks'))
     def webhook():
         post = request.get_json(silent=True, force=True)
-        print(post)
-        return process_webhook(post)
+        intent_display_name = get_intent_display_name(post)
+        agent_name = get_agent_name(post)
+        agent_name_defined = intent_display_name or agent_name
+        data = {
+            'agent_name': agent_name_defined,
+            'url': request.url,
+            'lang_code': get_lang_code(post),
+            'params': post,
+        }
+        print(data)
+        process_webhook.delay(**data)
+        return 'async request sent'
 
     @app.route(get_route('index'))
     def index():

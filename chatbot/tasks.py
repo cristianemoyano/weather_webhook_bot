@@ -23,4 +23,5 @@ def process_webhook(agent_name, url, lang_code, params, *args, **kwargs):
             print(return_value)
         except Exception as e:
             print('Internal error: {}'.format(e))
-    print('Invalid usage: Agent not defined')
+    else:
+        print('Invalid usage: Agent not defined')

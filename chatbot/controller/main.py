@@ -1,3 +1,4 @@
+import json
 from flask import jsonify
 
 from chatbot.tasks import process_webhook
@@ -34,19 +35,34 @@ class Controller(object):
 
     @app.route(get_route('webhooks'), methods=get_methods('webhooks'))
     def webhook():
-        post = request.get_json(silent=True, force=True)
-        intent_display_name = get_intent_display_name(post)
-        agent_name = get_agent_name(post)
+        post_data = request.get_json(silent=True, force=True)
+        intent_display_name = get_intent_display_name(post_data)
+        agent_name = get_agent_name(post_data)
         agent_name_defined = intent_display_name or agent_name
+        lang_code = get_lang_code(post_data)
         data = {
             'agent_name': agent_name_defined,
             'url': request.url,
-            'lang_code': get_lang_code(post),
-            'params': post,
+            'lang_code': lang_code,
+            'params': post_data,
         }
         print(data)
-        process_webhook.delay(**data)
-        return 'async request sent'
+        if request.method == 'POST':
+            process_webhook.delay(**data)
+            return 'async request sent'
+        elif request.method == 'GET':
+            get_data = request.args
+            agent = build_agent_by_intent_diplayname(get_data.get('agent', None))
+            agent.request_url = request.url
+            agent.lang_code = get_data.get('lang_code', None)
+            try:
+                return_value = agent.process_request(get_data)
+                return_value = json.dumps(return_value, indent=4)
+                return return_value
+            except Exception as e:
+                raise InvalidUsage('Internal error: {}'.format(e), status_code=500)
+        else:
+            raise InvalidUsage('Invalid usage: Agent not defined', status_code=410)
 
     @app.route(get_route('index'))
     def index():

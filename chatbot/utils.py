@@ -48,6 +48,7 @@ def _get_log_path(log_dir='chatbot/logs/', agent_name='undefined', extension='.l
 PHRASES_TABLE = {
     'en': {
         'es': {
+            'View': 'Ver',
             'test': 'prueba',
             'Hey': 'Hola',
             'Hi !': 'Hola !',
@@ -66,7 +67,10 @@ PHRASES_TABLE = {
 
 
 def translator(lang_in, lang_out, text_key):
-    text = PHRASES_TABLE.get(lang_in).get(lang_out).get(text_key)
+    try:
+        text = PHRASES_TABLE.get(lang_in).get(lang_out).get(text_key)
+    except AttributeError:
+        text = None
     if text:
         return text
     return text_key

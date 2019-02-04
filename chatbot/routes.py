@@ -2,7 +2,7 @@ APP_ROUTES = {
     'webhooks': {
         'description': '',
         'route': '/webhook',
-        'methods': ['POST'],
+        'methods': ['POST', 'GET'],
     },
     'index': {
         'description': '',

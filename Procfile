@@ -1,1 +1,1 @@
-worker: celery -A chatbot.tasks.celery worker --beat --loglevel=info
+worker: celery worker --app=chatbot.tasks.celery --loglevel=info

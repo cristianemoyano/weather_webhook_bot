@@ -14,6 +14,9 @@ from chatbot.integrations.eventbrite import (
     get_events_data,
     get_logo,
 )
+from chatbot.utils import (
+    get_text,
+)
 
 
 class EventAgent(Agent):
@@ -179,6 +182,44 @@ class CustomEventAgent(Agent):
             return {
                 'response': 'ok'
             }
+        return {
+            'response': 'error'
+        }
+
+
+class GetEventByIdAgent(Agent):
+    """Agent that processes events"""
+
+    def __init__(self):
+        super(GetEventByIdAgent, self).__init__()
+        self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.required_params = [
+            'event_id',
+            'agent',
+        ]
+
+    @has_required_params
+    def process_request(self, post):
+        print(post)
+        event_id = post.get('event_id')
+        lang_code = post.get('lang_code', 'en')
+        expand = post.get('expand', False)
+        event = self.event_integration.get_event_by_id(event_id)
+        print(event)
+        if (event.ok):
+            url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
+            webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
+            response = {
+                'embedded_checkout': '{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id')),
+                'event_logo': get_logo(event),
+                'event_title': event.get('name').get('text'),
+                'powered_by': 'Eventbrite',
+                'btn_title': get_text(lang_code, 'View'),
+                'event_url': event.get('url'),
+            }
+            if bool(int(expand)):
+                response.update({'event_data_expanded': event})
+            return response
         return {
             'response': 'error'
         }

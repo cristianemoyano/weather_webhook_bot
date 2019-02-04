@@ -1,6 +1,7 @@
 from chatbot.agents.events import (
     EventAgent,
     CustomEventAgent,
+    GetEventByIdAgent,
 )
 from chatbot.agents.welcome import WelcomeAgent
 from chatbot.agents.forecast import ForecastAgent
@@ -14,6 +15,8 @@ FORECAST_AGENT = 'CheckWeather'
 WELCOME_AGENT = 'DefaultWelcomeIntent'
 LIVECHAT_AGENT = 'LiveChat'
 SANDBOX_AGENT = 'SandBox'
+GET_EVENT_BY_ID_AGENT = 'GetEventById'
+
 
 AGENT_BY_NAME = {
     CUSTOM_EVENT_AGENT: CustomEventAgent,
@@ -22,6 +25,7 @@ AGENT_BY_NAME = {
     WELCOME_AGENT: WelcomeAgent,
     LIVECHAT_AGENT: LiveChatAgent,
     SANDBOX_AGENT: SandBoxAgent,
+    GET_EVENT_BY_ID_AGENT: GetEventByIdAgent,
 }
 
 

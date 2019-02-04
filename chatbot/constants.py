@@ -25,6 +25,6 @@ OPENWEATHERMAP_KEY = os.environ.get('OPENWEATHERMAP_KEY')
 IS_LOG_FILE_HANDLER_ACTIVE = bool(int(os.environ.get('IS_LOG_FILE_HANDLER_ACTIVE')))
 # Celery
 app.config['CELERY_BROKER_URL'] = os.environ.get('CLOUDAMQP_URL')
-app.config['CELERY_RESULT_BACKEND'] = os.environ.get('CLOUDAMQP_URL')
+app.config['RESULT_BACKEND'] = os.environ.get('CLOUDAMQP_URL')
 
 ROOT_PATH = os.getcwd()

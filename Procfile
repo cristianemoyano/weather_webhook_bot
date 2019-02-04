@@ -1,1 +1,1 @@
-worker: celery worker --app=chatbot.tasks.celery --loglevel=info
+worker: celery worker --app=chatbot.tasks.celery --loglevel=info && python3 server.py

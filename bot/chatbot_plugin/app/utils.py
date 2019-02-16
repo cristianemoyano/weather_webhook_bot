@@ -1,7 +1,7 @@
 # coding=utf-8
 import logging
 import os
-from chatbot.constants import (
+from .constants import (
     IS_LOG_FILE_HANDLER_ACTIVE,
 )
 

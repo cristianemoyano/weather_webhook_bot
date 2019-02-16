@@ -1,7 +1,7 @@
 from dateutil import parser
 
-from chatbot.agents.base import Agent
-from chatbot.integrations.builder import build_integration_by_source
+from .base import Agent
+from ..integrations.builder import build_integration_by_source
 
 
 class ForecastAgent(Agent):

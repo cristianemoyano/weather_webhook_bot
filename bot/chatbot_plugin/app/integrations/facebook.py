@@ -1,11 +1,11 @@
 import requests
 
-from chatbot.integrations.base import Integration
-from chatbot.constants import (
+from .base import Integration
+from ..constants import (
     FB_MESSENGER_ACCESS_TOKEN,
     FB_INBOX_APP_ID,
 )
-from chatbot.integrations.exceptions import UndefinedElementType
+from .exceptions import UndefinedElementType
 
 
 FB_SENDER_ACTIONS = {

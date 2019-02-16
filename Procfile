@@ -1,2 +1,2 @@
-web: python3 server.py
+web: gunicorn app.wsgi --log-file -
 worker: celery -A chatbot.tasks.celery worker --loglevel=info

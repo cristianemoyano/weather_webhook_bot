@@ -24,6 +24,10 @@ $ source env/bin/activate
 (env) $ FB_INBOX_APP_ID=int
 (env) $ FB_MESSENGER_ACCESS_TOKEN=str
 (env) $ OPENWEATHERMAP_KEY=int
+(env) $ FLASK_ENV=development
+(env) $ IS_LOG_FILE_HANDLER_ACTIVE=int
+(env) $ CLOUDAMQP_URL=str
+(env) $ REDIS_URL=str
 ```
 
 > or create .env in code/chatbot/.env:
@@ -35,14 +39,26 @@ EB_ORGANIZATION_ID=61565826027
 FB_INBOX_APP_ID=1
 FB_MESSENGER_ACCESS_TOKEN=234
 OPENWEATHERMAP_KEY=345
+...
 ```
 
 ## Running Locally
 
+- Environment requirements:
+-- Python 3.7 | https://www.python.org/downloads/
+-- RabbitMQ / Redis | https://www.rabbitmq.com/download.html
+-- Celery | http://www.celeryproject.org/install/
+
 ```sh
-$ pip install -r requirements.txt
 $ git clone https://github.com/cristianemoyano/weather_webhook_bot.git # or clone your own fork
-$ python server.py
+$ make setup # install libs
+$ make # run flask server
+
+-- other tab >
+$ make rabbitmq # run rabbitmq server
+
+-- other tab >
+$ make celery # run celery
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
@@ -125,6 +141,8 @@ $ make test
 Run app:
 ```
 $ make run
+$ make celery
+$ make rabbitmq
 ```
 
 To install dependencies:
@@ -134,7 +152,7 @@ $ make setup
 
 To clean git local branches
 ```sh
-$ make clean_local_branches
+$ make clean
 ```
 
 To see Heroku logs:

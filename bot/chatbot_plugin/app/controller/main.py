@@ -1,7 +1,7 @@
 import json
 from flask import jsonify
 
-from chatbot.tasks import process_webhook
+from ..tasks import process_webhook
 from .exceptions import InvalidUsage
 from .utils import (
     get_methods,
@@ -10,15 +10,15 @@ from .utils import (
     get_agent_name,
     get_lang_code,
 )
-from chatbot.agents.builder import (
+from ..agents.builder import (
     build_agent_by_intent_diplayname,
 )
-from chatbot.constants import app
+from ..constants import app
 from flask import (
     request,
     make_response,
 )
-from chatbot.views.main import (
+from ..views.main import (
     IframeView,
     WebView,
     SandboxView,

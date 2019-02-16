@@ -1,4 +1,4 @@
-from chatbot.constants import ROOT_PATH
+from ..constants import ROOT_PATH
 
 
 class View(object):

@@ -6,7 +6,7 @@ sudo: true
 install:
   - pip3 install -r requirements.txt
 
-script: coverage run test_suite.py test
+script: coverage run --source='.' manage.py test bot
 
 after_success:
   - coveralls

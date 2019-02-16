@@ -1,7 +1,7 @@
 import pytest
 import unittest
 
-from chatbot.agents.base import Agent
+from ...app.agents.base import Agent
 
 
 class TestAgentBase(unittest.TestCase):

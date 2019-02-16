@@ -1,12 +1,12 @@
 import unittest
 from mock import patch
 
-from chatbot.integrations.eventbrite import EventbriteIntegration
-from chatbot.agents.builder import (
+from ...app.integrations.eventbrite import EventbriteIntegration
+from ...app.agents.builder import (
     build_agent_by_intent_diplayname,
     EVENT_AGENT,
 )
-from chatbot.integrations.builder import (
+from ...app.integrations.builder import (
     EB_INTEGRATION,
     build_integration_by_source,
 )

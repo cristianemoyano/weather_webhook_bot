@@ -6,7 +6,7 @@ from .constants import (
 )
 
 # Logger
-LOG_AGENT_DIR = 'chatbot/logs/agents/'
+LOG_AGENT_DIR = 'logs/agents/'
 
 
 def get_logger(agent, path, file_handler_active=True, stream_handler_active=True):

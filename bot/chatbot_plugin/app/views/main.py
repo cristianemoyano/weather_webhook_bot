@@ -1,10 +1,10 @@
-from chatbot.views.base import View
+from .base import View
 from flask import render_template
-from chatbot.constants import DEBUG
-from chatbot.integrations.sandbox import (
+from ..constants import DEBUG
+from ..integrations.sandbox import (
     CONTEXT_ACTIONS,
 )
-from chatbot.integrations.eventbrite import (
+from ..integrations.eventbrite import (
     get_widgets
 )
 

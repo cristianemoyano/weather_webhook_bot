@@ -1,7 +1,7 @@
-from chatbot.integrations.facebook import FacebookIntegration
-from chatbot.integrations.eventbrite import EventbriteIntegration
-from chatbot.integrations.openweathermap import OpenWeatherMapIntegration
-from chatbot.integrations.exceptions import UndefinedIntegration
+from .facebook import FacebookIntegration
+from .eventbrite import EventbriteIntegration
+from .openweathermap import OpenWeatherMapIntegration
+from .exceptions import UndefinedIntegration
 
 FB_INTEGRATION = 'facebook'
 EB_INTEGRATION = 'eventbrite'

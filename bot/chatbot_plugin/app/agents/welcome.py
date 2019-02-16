@@ -1,20 +1,20 @@
-from chatbot.utils import (
+from ..utils import (
     get_logger,
     LOG_AGENT_DIR,
     get_text,
 )
-from chatbot.agents.base import Agent
-from chatbot.integrations.builder import (
+from .base import Agent
+from ..integrations.builder import (
     FB_INTEGRATION,
     EB_INTEGRATION,
     build_integration_by_source,
 )
-from chatbot.integrations.facebook import (
+from ..integrations.facebook import (
     FB_SENDER_ACTIONS,
     FacebookQuickReplies,
     FacebookSimpleElement,
 )
-from chatbot.integrations.eventbrite import get_events_data
+from ..integrations.eventbrite import get_events_data
 
 
 def _get_gretting_text(user_first_name, lang_out):

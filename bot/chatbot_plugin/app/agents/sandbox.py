@@ -1,8 +1,8 @@
-from chatbot.agents.base import Agent
-from chatbot.constants import DEBUG
-from chatbot.agents.welcome import WelcomeAgent
-from chatbot.agents.events import CustomEventAgent
-from chatbot.integrations.sandbox import (
+from .base import Agent
+from ..constants import DEBUG
+from .welcome import WelcomeAgent
+from .events import CustomEventAgent
+from ..integrations.sandbox import (
     get_facebook_welcome_payload,
     get_custom_event_post_example,
     WELCOME_ACTION,

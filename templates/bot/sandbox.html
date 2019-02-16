@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sandbox Interface</title>
+</head>
+<body>
+  {% if debug %}
+    <form method="post">
+        {% if actions %}
+        Select a action:
+        <select name="action" id="action">
+          {% for action in actions %}
+            <option value="{{action.id}}">{{action.label}}</option>
+          {% endfor %}
+          </select>
+        {% endif %}
+        <p>
+           <input name="sender_id" type="text" id="sender_id" placeholder="Sender ID">
+        </p>
+        <p>
+            <input name="recipient_id" type="text" id="recipient_id" placeholder="Recipient ID">
+        </p>
+        <p>
+            <input name="event_id" type="text" id="event_id" placeholder="Event ID">
+        </p>
+
+        <input type="submit">
+    </form>
+  {% else %}
+    This view is not available for Production environment.
+  {% endif %}
+
+</body>
+</html>

@@ -1,9 +1,9 @@
-from chatbot.agents.base import Agent
-from chatbot.integrations.builder import (
+from .base import Agent
+from ..integrations.builder import (
     FB_INTEGRATION,
     build_integration_by_source,
 )
-from chatbot.utils import (
+from ..utils import (
     get_logger,
     LOG_AGENT_DIR,
 )

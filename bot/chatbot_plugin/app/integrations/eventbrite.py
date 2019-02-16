@@ -1,20 +1,20 @@
-from chatbot.integrations.base import Integration
-from chatbot.constants import DEBUG
-from chatbot.constants import (
-    EB_ACCESS_TOKEN,
-    EB_ORGANIZATION_ID,
-    EB_IS_BY_ORGANIZATION,
-)
 import eventbrite
 import urllib
+
+from ..integrations.base import Integration
+from ..constants import (
+    EB_ACCESS_TOKEN,
+    EB_IS_BY_ORGANIZATION,
+    EB_ORGANIZATION_ID
+)
 
 
 EB_WIDGETS_QA = "https://www.evbqa.com/static/widgets/eb_widgets.js"
 EB_WIDGETS_PROD = "https://www.eventbrite.com/static/widgets/eb_widgets.js"
 
 
-def get_widgets():
-    return EB_WIDGETS_QA if DEBUG else EB_WIDGETS_PROD
+def get_widgets(debug=True):
+    return EB_WIDGETS_QA if debug else EB_WIDGETS_PROD
 
 
 class EventbriteIntegration(Integration):

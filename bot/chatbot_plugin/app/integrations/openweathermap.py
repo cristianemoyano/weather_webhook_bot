@@ -1,7 +1,7 @@
 import requests
 
-from chatbot.integrations.base import Integration
-from chatbot.constants import OPENWEATHERMAP_KEY
+from .base import Integration
+from ..constants import OPENWEATHERMAP_KEY
 
 
 class OpenWeatherMapIntegration(Integration):

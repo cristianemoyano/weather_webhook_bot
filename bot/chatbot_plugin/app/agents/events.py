@@ -1,20 +1,20 @@
-from chatbot.agents.base import Agent
-from chatbot.agents.decorators import has_required_params
-from chatbot.integrations.builder import (
+from .base import Agent
+from .decorators import has_required_params
+from ..integrations.builder import (
     FB_INTEGRATION,
     EB_INTEGRATION,
     build_integration_by_source,
 )
-from chatbot.integrations.facebook import (
+from ..integrations.facebook import (
     FB_SENDER_ACTIONS,
     FacebookQuickReplies,
     FacebookSimpleElement,
 )
-from chatbot.integrations.eventbrite import (
+from ..integrations.eventbrite import (
     get_events_data,
     get_logo,
 )
-from chatbot.utils import (
+from ..utils import (
     get_text,
 )
 
@@ -161,7 +161,7 @@ class CustomEventAgent(Agent):
             elements = [
                 self.messenger_integration.get_element(
                     element_type=self.messenger_integration.ELEMENTS_TYPE_SIMPLE,
-                    title=event.get('name').get('text'),
+                    title=event.get('name').get('text') or event.get('name'),
                     subtitle='Eventbrite',
                     image_url=get_logo(event),
                     btn_title='View',

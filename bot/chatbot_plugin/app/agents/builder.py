@@ -1,13 +1,13 @@
-from chatbot.agents.events import (
+from .events import (
     EventAgent,
     CustomEventAgent,
     GetEventByIdAgent,
 )
-from chatbot.agents.welcome import WelcomeAgent
-from chatbot.agents.forecast import ForecastAgent
-from chatbot.agents.livechat import LiveChatAgent
-from chatbot.agents.exceptions import UndefinedAgent
-from chatbot.agents.sandbox import SandBoxAgent
+from .welcome import WelcomeAgent
+from .forecast import ForecastAgent
+from .livechat import LiveChatAgent
+from .exceptions import UndefinedAgent
+from .sandbox import SandBoxAgent
 
 CUSTOM_EVENT_AGENT = 'CustomEventSearch'
 EVENT_AGENT = 'events.search'

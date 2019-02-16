@@ -1,16 +1,16 @@
 import json
 
-from chatbot.constants import app
+from .constants import app
 from .flask_celery import make_celery
 
-from chatbot.agents.builder import (
+from .agents.builder import (
     build_agent_by_intent_diplayname,
 )
 
 celery = make_celery(app)
 
 
-@celery.task(name='chatbot.tasks.process_webhook')
+@celery.task(name='.tasks.process_webhook')
 def process_webhook(agent_name, url, lang_code, params, *args, **kwargs):
     if agent_name:
         agent = build_agent_by_intent_diplayname(agent_name)

@@ -1,12 +1,12 @@
 import unittest
 import pytest
 
-from chatbot.agents.events import EventAgent
-from chatbot.agents.builder import (
+from ...app.agents.events import EventAgent
+from ...app.agents.builder import (
     build_agent_by_intent_diplayname,
     EVENT_AGENT
 )
-from chatbot.agents.exceptions import UndefinedAgent
+from ...app.agents.exceptions import UndefinedAgent
 
 
 class TestAgentBuilder(unittest.TestCase):

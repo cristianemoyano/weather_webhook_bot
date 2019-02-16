@@ -1,8 +1,8 @@
 import unittest
 from mock import patch
 
-from chatbot.integrations.openweathermap import OpenWeatherMapIntegration
-from chatbot.agents.builder import (
+from ...app.integrations.openweathermap import OpenWeatherMapIntegration
+from ...app.agents.builder import (
     build_agent_by_intent_diplayname,
     FORECAST_AGENT,
 )

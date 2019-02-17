@@ -1,3 +1,4 @@
+
 from django.shortcuts import render
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -19,6 +20,7 @@ from app.auth import TokenAuthSupportQueryString
 from app.settings import DEBUG
 
 from .utils import get_required_params
+from .api_exceptions import ServiceUnavailable
 
 
 def home_view(request):
@@ -79,20 +81,22 @@ class WebhooksView(APIView):
 
     def get(self, request, format=None):
         """
-        Get dummy
+        GET: Agent processor
         """
         params = request.query_params
-        response = {
-            'data': {
-                'agent': params.get('agent'),
-                'lang_code': params.get('lang_code')
-            },
-        }
-        return Response(response)
+
+        agent = build_agent_by_intent_diplayname(params.get('agent', None))
+        agent.request_url = request.build_absolute_uri('/')
+        agent.lang_code = params.get('lang_code', None)
+        try:
+            return_value = agent.process_request(params)
+        except Exception:
+            raise ServiceUnavailable()
+        return Response(return_value)
 
     def post(self, request, format=None):
         """
-        Get dummy
+        POST dummy
         """
         params = get_required_params(post=request.data, url=request.build_absolute_uri('/'))
         print(params)

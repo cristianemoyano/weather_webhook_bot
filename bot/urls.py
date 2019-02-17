@@ -16,6 +16,6 @@ urlpatterns = [
     url(r'^webview/', checkout_view, name='checkout'),
     url(r'^sandbox/', csrf_exempt(sandbox_chatbot_plugin_view), name='sandbox'),
     # API
-    url(r'^webkooks/', WebhooksView.as_view(), name='webkooks'),
+    url(r'^webhook/', WebhooksView.as_view(), name='webhook'),
     url(r'^api-token-auth/', CustomAuthToken.as_view())
 ]

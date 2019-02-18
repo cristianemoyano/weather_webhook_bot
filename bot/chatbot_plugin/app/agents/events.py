@@ -247,6 +247,7 @@ class GetWebviewAgent(Agent):
         print(post)
         sender_id = post.get('user_id')
         event_id = post.get('event_id')
+        chatfuel = post.get('chatfuel', False)
         event = self.event_integration.get_event_by_id(event_id)
         print(event)
         if (event.ok):
@@ -267,7 +268,15 @@ class GetWebviewAgent(Agent):
                 sender_id=sender_id,
                 dict_message=template
             )
-            return 'ok'
+            chatfuel_template = ''
+            if chatfuel:
+                chatfuel_template = {
+                    'messages':
+                    [
+                        template
+                    ]
+                }
+            return chatfuel_template
         return {
             'response': 'error'
         }

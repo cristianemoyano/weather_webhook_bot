@@ -1,4 +1,5 @@
 
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.shortcuts import render
 from django.conf import settings
 from django.db.models.signals import post_save
@@ -29,8 +30,11 @@ def home_view(request):
     return render(request, 'bot/home.html')
 
 
+@xframe_options_exempt
 def checkout_view(request):
     """
+    XFRAME: This page is safe to load in a frame on any site.
+
     View function for webiew page to render embedded checkout.
     GET:
     - eid = <event_id>

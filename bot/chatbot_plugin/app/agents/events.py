@@ -274,48 +274,43 @@ class GetWebviewAgent(Agent):
 
     def get_template(self, webview_url, image_url, event_url, event_title):
         return {
-            'messages':
-            [
+            'attachment':
                 {
-                    'attachment':
+                    'type': 'template',
+                    'payload':
                     {
-                        'type': 'template',
-                        'payload':
-                        {
-                            'template_type': 'generic',
-                            'elements':
-                            [
-                                {
-                                    'title': event_title,
-                                    'subtitle': 'Eventbrite',
-                                    'image_url': image_url,
-                                    'buttons':
-                                    [
-                                        {
-                                            'type': 'web_url',
-                                            'url': event_url,
-                                            'title': 'View',
-                                            'messenger_extensions': 'false',
-                                            'webview_height_ratio': 'tall'
-                                        },
-                                        {
-                                            'type': 'web_url',
-                                            'url': webview_url,
-                                            'title': 'Tickets',
-                                            'messenger_extensions': 'true',
-                                            'webview_height_ratio': 'full'
-                                        }
-                                    ],
-                                    'default_action': {
-                                        "type": 'web_url',
-                                        "url": event_url,
-                                        "messenger_extensions": 'false',
-                                        "webview_height_ratio": 'tall',
+                        'template_type': 'generic',
+                        'elements':
+                        [
+                            {
+                                'title': event_title,
+                                'subtitle': 'Eventbrite',
+                                'image_url': image_url,
+                                'buttons':
+                                [
+                                    {
+                                        'type': 'web_url',
+                                        'url': event_url,
+                                        'title': 'View',
+                                        'messenger_extensions': 'false',
+                                        'webview_height_ratio': 'tall'
                                     },
-                                }
-                            ]
-                        }
+                                    {
+                                        'type': 'web_url',
+                                        'url': webview_url,
+                                        'title': 'Tickets',
+                                        'messenger_extensions': 'true',
+                                        'webview_height_ratio': 'full'
+                                    }
+                                ],
+                                'default_action': {
+                                    "type": 'web_url',
+                                    "url": event_url,
+                                    "messenger_extensions": 'false',
+                                    "webview_height_ratio": 'tall',
+                                },
+                            }
+                        ]
                     }
                 }
-            ]
         }

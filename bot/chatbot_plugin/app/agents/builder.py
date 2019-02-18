@@ -2,6 +2,7 @@ from .events import (
     EventAgent,
     CustomEventAgent,
     GetEventByIdAgent,
+    GetWebviewAgent,
 )
 from .welcome import WelcomeAgent
 from .forecast import ForecastAgent
@@ -16,6 +17,7 @@ WELCOME_AGENT = 'DefaultWelcomeIntent'
 LIVECHAT_AGENT = 'LiveChat'
 SANDBOX_AGENT = 'SandBox'
 GET_EVENT_BY_ID_AGENT = 'GetEventById'
+GET_WEBVIEW_AGENT = 'get_webview'
 
 
 AGENT_BY_NAME = {
@@ -26,6 +28,7 @@ AGENT_BY_NAME = {
     LIVECHAT_AGENT: LiveChatAgent,
     SANDBOX_AGENT: SandBoxAgent,
     GET_EVENT_BY_ID_AGENT: GetEventByIdAgent,
+    GET_WEBVIEW_AGENT: GetWebviewAgent,
 }
 
 

@@ -98,10 +98,22 @@ class WebhooksView(APIView):
 
     def post(self, request, format=None):
         """
-        POST dummy
+        POST: Agent processor
         """
         params = get_required_params(post=request.data, url=request.build_absolute_uri('/'))
-        print(params)
+
+        if params.get('agent_name'):
+            agent = build_agent_by_intent_diplayname(params.get('agent_name'))
+            agent.request_url = params.get('url')
+            # param: languageCode
+            agent.lang_code = params.get('lang_code')
+            try:
+                return_value = agent.process_request(params.get('params'))
+                print(return_value)
+            except Exception:
+                raise ServiceUnavailable()
+        else:
+            raise ServiceUnavailable()
 
         return Response(params)
 

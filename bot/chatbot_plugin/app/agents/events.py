@@ -223,3 +223,84 @@ class GetEventByIdAgent(Agent):
         return {
             'response': 'error'
         }
+
+
+class GetWebviewAgent(Agent):
+    """Agent that processes events"""
+
+    def __init__(self):
+        super(GetWebviewAgent, self).__init__()
+        self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.required_params = [
+            'event_id',
+            'agent',
+        ]
+
+    @has_required_params
+    def process_request(self, post):
+        print(post)
+        event_id = post.get('event_id')
+        # lang_code = post.get('lang_code', 'en')
+        expand = post.get('expand', False)
+        event = self.event_integration.get_event_by_id(event_id)
+        print(event)
+        if (event.ok):
+            url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
+            webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
+            display_url = '{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id'))
+            response = self.get_template(display_url)
+            if bool(int(expand)):
+                response.update({'event_data_expanded': event})
+            return response
+        return {
+            'response': 'error'
+        }
+
+    def get_template(self, display_url):
+        return {
+            'messages':
+            [
+                {
+                    'attachment':
+                    {
+                        'type': 'template',
+                        'payload':
+                        {
+                            'template_type': 'generic',
+                            'image_aspect_ratio': 'square',
+                            'elements':
+                            [
+                                {
+                                    'title': 'Welcome!',
+                                    'subtitle': 'Choose your preferences',
+                                    'buttons':
+                                    [
+                                        {
+                                            'type': 'web_url',
+                                            'url': display_url,
+                                            'title': 'Webview (compact)',
+                                            'messenger_extensions': 'true',
+                                            'webview_height_ratio': 'compact'
+                                        },
+                                        {
+                                            'type': 'web_url',
+                                            'url': display_url,
+                                            'title': 'Webview (tall)',
+                                            'messenger_extensions': 'true',
+                                            'webview_height_ratio': 'tall'
+                                        },
+                                        {
+                                            'type': 'web_url',
+                                            'url': display_url,
+                                            'title': 'Webview (full)',
+                                            'messenger_extensions': 'true',
+                                            'webview_height_ratio': 'full'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }

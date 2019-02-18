@@ -197,6 +197,7 @@ class GetEventByIdAgent(Agent):
     def __init__(self):
         super(GetEventByIdAgent, self).__init__()
         self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
         self.required_params = [
             'event_id',
             'agent',
@@ -238,14 +239,14 @@ class GetWebviewAgent(Agent):
         self.required_params = [
             'event_id',
             'agent',
+            'user_id'
         ]
 
     @has_required_params
     def process_request(self, post):
         print(post)
+        sender_id = post.get('user_id')
         event_id = post.get('event_id')
-        # lang_code = post.get('lang_code', 'en')
-        expand = post.get('expand', False)
         event = self.event_integration.get_event_by_id(event_id)
         print(event)
         if (event.ok):
@@ -255,15 +256,18 @@ class GetWebviewAgent(Agent):
             event_logo = get_logo(event)
             event_url = event.get('url')
             event_title = event.get('name').get('text')
-            response = self.get_template(
+            template = self.get_template(
                 webview_url=display_url,
                 image_url=event_logo,
                 event_url=event_url,
                 event_title=event_title
             )
-            if bool(int(expand)):
-                response.update({'event_data_expanded': event})
-            return response
+            # send element created on messenger
+            self.messenger_integration.direct_response(
+                sender_id=sender_id,
+                dict_message=template
+            )
+            return 'ok'
         return {
             'response': 'error'
         }

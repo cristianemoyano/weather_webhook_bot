@@ -230,6 +230,25 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
+    def direct_response(self, sender_id, dict_message):
+        json_data = {
+            "recipient": {"id": sender_id},
+            "messaging_type": "response",
+            "message": dict_message
+        }
+
+        params = {
+            "access_token": self.fb_token
+        }
+        r = requests.post(
+            self.call_url,
+            json=json_data,
+            params=params
+        )
+        print(r, r.status_code, r.text)
+        print(sender_id)
+        print(json_data)
+
     def get_message(self, typeMessage, elements=None, quick_reply=None):
         msg = {}
         if elements and not quick_reply:

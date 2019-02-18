@@ -15,5 +15,7 @@ FB_INBOX_APP_ID = os.getenv('FB_INBOX_APP_ID')
 OPENWEATHERMAP_KEY = os.getenv('OPENWEATHERMAP_KEY')
 # Log file handler is active
 IS_LOG_FILE_HANDLER_ACTIVE = bool(int(os.getenv('IS_LOG_FILE_HANDLER_ACTIVE')))
+# Slack Integretion
+SLACK_WEBHOOK = os.getenv('SLACK_WEBHOOK')
 
 ROOT_PATH = os.getcwd()

@@ -1,3 +1,6 @@
+import datetime
+from dateutil import tz
+
 from bot.chatbot_plugin.app.controller.utils import (
     get_intent_display_name,
     get_agent_name,
@@ -16,3 +19,10 @@ def get_required_params(post, url):
         'lang_code': lang_code,
         'params': post,
     }
+
+
+def get_datetime_in_utc():
+    """Returns date in UTC w/o tzinfo"""
+    date = datetime.datetime.utcnow()
+    timestamp = date.astimezone(tz.gettz('UTC')).replace(tzinfo=None) if date.tzinfo else date
+    return timestamp.strftime("%Y-%m-%d %H:%M:%S")

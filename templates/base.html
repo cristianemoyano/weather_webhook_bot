@@ -16,6 +16,10 @@
     {% include "menu.html" %}
 
     <!-- main content -->
+    <fb:login-button
+  scope="manage_pages"
+  onlogin="checkLoginState();">
+</fb:login-button>
     {% block content %}
     {% endblock %}
 

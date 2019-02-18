@@ -29,7 +29,11 @@ class EventAgent(Agent):
 
     def process_request(self, post):
         print(post)
-        req_params = post.get('queryResult').get('parameters')
+        try:
+            req_params = post.get('queryResult').get('parameters')
+        except Exception:
+            return None
+
         events = self.event_integration.respond(
             params=req_params,
             limit=3,
@@ -249,7 +253,14 @@ class GetWebviewAgent(Agent):
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             display_url = '{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id'))
             event_logo = get_logo(event)
-            response = self.get_template(display_url=display_url, image_url=event_logo)
+            event_url = event.get('url')
+            event_title = event.get('name').get('text')
+            response = self.get_template(
+                webview_url=display_url,
+                image_url=event_logo,
+                event_url=event_url,
+                event_title=event_title
+            )
             if bool(int(expand)):
                 response.update({'event_data_expanded': event})
             return response
@@ -257,7 +268,7 @@ class GetWebviewAgent(Agent):
             'response': 'error'
         }
 
-    def get_template(self, display_url, image_url):
+    def get_template(self, webview_url, image_url, event_url, event_title):
         return {
             'messages':
             [
@@ -268,40 +279,32 @@ class GetWebviewAgent(Agent):
                         'payload':
                         {
                             'template_type': 'generic',
-                            'image_aspect_ratio': 'square',
                             'elements':
                             [
                                 {
-                                    'title': 'Welcome!',
-                                    'subtitle': 'Choose your preferences',
+                                    'title': event_title,
+                                    'subtitle': 'Eventbrite',
                                     'image_url': image_url,
                                     'buttons':
                                     [
                                         {
                                             'type': 'web_url',
-                                            'url': display_url,
-                                            'title': 'Webview (compact)',
-                                            'messenger_extensions': 'true',
-                                            'webview_height_ratio': 'compact'
-                                        },
-                                        {
-                                            'type': 'web_url',
-                                            'url': display_url,
-                                            'title': 'Webview (tall)',
-                                            'messenger_extensions': 'true',
+                                            'url': event_url,
+                                            'title': 'View',
+                                            'messenger_extensions': 'false',
                                             'webview_height_ratio': 'tall'
                                         },
                                         {
                                             'type': 'web_url',
-                                            'url': display_url,
-                                            'title': 'Webview (full)',
+                                            'url': webview_url,
+                                            'title': 'Tickets',
                                             'messenger_extensions': 'true',
                                             'webview_height_ratio': 'full'
                                         }
                                     ],
                                     'default_action': {
                                         "type": 'web_url',
-                                        "url": display_url,
+                                        "url": event_url,
                                         "messenger_extensions": 'false',
                                         "webview_height_ratio": 'tall',
                                     },

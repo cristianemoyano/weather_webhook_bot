@@ -20,6 +20,7 @@ from app.auth import TokenAuthSupportQueryString
 from app.settings import DEBUG
 
 from .utils import get_required_params
+from .decorators import timing_and_reporting
 from .api_exceptions import ServiceUnavailable
 
 
@@ -79,6 +80,7 @@ class WebhooksView(APIView):
     authentication_classes = (TokenAuthSupportQueryString,)
     permission_classes = (permissions.IsAuthenticated,)
 
+    @timing_and_reporting
     def get(self, request, format=None):
         """
         GET: Agent processor

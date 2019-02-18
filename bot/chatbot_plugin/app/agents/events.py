@@ -197,7 +197,6 @@ class GetEventByIdAgent(Agent):
     def __init__(self):
         super(GetEventByIdAgent, self).__init__()
         self.event_integration = build_integration_by_source(EB_INTEGRATION)
-        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
         self.required_params = [
             'event_id',
             'agent',
@@ -236,6 +235,7 @@ class GetWebviewAgent(Agent):
     def __init__(self):
         super(GetWebviewAgent, self).__init__()
         self.event_integration = build_integration_by_source(EB_INTEGRATION)
+        self.messenger_integration = build_integration_by_source(FB_INTEGRATION)
         self.required_params = [
             'event_id',
             'agent',

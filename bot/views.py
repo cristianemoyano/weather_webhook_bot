@@ -108,7 +108,7 @@ class WebhooksView(APIView):
             # param: languageCode
             agent.lang_code = params.get('lang_code')
             try:
-                return_value = agent.process_request(params.get('params'))
+                return_value = agent.process_request(request.data)
                 print(return_value)
             except Exception:
                 raise ServiceUnavailable()

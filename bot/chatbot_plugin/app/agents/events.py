@@ -248,7 +248,8 @@ class GetWebviewAgent(Agent):
             url = 'https://{root}/webview'.format(root=self.request_url.split('/')[2])
             webview_url = '{url}{event_param}'.format(url=url, event_param='?eid=')
             display_url = '{webview_url}{eid}'.format(webview_url=webview_url, eid=event.get('id'))
-            response = self.get_template(display_url)
+            event_logo = get_logo(event)
+            response = self.get_template(display_url=display_url, image_url=event_logo)
             if bool(int(expand)):
                 response.update({'event_data_expanded': event})
             return response
@@ -256,7 +257,7 @@ class GetWebviewAgent(Agent):
             'response': 'error'
         }
 
-    def get_template(self, display_url):
+    def get_template(self, display_url, image_url):
         return {
             'messages':
             [
@@ -273,6 +274,7 @@ class GetWebviewAgent(Agent):
                                 {
                                     'title': 'Welcome!',
                                     'subtitle': 'Choose your preferences',
+                                    'image_url': image_url,
                                     'buttons':
                                     [
                                         {
@@ -296,7 +298,13 @@ class GetWebviewAgent(Agent):
                                             'messenger_extensions': 'true',
                                             'webview_height_ratio': 'full'
                                         }
-                                    ]
+                                    ],
+                                    'default_action': {
+                                        "type": 'web_url',
+                                        "url": display_url,
+                                        "messenger_extensions": 'false',
+                                        "webview_height_ratio": 'tall',
+                                    },
                                 }
                             ]
                         }

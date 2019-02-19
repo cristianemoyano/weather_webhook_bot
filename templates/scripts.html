@@ -42,8 +42,12 @@
   }
 
   function statusChangeCallback(response) {
-      console.log(response);
+      if (response.status === 'connected') {
+      let [authResponse] = response;
+      console.log('token', authResponse.accessToken);
+      } else {
+      // The person is not logged into this app or we are unable to tell.
+      console.log('not logged');
+      }
   }
 </script>
-
-

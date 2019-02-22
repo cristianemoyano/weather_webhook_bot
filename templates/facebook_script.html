@@ -1,0 +1,63 @@
+
+<script>
+function loadToken(token) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/get_data?token='+token);
+  //Send the proper header information along with the request
+  xhr.setRequestHeader('Content-Type', 'application/json');
+
+  xhr.onreadystatechange = function() { // Call a function when the state changes.
+      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          document.getElementById('demo').innerHTML = this.responseText;
+      }
+  }
+  xhr.send();
+
+}
+</script>
+<script>
+  window.fbMessengerPlugins = window.fbMessengerPlugins || {
+        init: function () {
+          FB.init({
+            appId            : '503413226852581',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v2.8'
+          });
+        }, callable: []
+      };
+      window.fbAsyncInit = window.fbAsyncInit || function () {
+        window.fbMessengerPlugins.callable.forEach(function (item) { item(); });
+        window.fbMessengerPlugins.init();
+      };
+      setTimeout(function () {
+        (function (d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) { return; }
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      }, 0);
+
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
+
+  function checkLoginState() {
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+  }
+
+  function statusChangeCallback(response) {
+      if (response.status === 'connected') {
+      loadToken(response.authResponse.accessToken)
+      } else {
+      // The person is not logged into this app or we are unable to tell.
+      console.log('not logged');
+      }
+  }
+</script>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+
+        {% if user.is_authenticated %}
+          {{ user.username }}
+          {{ user.email }}
+          {{ user.first_name }}
+          {{ user.last_name }}
+
+<fb:login-button
+  scope="manage_pages"
+  onlogin="checkLoginState();">
+</fb:login-button>
+<p id="demo"></p>
+        {% endif %}
+
+    <!-- javascripts -->
+  {% include "facebook_script.html" %}
+
+{% endblock %}
+
+

@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -91,8 +92,9 @@ class WebhooksView(APIView):
         GET: Agent processor
         """
         params = request.query_params
+        user = User.objects.get(username=request.user.username)
         social = SocialAccount.objects.filter(
-            user=request.user
+            user=user
         )
         if social:
             params.update({'fb_token': social.token})

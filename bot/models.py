@@ -14,7 +14,17 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class SocialAccount(models.Model):
+class SocialAccount(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.TextField()
     social = models.CharField(max_length=250, blank=True, null=True)
+
+
+class SocialPages(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    access_token = models.TextField()
+    category = models.CharField(max_length=250, blank=True, null=True)
+    page_name = models.CharField(max_length=250, blank=True, null=True)
+    page_id = models.CharField(max_length=250, blank=True, null=True)
+    page_tasks = models.TextField()
+    default = models.BooleanField(default=False)

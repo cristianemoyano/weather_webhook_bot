@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import SocialAccount
+from .models import (
+    SocialAccount,
+    SocialPages,
+)
 from .utils import get_page_data
 
 
@@ -32,18 +35,37 @@ class PostToken(APIView):
         social = None
         msg = 'Missing required params: token & username'
         if access_token and username:
-            page_data = get_page_data(access_token)
             user = User.objects.get(username=username)
-            social = SocialAccount.objects.filter(user=user)
-            if not social:
-                SocialAccount.objects.create(
-                    user=user,
-                    token=page_data,
-                    social='facebook'
-                )
-                msg = 'Token saved.'
+            pages = SocialPages.objects.filter(user=user)
+            if not pages:
+                page_data = get_page_data(access_token)
+                page_list = page_data.get('data')
+                for page in page_list:
+                    page_access_token = page.get('access_token')
+                    page_category = page.get('category')
+                    page_name = page.get('name')
+                    page_id = page.get('id')
+                    page_tasks = page.get('tasks')
+                    SocialPages.objects.create(
+                        user=user,
+                        access_token=page_access_token,
+                        category=page_category,
+                        page_name=page_name,
+                        page_id=page_id,
+                        page_tasks=page_tasks
+                    )
+                social = SocialAccount.objects.filter(user=user)
+                if not social:
+                    SocialAccount.objects.create(
+                        user=user,
+                        token=access_token,
+                        social='facebook'
+                    )
+                    msg = 'Token saved.'
+                else:
+                    msg = 'Token already exist.'
             else:
-                msg = 'Token already exist.'
+                msg = 'Pages saved.'
         return Response(msg)
 
     def post(self, request, format=None):

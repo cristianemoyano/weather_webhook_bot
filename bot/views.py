@@ -91,13 +91,15 @@ class WebhooksView(APIView):
         """
         GET: Agent processor
         """
+        request.query_params._mutable = True
         params = request.query_params
         user = User.objects.get(username=request.user.username)
         social = SocialAccount.objects.filter(
             user=user
         )
         if social:
-            params.update({'fb_token': social.token})
+            token = social[0].__getattribute__('token')
+            params.update({'fb_token': token})
 
         agent = build_agent_by_intent_diplayname(params.get('agent', None))
         agent.request_url = request.build_absolute_uri('/')

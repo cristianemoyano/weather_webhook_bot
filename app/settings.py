@@ -83,7 +83,14 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler',
+
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    ),
 }
 
 
@@ -105,8 +112,8 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 WSGI_APPLICATION = 'app.wsgi.application'
 

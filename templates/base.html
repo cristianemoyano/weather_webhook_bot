@@ -16,12 +16,12 @@
     {% include "menu.html" %}
 
     <!-- main content -->
-    <fb:login-button
-  scope="manage_pages"
-  onlogin="checkLoginState();">
-</fb:login-button>
+  <main role="main" class="container">
+      <div class="jumbotron">
     {% block content %}
     {% endblock %}
+        </div>
+  </main>
 
 
     <!-- javascripts -->

@@ -23,6 +23,7 @@ from app.settings import DEBUG
 from .utils import get_required_params
 from .decorators import timing_and_reporting
 from .api_exceptions import ServiceUnavailable
+from .models import SocialAccount
 
 
 def home_view(request):
@@ -90,6 +91,11 @@ class WebhooksView(APIView):
         GET: Agent processor
         """
         params = request.query_params
+        social = SocialAccount.objects.filter(
+            user=request.user
+        )
+        if social:
+            params.update({'fb_token': social.token})
 
         agent = build_agent_by_intent_diplayname(params.get('agent', None))
         agent.request_url = request.build_absolute_uri('/')

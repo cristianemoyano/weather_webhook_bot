@@ -7,11 +7,16 @@
           {{ user.first_name }}
           {{ user.last_name }}
 
-<fb:login-button
-  scope="manage_pages"
-  onlogin="checkLoginState();">
-</fb:login-button>
-<p id="demo"></p>
+          {% if social %}
+            <fb:login-button
+              scope="manage_pages"
+              onlogin="checkLoginState();">
+            </fb:login-button>
+            <p id="demo"></p>
+          {% else %}
+          <div>Connected with Facebook</div>
+          {% endif %}
+
         {% endif %}
 
     <!-- javascripts -->

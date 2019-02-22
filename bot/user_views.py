@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import SocialAccount
+from .utils import get_page_data
 
 
 def get_user_profile(request, username):
@@ -26,17 +27,18 @@ class PostToken(APIView):
         POST: Agent processor
         """
         params = request.GET
-        token = params.get('token', None)
+        access_token = params.get('token', None)
         username = params.get('username', None)
         social = None
         msg = 'Missing required params: token & username'
-        if token and username:
+        if access_token and username:
+            page_data = get_page_data(access_token)
             user = User.objects.get(username=username)
             social = SocialAccount.objects.filter(user=user)
             if not social:
                 SocialAccount.objects.create(
                     user=user,
-                    token=token,
+                    token=page_data,
                     social='facebook'
                 )
                 msg = 'Token saved.'

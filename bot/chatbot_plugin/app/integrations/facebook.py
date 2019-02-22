@@ -98,6 +98,7 @@ class FacebookIntegration(Integration):
         self.FB_MESSAGE_TYPE_TEMPLATE = 'template'
         self.FB_TEMPLATE_TYPE_GENERIC = 'generic'
         self.call_url = call_url
+        self.account_url = 'https://graph.facebook.com/v3.1/me/accounts'
 
     def send_pass_thread(self, sender_id):
         uri = 'https://graph.facebook.com/v2.6/me/pass_thread_control'
@@ -248,6 +249,18 @@ class FacebookIntegration(Integration):
         print(r, r.status_code, r.text)
         print(sender_id)
         print(json_data)
+
+    def get_page_data(self, access_token):
+        params = {
+            "access_token": access_token
+        }
+        r = requests.get(
+            self.account_url,
+            params=params
+        )
+        print(r, r.status_code, r.text)
+        print(access_token)
+        return r.text
 
     def get_message(self, typeMessage, elements=None, quick_reply=None):
         msg = {}

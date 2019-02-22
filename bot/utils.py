@@ -6,6 +6,12 @@ from bot.chatbot_plugin.app.controller.utils import (
     get_agent_name,
     get_lang_code,
 )
+from .chatbot_plugin.app.integrations.facebook import FacebookIntegration
+
+
+def get_page_data(token):
+    fb_client = FacebookIntegration()
+    return fb_client.get_page_data(token)
 
 
 def get_required_params(post, url):

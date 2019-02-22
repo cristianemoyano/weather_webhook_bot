@@ -10,6 +10,43 @@ from .chatbot_plugin.app.integrations.facebook import FacebookIntegration
 
 
 def get_page_data(token):
+    """
+    {
+        "data":
+            [
+                {
+                    "access_token":"",
+                    "category":"Event",
+                    "category_list":[{"id":"192119584190796","name":"Event"}],
+                    "name":"Search Events","id":"256171418366507",
+                    "tasks":["ANALYZE","ADVERTISE","MODERATE","CREATE_CONTENT","MANAGE"]
+                },
+                {
+                    "access_token":"",
+                    "category":"Entertainment Website",
+                    "category_list":[{"id":"2705","name":"Entertainment Website"}],
+                    "name":"Chatbot +Con",
+                    "id":"297439270861658",
+                    "tasks":["ANALYZE","ADVERTISE","MODERATE","CREATE_CONTENT","MANAGE"]
+                },
+                {
+                    "access_token":"",
+                    "category":"Comedian",
+                    "category_list":[{"id":"1610","name":"Comedian"}],
+                    "name":"Chatbot del 8",
+                    "id":"1828290267463099",
+                    "tasks":["ANALYZE","ADVERTISE","MODERATE","CREATE_CONTENT"]
+                }
+            ],
+            "paging":
+                {
+                    "cursors":
+                        {
+                            "before":"","after":""
+                        }
+                }
+    }
+    """
     fb_client = FacebookIntegration()
     return fb_client.get_page_data(token)
 

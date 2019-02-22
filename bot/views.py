@@ -24,7 +24,7 @@ from app.settings import DEBUG
 from .utils import get_required_params
 from .decorators import timing_and_reporting
 from .api_exceptions import ServiceUnavailable
-from .models import SocialAccount
+from .models import SocialPages
 
 
 def home_view(request):
@@ -94,11 +94,12 @@ class WebhooksView(APIView):
         request.query_params._mutable = True
         params = request.query_params
         user = User.objects.get(username=request.user.username)
-        social = SocialAccount.objects.filter(
-            user=user
+        social = SocialPages.objects.filter(
+            user=user,
+            default=True,
         )
         if social:
-            token = social[0].__getattribute__('token')
+            token = social[0].__getattribute__('access_token')
             params.update({'fb_token': token})
 
         agent = build_agent_by_intent_diplayname(params.get('agent', None))

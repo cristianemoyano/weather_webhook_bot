@@ -9,7 +9,10 @@ from .models import SocialAccount
 
 def get_user_profile(request, username):
     user = User.objects.get(username=username)
-    return render(request, 'bot/user_profile.html', {"user": user})
+    social = SocialAccount.objects.filter(
+        user=user
+    )
+    return render(request, 'bot/user_profile.html', {"user": user, "social": social})
 
 
 class PostToken(APIView):
@@ -26,7 +29,7 @@ class PostToken(APIView):
         token = params.get('token', None)
         username = params.get('username', None)
         social = None
-        msg = 'Token exist'
+        msg = 'Missing required params: token & username'
         if token and username:
             user = User.objects.get(username=username)
             social = SocialAccount.objects.filter(user=user)
@@ -36,7 +39,9 @@ class PostToken(APIView):
                     token=token,
                     social='facebook'
                 )
-                msg = 'Token saved'
+                msg = 'Token saved.'
+            else:
+                msg = 'Token already exist.'
         return Response(msg)
 
     def post(self, request, format=None):

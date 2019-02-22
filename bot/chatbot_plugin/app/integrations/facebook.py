@@ -230,7 +230,7 @@ class FacebookIntegration(Integration):
         print(sender_id)
         print(json_data)
 
-    def direct_response(self, sender_id, dict_message):
+    def direct_response(self, sender_id, dict_message, token=None):
         json_data = {
             "recipient": {"id": sender_id},
             "messaging_type": "response",
@@ -238,7 +238,7 @@ class FacebookIntegration(Integration):
         }
 
         params = {
-            "access_token": self.fb_token
+            "access_token": token if token else self.fb_token
         }
         r = requests.post(
             self.call_url,

@@ -245,6 +245,7 @@ class GetWebviewAgent(Agent):
     @has_required_params
     def process_request(self, post):
         print(post)
+        fb_token = post.get('fb_token', None)
         sender_id = post.get('user_id')
         event_id = post.get('event_id')
         chatfuel = post.get('chatfuel', False)
@@ -266,7 +267,8 @@ class GetWebviewAgent(Agent):
             # send element created on messenger
             self.messenger_integration.direct_response(
                 sender_id=sender_id,
-                dict_message=template
+                dict_message=template,
+                token=fb_token
             )
             chatfuel_template = ''
             if chatfuel:

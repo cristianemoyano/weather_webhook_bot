@@ -24,13 +24,15 @@ class PostToken(APIView):
         """
         params = request.GET
         token = params.get('token', None)
+        username = params.get('username', None)
         social = None
         msg = 'Token exist'
-        if token:
-            social = SocialAccount.objects.filter(user=request.user)
+        if token and username:
+            user = User.objects.get(username=username)
+            social = SocialAccount.objects.filter(user=user)
             if not social:
                 SocialAccount.objects.create(
-                    user=request.user,
+                    user=user,
                     token=token,
                     social='facebook'
                 )

@@ -7,7 +7,7 @@
           {{ user.first_name }}
           {{ user.last_name }}
 
-          {% if social %}
+          {% if not social %}
             <fb:login-button
               scope="manage_pages"
               onlogin="checkLoginState();">

@@ -1,3 +1,5 @@
+import json
+
 from django.shortcuts import render
 from django.contrib.auth.models import User
 
@@ -38,7 +40,8 @@ class PostToken(APIView):
             user = User.objects.get(username=username)
             pages = SocialPages.objects.filter(user=user)
             if not pages:
-                page_data = get_page_data(access_token)
+                page_data_json = get_page_data(access_token)
+                page_data = json.loads(page_data_json)
                 page_list = page_data.get('data')
                 for page in page_list:
                     page_access_token = page.get('access_token')

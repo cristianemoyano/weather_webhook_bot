@@ -15,6 +15,7 @@ function loadToken(token) {
   xhr.onreadystatechange = function() { // Call a function when the state changes.
       if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
           document.getElementById('demo').innerHTML = this.responseText;
+          setTimeout(location.reload.bind(location), 1000);
       }
   }
   xhr.send();

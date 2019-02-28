@@ -1,6 +1,5 @@
 import json
 
-from django.shortcuts import render
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
@@ -11,14 +10,6 @@ from .models import (
     SocialPages,
 )
 from .utils import get_page_data
-
-
-def get_user_profile(request, username):
-    user = User.objects.get(username=username)
-    social = SocialAccount.objects.filter(
-        user=user
-    )
-    return render(request, 'bot/user_profile.html', {"user": user, "social": social})
 
 
 class PostToken(APIView):

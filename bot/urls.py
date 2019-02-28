@@ -12,14 +12,9 @@ from .views import (
 )
 
 from .user_views import (
-    get_user_profile,
     PostToken,
     # get_data,
 )
-
-profile = [
-    url(r'profile/(?P<username>[a-zA-Z0-9]+)$', get_user_profile, name='profile'),
-]
 
 
 bot = [
@@ -32,4 +27,4 @@ bot = [
     url(r'^api-token-auth/', CustomAuthToken.as_view())
 ]
 
-urlpatterns = bot + profile
+urlpatterns = bot

@@ -19,6 +19,7 @@ accounts/reset/done/ [name='password_reset_complete']
 """
 login = [
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('accounts.urls')),
 ]
 
 apps = [

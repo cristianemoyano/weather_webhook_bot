@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Token</th>
+              <th scope="col">Username</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{ token }}</th>
+              <td> {{ user.username }}</td>
+              <td>{{ user.first_name }}</td>
+              <td>{{ user.last_name }}</td>
+              <td>{{ user.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Connect with Facebook</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">
+                  {% if not social %}
+                  <fb:login-button
+                    scope="manage_pages, pages_messaging"
+                    onlogin="checkLoginState();">
+                  </fb:login-button>
+                  <p id="demo"></p>
+                  {% else %}
+                   Connected with Facebook
+                  {% endif %}
+              </th>
+
+            </tr>
+          </tbody>
+        </table>
+
+            {% if pages %}
+            <table class="table">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Page</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {% for page in pages %}
+                  <th scope="row">
+                      page.page_name
+                  </th>
+                  {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+            {% endif %}
+
+    {% endif %}
+
+    <!-- javascripts -->
+  {% include "facebook_script.html" %}
+
+{% endblock %}
+
+

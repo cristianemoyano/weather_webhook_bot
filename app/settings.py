@@ -54,6 +54,7 @@ DJANGO_APPS = (
 
 LOCAL_APPS = (
     'bot',
+    'accounts.apps.AccountsConfig',
 )
 
 THIRD_PARTY_APPS = (

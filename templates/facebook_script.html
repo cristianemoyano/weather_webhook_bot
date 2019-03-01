@@ -16,10 +16,11 @@ function loadToken(token) {
   url = window.location.href;
   var path = new URL(url);
   splits = path.pathname.split('/')
-  username = splits[2]
-  username_param = '&username='+username
+  username = splits[3]
+  params = 'token='+token'&username='+username
+  params_passed = '?token='+token'&username='+username
   var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/get_data?token='+token+username_param);
+  xhr.open('POST', '/get_data'+params_passed, true);
   //Send the proper header information along with the request
   xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -29,7 +30,7 @@ function loadToken(token) {
           setTimeout(location.reload.bind(location), 1000);
       }
   }
-  xhr.send();
+  xhr.send(params);
 
 }
 </script>

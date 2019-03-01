@@ -47,7 +47,7 @@
     var path = new URL(url);
     splits = path.pathname.split('/')
     username = splits[3]
-    params = 'token='+token'&username='+username
+    params = 'token='+token+'&username='+username
     params_passed = '?token='+token'&username='+username
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/get_data'+params_passed, true);

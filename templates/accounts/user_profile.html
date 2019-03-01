@@ -55,13 +55,13 @@
                 </tr>
               </thead>
               <tbody>
+                 {% for page in pages %}
                 <tr>
-                  {% for page in pages %}
                   <th scope="row">
-                      page.page_name
+                    {{ page.page_name }}
                   </th>
-                  {% endfor %}
                 </tr>
+                {% endfor %}
               </tbody>
             </table>
             {% endif %}

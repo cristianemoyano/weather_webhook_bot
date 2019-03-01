@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
     {% if user.is_authenticated %}
-        <table class="table">
+    <div class="container row justify-content-center">
+      <div class="col-auto">
+        <table class="table table-responsive">
           <thead class="thead-dark">
             <tr>
               <th scope="col">Token</th>
@@ -56,17 +58,58 @@
               </thead>
               <tbody>
                  {% for page in pages %}
+                    {% if page.default %}
+                      <tr class="text-primary">
+                    {% else %}
+                      <tr>
+                    {% endif %}
+                        <th scope="row">
+                            {{ page.page_name }}
+                            {% if page.default %}
+                                ✓
+                            {% endif %}
+                        </th>
+                      </tr>
+                {% endfor %}
                 <tr>
-                  <th scope="row">
-                    {{ page.page_name }}
+                  <th>
+                  <a class="btn btn-primary" href="{% url 'social-pages' %}">Select default Page</a>
                   </th>
                 </tr>
-                {% endfor %}
+
               </tbody>
             </table>
+
+            <table class="table">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Integrations</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Chatfuel integration</span>
+                        </div>
+                        <input id="myInput" type="text" class="form-control" placeholder="Chatfuel" aria-label="integration url" aria-describedby="basic-addon2" value="{{ url_chatfuel }}">
+                        <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" onclick="myFunction()">Copy Url</button>
+                        </div>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+            </table>
+
             {% endif %}
 
+
+
     {% endif %}
+  </div>
+  </div>
 
     <!-- javascripts -->
   {% include "facebook_script.html" %}

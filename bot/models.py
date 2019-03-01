@@ -28,3 +28,6 @@ class SocialPages(TimeStampedModel):
     page_id = models.CharField(max_length=250, blank=True, null=True)
     page_tasks = models.TextField()
     default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return '%s -  %s' % (self.page_name, self.category)

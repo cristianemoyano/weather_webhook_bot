@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if social_pages %}
+ <form method="post">
+    {% csrf_token %}
+    <select name="social_page" id="id_social_page">
+      {% for page in social_pages %}
+          <option value="{{page.pk}}">{{ page}}</option>
+      {% endfor %}
+    </select>
+
+    <button class="btn btn-success" type="submit">Select default social page</button>
+  </form>
+{% else %}
+    <span>You don't have any social page.</span>
+{% endif %}
+
+{% endblock %}

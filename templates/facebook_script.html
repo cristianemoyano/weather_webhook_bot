@@ -1,39 +1,3 @@
-
-<script>
-  function myFunction() {
-  /* Get the text field */
-  var copyText = document.getElementById("myInput");
-
-  /* Select the text field */
-  copyText.select();
-
-  /* Copy the text inside the text field */
-  document.execCommand("copy");
-
-}
-function loadToken(token) {
-
-  url = window.location.href;
-  var path = new URL(url);
-  splits = path.pathname.split('/')
-  username = splits[3]
-  params = 'token='+token'&username='+username
-  params_passed = '?token='+token'&username='+username
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/get_data'+params_passed, true);
-  //Send the proper header information along with the request
-  xhr.setRequestHeader('Content-Type', 'application/json');
-
-  xhr.onreadystatechange = function() { // Call a function when the state changes.
-      if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-          document.getElementById('demo').innerHTML = this.responseText;
-          setTimeout(location.reload.bind(location), 1000);
-      }
-  }
-  xhr.send(params);
-
-}
-</script>
 <script>
   window.fbMessengerPlugins = window.fbMessengerPlugins || {
         init: function () {
@@ -78,4 +42,35 @@ function loadToken(token) {
       console.log('not logged');
       }
   }
+  function loadToken(token) {
+    url = window.location.href;
+    var path = new URL(url);
+    splits = path.pathname.split('/')
+    username = splits[3]
+    params = 'token='+token'&username='+username
+    params_passed = '?token='+token'&username='+username
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/get_data'+params_passed, true);
+    //Send the proper header information along with the request
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            document.getElementById('demo').innerHTML = this.responseText;
+            setTimeout(location.reload.bind(location), 1000);
+        }
+    }
+    xhr.send(params);
+}
+  function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("myInput");
+
+  /* Select the text field */
+  copyText.select();
+
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+
+}
 </script>

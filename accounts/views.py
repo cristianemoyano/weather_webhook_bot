@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views import generic
 from django.shortcuts import (
@@ -39,6 +40,24 @@ class SignUp(generic.CreateView):
         return super().get(request, *args, **kwargs)
 
 
+@login_required
+def DefaultSocialPageView(request):
+    if request.method == 'POST':
+        social_id = request.POST.get('social_page')
+        social_page_selected = SocialPages.objects.get(id=int(social_id))
+        all_social_pages = SocialPages.objects.all()
+        for page in all_social_pages:
+            page.default = False
+            page.save()
+        social_page_selected.default = True
+        social_page_selected.save()
+        return redirect('accounts/profile/{}'.format(request.user.username))
+    else:
+        social_pages = SocialPages.objects.all().filter(user=request.user)
+    return render(request, 'accounts/default_page.html', {'social_pages': social_pages})
+
+
+@login_required
 def UserProfileView(request, username):
     template_url = 'accounts/user_profile.html'
     user = User.objects.get(username=username)
@@ -51,11 +70,19 @@ def UserProfileView(request, username):
     token = Token.objects.get(
         user=user
     )
+    absolute_url = request.build_absolute_uri('/')
+    url_chatfuel = '{url}webhook/?agent=get_webview&event_id={evt}&user_id={user_id}&token={token}'.format(
+        url=absolute_url,
+        user_id='{{messenger user id}}',
+        evt=45433408548,
+        token=token
+    )
     context = {
         "user": user,
         "social": social,
         "pages": pages,
         "token": token,
+        "url_chatfuel": url_chatfuel,
     }
     return render(
         request,

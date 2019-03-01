@@ -6,7 +6,36 @@
   <h2>Sign up</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Sign up</button>
+
+    {{ form.non_field_errors }}
+<div class="fieldWrapper">
+    {{ form.username.errors }}
+    <label for="{{ form.username.id_for_label }}">Username:</label>
+    {{ form.username }}
+    <small id="usernamHelp" class="form-text text-muted">Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</small>
+</div>
+
+<div class="fieldWrapper">
+    {{ form.password1.errors }}
+    <label for="{{ form.password1.id_for_label }}">Password:</label>
+    {{ form.password1 }}
+    <small id="usernamHelp" class="form-text text-muted">
+      Your password can't be too similar to your other personal information.
+      Must contain at least 8 characters.
+      Can't be a commonly used password.
+      Can't be entirely numeric.
+    </small>
+</div>
+<div class="fieldWrapper">
+    {{ form.password2.errors }}
+    <label for="{{ form.password2.id_for_label }}">Password confirmation:</label>
+    {{ form.password2 }}
+    <small id="usernamHelp" class="form-text text-muted">
+    Enter the same password as before, for verification.
+    </small>
+</div>
+
+<button class="btn btn-success" type="submit">Sign up</button>
+
   </form>
 {% endblock %}

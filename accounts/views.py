@@ -59,33 +59,35 @@ def DefaultSocialPageView(request):
 
 @login_required
 def UserProfileView(request, username):
-    template_url = 'accounts/user_profile.html'
-    user = User.objects.get(username=username)
-    social = SocialAccount.objects.filter(
-        user=user
-    )
-    pages = SocialPages.objects.filter(
-        user=user
-    )
-    token = Token.objects.get(
-        user=user
-    )
-    absolute_url = request.build_absolute_uri('/')
-    url_chatfuel = '{url}webhook/?agent=get_webview&event_id={evt}&user_id={user_id}&token={token}'.format(
-        url=absolute_url,
-        user_id='{{messenger user id}}',
-        evt=45433408548,
-        token=token
-    )
-    context = {
-        "user": user,
-        "social": social,
-        "pages": pages,
-        "token": token,
-        "url_chatfuel": url_chatfuel,
-    }
-    return render(
-        request,
-        template_url,
-        context
-    )
+    if request.user.username == username:
+        template_url = 'accounts/user_profile.html'
+        user = User.objects.get(username=request.user.username)
+        social = SocialAccount.objects.filter(
+            user=user
+        )
+        pages = SocialPages.objects.filter(
+            user=user
+        )
+        token = Token.objects.get(
+            user=user
+        )
+        absolute_url = request.build_absolute_uri('/')
+        url_chatfuel = '{url}webhook/?agent=get_webview&event_id={evt}&user_id={user_id}&token={token}'.format(
+            url=absolute_url,
+            user_id='{{messenger user id}}',
+            evt=45433408548,
+            token=token
+        )
+        context = {
+            "user": user,
+            "social": social,
+            "pages": pages,
+            "token": token,
+            "url_chatfuel": url_chatfuel,
+        }
+        return render(
+            request,
+            template_url,
+            context
+        )
+    return redirect('/accounts/profile/{}'.format(request.user.username))

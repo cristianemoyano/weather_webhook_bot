@@ -52,6 +52,7 @@ superuser:
 	python3 manage.py createsuperuser
 
 run-django:
+	pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start
 	python3 manage.py runserver
 
 shell:
@@ -73,3 +74,6 @@ h-loaddata:
 	heroku run python3 manage.py loaddata product/migrations/0001_product.json
 	heroku run python3 manage.py loaddata sales/migrations/0001_sales.json
 	heroku run python3 manage.py loaddata purchases/migrations/0001_purchases.json
+
+activate:
+	cd .. && source env/bin/activate && cd code

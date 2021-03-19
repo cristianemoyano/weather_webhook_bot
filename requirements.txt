@@ -22,7 +22,7 @@ django-filter==2.1.0
 django-import-export==1.1.0
 django-postgres-copy==2.3.7
 django-search-views==0.3.7
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 docopt==0.6.2
 enum34==1.1.6
 et-xmlfile==1.0.1
